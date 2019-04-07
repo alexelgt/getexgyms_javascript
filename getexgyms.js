@@ -53,55 +53,73 @@ document.getElementById('exclusionareasfile').addEventListener('change', handleF
 /*== Set data_global_exareas from input file ==*/
 
 /*==== Function called when the button is pressed ====*/
-function pogotoolstomymaps() {
+function getexgyms() {
 
     gyms_data = JSON.parse(csvJSON(data_global_gyms));
 
     var level = 20;
 
+
+    var data_global_exareas_polygon = [];
+    var number_valid_exareas = 0;
+    for (var i = 0; i < data_global_exareas['features'].length; i++) {
+
+        if ( (data_global_exareas['features'][i]['geometry']['coordinates'][0].length >= 4) && (data_global_exareas['features'][i]['geometry']['type'] == "Polygon") ) {
+            data_global_exareas_polygon[number_valid_exareas] = data_global_exareas['features'][i]['geometry']['coordinates'];
+            number_valid_exareas++;
+        }
+        else if ( data_global_exareas['features'][i]['geometry']['type'] == "LineString" ) {
+
+            var temp_data = [];
+            temp_data = data_global_exareas['features'][i]['geometry']['coordinates'];
+            temp_data.push(data_global_exareas['features'][i]['geometry']['coordinates'][0]);
+
+            if ( temp_data.length >= 4  ) {
+                data_global_exareas_polygon[number_valid_exareas] = temp_data;
+                number_valid_exareas++;
+            }
+        }
+    }
+    var data_global_exareas_multipolygon = turf.multiPolygon(data_global_exareas_polygon);
+    
+    var data_global_exclusionareas_polygon = [];
+    var number_valid_exclusionareas = 0;
+    for (var i = 0; i < data_global_exclusionareas['features'].length; i++) {
+
+        if ( (data_global_exclusionareas['features'][i]['geometry']['coordinates'][0].length >= 4) && (data_global_exclusionareas['features'][i]['geometry']['type'] == "Polygon") ) {
+            data_global_exclusionareas_polygon[number_valid_exclusionareas] = data_global_exclusionareas['features'][i]['geometry']['coordinates'];
+            number_valid_exclusionareas++;
+        }
+        else if ( data_global_exclusionareas['features'][i]['geometry']['type'] == "LineString" ) {
+            var temp_data = [];
+            temp_data = data_global_exclusionareas['features'][i]['geometry']['coordinates'];
+            temp_data.push(data_global_exclusionareas['features'][i]['geometry']['coordinates'][0]);
+
+            if ( temp_data.length >= 4  ) {
+                data_global_exclusionareas_polygon[number_valid_exclusionareas] = [temp_data];
+                number_valid_exclusionareas++;
+            }
+        }
+    }
+    var data_global_exclusionareas_multipolygon = turf.multiPolygon(data_global_exclusionareas_polygon);
+
+
     for (var i = 0; i < gyms_data.length; i++) {
 
-        var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gyms_data[i].lat, gyms_data[i].lng, level) );
-        for (var j = 0; j < data_global_exareas['features'].length; j++) {
-            
-            if ( (data_global_exareas['features'][j]['geometry']['coordinates'][0].length >= 4) && (data_global_exareas['features'][j]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exareas['features'][j]['geometry']['coordinates'])) == true) ) {
-                gyms_data[i]['inEXarea'] = true;
-            }
-            else if ( data_global_exareas['features'][j]['geometry']['type'] == "LineString" ) {
-                var temp_data = [];
-                temp_data = data_global_exareas['features'][j]['geometry']['coordinates'];
-                temp_data.push(data_global_exareas['features'][j]['geometry']['coordinates'][0]);
-
-                if ( temp_data.length >= 4 && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon([temp_data])) == true) ) {
-                    gyms_data[i]['inEXarea'] = true;
-                }
-            }
-
-            if (gyms_data[i]['inEXarea'] == true) {
-                break;
-            }
-        }
-
-        for (var k = 0; k < data_global_exclusionareas['features'].length; k++) {
-            
-            if ( (data_global_exclusionareas['features'][k]['geometry']['coordinates'][0].length >= 4) && (data_global_exclusionareas['features'][k]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exclusionareas['features'][k]['geometry']['coordinates'])) == true) ) {
-                gyms_data[i]['inexclusionarea'] = true;
-            }
-            else if ( data_global_exclusionareas['features'][k]['geometry']['type'] == "LineString"){
-                var temp_data = [];
-                temp_data = data_global_exclusionareas['features'][k]['geometry']['coordinates'];
-                temp_data.push(data_global_exclusionareas['features'][k]['geometry']['coordinates'][0]);
-
-                if ( temp_data.length >= 4 && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon([temp_data])) == true) ) {
-                    gyms_data[i]['inexclusionarea'] = true;
-                }
-            }
-
-            if (gyms_data[i]['inexclusionarea'] == true) {
-                break;
-            }
+        if ((i/100.0 - Math.floor(i/100.0)) == 0.0 ) {
+            console.log(i);
         }
         
+        var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gyms_data[i].lat, gyms_data[i].lng, level) );
+
+        if ( (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exareas_multipolygon) == true) ) {
+            gyms_data[i]['inEXarea'] = true;
+        }
+
+        if ( (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exclusionareas_multipolygon) == true) ) {
+            gyms_data[i]['inexclusionarea'] = true;
+        }
+
     }
 
     var csv_string_ex = "";
@@ -124,7 +142,6 @@ function pogotoolstomymaps() {
     link.setAttribute("download", output_filename + "_ex_and_blocked.csv");
     document.body.appendChild(link);
     link.click();
-    
 
 }
 /*== Function called when the button is pressed ==*/
