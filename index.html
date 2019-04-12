@@ -17,17 +17,27 @@
         <input type="file" id="gymsfile" accept=".csv"/>
       </p>
       <p>
-        <span>EX areas file</span>
+        <span>Pre selected areas</span>
+        <select id="select_area">
+          <option selected="selected">Manual</option>
+          <option>Madrid</option>
+        </select>
+      </p>
+      <p>
+        <span id="exgeojson_text">EX areas file</span>
         <input type="file" id="EXareasfile" accept=".geojson"/>
       </p>
       <p>
-        <span>Exclusion areas file</span>
+        <span id="exclusiongeojson_text">Exclusion areas file</span>
         <input type="file" id="exclusionareasfile" accept=".geojson"/>
       </p>
-      
       <p>
         <input type='button' id='btnLoad' value='Get EX and blocked gyms' onclick='getexgyms();'>
       </p>
+
+      <div id="Output_info" class="output"></div>
+      <br>
+      <div id="Output_results" class="output"></div>
 
     <script src='turf.min.js'></script>
     <script src='s2geometry.js'></script>
