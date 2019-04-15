@@ -281,6 +281,7 @@ function Get_exclusionareas() {
     
     var kml_string_gyms_folder = '\n    <Folder>\n      <name>Blocked gyms</name>';
     var kml_string_exclusionareas_folder = '\n    <Folder>\n      <name>Exclusion areas</name>';
+    var kml_string_exareas_folder = '\n    <Folder>\n      <name>EX areas</name>';
 
     for (let i = 0; i < gyms_data.length; i++) {
 
@@ -290,6 +291,54 @@ function Get_exclusionareas() {
             kml_string_gyms_folder += '\n        <Point>\n          <coordinates>\n            ' + gyms_data[i].lng + ',' + gyms_data[i].lat + '\n          </coordinates>\n        </Point>\n      </Placemark>';
 
             var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gyms_data[i].lat, gyms_data[i].lng, level) );
+
+            for (let k = 0; k < data_global_exareas['features'].length; k++) {
+    
+                if ( (data_global_exareas['features'][k]['geometry']['coordinates'][0].length >= 4) && (data_global_exareas['features'][k]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exareas['features'][k]['geometry']['coordinates'])) == true) ) {
+                    
+                    if ( data_global_exareas['features'][k]['properties']['name'] != undefined ) {
+                        kml_string_exareas_folder += '\n      <Placemark>\n        <name>' + data_global_exareas['features'][k]['properties']['name'] + '</name>';
+                    }
+                    else{
+                        kml_string_exareas_folder += '\n      <Placemark>\n        <name></name>';
+                    }
+                    
+                    kml_string_exareas_folder += '\n        <Polygon>\n          <outerBoundaryIs>\n            <LinearRing>\n              <coordinates>';
+
+                    for (let j = 0; j < data_global_exareas['features'][k]['geometry']['coordinates'][0].length; j++) {
+                        kml_string_exareas_folder += '\n                ' + data_global_exareas['features'][k]['geometry']['coordinates'][0][j][0] + ',' + data_global_exareas['features'][k]['geometry']['coordinates'][0][j][1];
+                    }
+                    kml_string_exareas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>';
+                    
+                    kml_string_exareas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>#4c589d0f</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
+                }
+                else if ( data_global_exareas['features'][k]['geometry']['type'] == "LineString"){
+                    var temp_data = [];
+                    temp_data = data_global_exareas['features'][k]['geometry']['coordinates'];
+                    temp_data.push(data_global_exareas['features'][k]['geometry']['coordinates'][0]);
+    
+                    if ( temp_data.length >= 4 && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon([temp_data])) == true) ) {
+                        
+
+                        if ( data_global_exareas['features'][k]['properties']['name'] != undefined ) {
+                            kml_string_exareas_folder += '\n      <Placemark>\n        <name>' + data_global_exareas['features'][k]['properties']['name'] + '</name>';
+                        }
+                        else{
+                            kml_string_exareas_folder += '\n      <Placemark>\n        <name></name>';
+                        }
+                        
+                        kml_string_exareas_folder += '\n        <LineString>\n          <coordinates>';
+    
+                        for (let j = 0; j < data_global_exareas['features'][k]['geometry']['coordinates'].length; j++) {
+                            kml_string_exareas_folder += '\n            ' + data_global_exareas['features'][k]['geometry']['coordinates'][j][0] + ',' + data_global_exareas['features'][k]['geometry']['coordinates'][j][1];
+                        }
+                        kml_string_exareas_folder += '\n          </coordinates>\n        </LineString>';
+
+                        kml_string_exareas_folder += '\n        <Style>\n          <LineStyle>\n            <color>#ff589d0f</color>\n          </LineStyle>\n        </Style>\n      </Placemark>';
+                    }
+                }
+
+            }
 
             for (let k = 0; k < data_global_exclusionareas['features'].length; k++) {
     
@@ -307,7 +356,9 @@ function Get_exclusionareas() {
                     for (let j = 0; j < data_global_exclusionareas['features'][k]['geometry']['coordinates'][0].length; j++) {
                         kml_string_exclusionareas_folder += '\n                ' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][0][j][0] + ',' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][0][j][1];
                     }
-                    kml_string_exclusionareas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>\n      </Placemark>';
+                    kml_string_exclusionareas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>';
+                    
+                    kml_string_exclusionareas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>#4cb0279c</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
                 }
                 else if ( data_global_exclusionareas['features'][k]['geometry']['type'] == "LineString"){
                     var temp_data = [];
@@ -329,7 +380,9 @@ function Get_exclusionareas() {
                         for (let j = 0; j < data_global_exclusionareas['features'][k]['geometry']['coordinates'].length; j++) {
                             kml_string_exclusionareas_folder += '\n            ' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][j][0] + ',' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][j][1];
                         }
-                        kml_string_exclusionareas_folder += '\n          </coordinates>\n        </LineString>\n      </Placemark>';
+                        kml_string_exclusionareas_folder += '\n          </coordinates>\n        </LineString>';
+
+                        kml_string_exclusionareas_folder += '\n        <Style>\n          <LineStyle>\n            <color>#ffb0279c</color>\n          </LineStyle>\n        </Style>\n      </Placemark>';
                     }
                 }
 
@@ -339,8 +392,9 @@ function Get_exclusionareas() {
 
     kml_string_gyms_folder += '\n    </Folder>';
     kml_string_exclusionareas_folder += '\n    </Folder>';
+    kml_string_exareas_folder += '\n    </Folder>';
 
-    var kml_string = kml_string1 + kml_string_gyms_folder + kml_string_exclusionareas_folder + kml_string2;
+    var kml_string = kml_string1 + kml_string_gyms_folder + kml_string_exareas_folder + kml_string_exclusionareas_folder + kml_string2;
 
     let file_data = "data:text/csv;charset=utf-8,";
     file_data += kml_string;
