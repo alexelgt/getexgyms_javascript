@@ -195,6 +195,7 @@ function getexgyms() {
 
     let file_data = "data:text/csv;charset=utf-8,";
     file_data += "Name,Latitude,Longitude,Type\n" + csv_string_ex + csv_string_blocked;
+    file_data = file_data.replace(/[\r]+/g, '').trim();
     var encodedUri = encodeURI(file_data);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -394,6 +395,7 @@ function Get_exclusionareas() {
     /*==== Get output csv file ====*/
     let file_data = "data:text/csv;charset=utf-8,";
     file_data += kml_string1 + kml_string_gyms_folder + kml_string_exareas_folder + kml_string_exclusionareas_folder + kml_string2;
+    file_data = file_data.replace(/[\r]+/g, '').trim();
     var encodedUri = encodeURI(file_data);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
