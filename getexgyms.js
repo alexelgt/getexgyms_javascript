@@ -1,12 +1,13 @@
-/*==== Set data_global_exareas from input file ====*/
+/*==== Set global variables ====*/
 var level = 20;
 var data_global_gyms;
 var data_global_exareas;
 var data_global_exclusionareas;
 var output_filename;
+var gyms_data;
+/*== Set global variables ==*/
 
-var gyms_data
-
+/*==== Set data from input files ====*/
 //creates a new file reader object
 const fr_exareas = new FileReader();
 const fr_exclusionareas = new FileReader();
@@ -42,7 +43,7 @@ function handleFileexclusionareas (evt) {
 document.getElementById('gymsfile').addEventListener('change', handleFilegyms, false);
 document.getElementById('EXareasfile').addEventListener('change', handleFileEXareas, false);
 document.getElementById('exclusionareasfile').addEventListener('change', handleFileexclusionareas, false);
-/*== Set data_global_exareas from input file ==*/
+/*== Set data from input files ==*/
 
 /*==== Deal with page style if select_area is changed ====*/
 function handleSelectedarea() {
@@ -69,19 +70,15 @@ function getexgyms() {
     $("#Output_info").html("");
     $("#Output_results").html("");
     $("#Get_exclusionareas").html("");
+    var problem_detected = false;
 
     /*=== Set csv data into a variable  ===*/
     gyms_data = JSON.parse(csvJSON(data_global_gyms));
 
-
+    /*=== If a pre-selected area is selected change EX an exclusion areas ===*/
     preselectedareas();
 
-    
-    
-
-    var problem_detected = false;
     /*==== Create a multipolygon with all EX areas ====*/
-
     if (data_global_exareas == undefined) {
         problem_detected = first_time_problem_detected(problem_detected);
         $("#Output_info").html($('#Output_info').html() + "File with EX areas not correct.");
@@ -112,7 +109,6 @@ function getexgyms() {
     /*== Create a multipolygon with all EX areas ==*/
     
     /*==== Create a multipolygon with all exclusion areas ====*/
-
     if (data_global_exclusionareas == undefined) {
         problem_detected = first_time_problem_detected(problem_detected);
         $("#Output_info").html($('#Output_info').html() + "File with exclusion areas not correct.");
@@ -237,7 +233,7 @@ function csvJSON(csv){
     var headers=lines[0].split(",");
 
     for(let i = 1; i < lines.length; i++){
-  
+
         var obj = {};
         var currentline=lines[i].split(",");
   
@@ -276,12 +272,14 @@ function preselectedareas() {
 
 function Get_exclusionareas() {
 
+    /*==== Set some strings for the kml file ====*/
     var kml_string1 = '<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n  <Document>\n    <name>Blocked gyms</name>';
     var kml_string2 = '\n  </Document>\n</kml>';
     
     var kml_string_gyms_folder = '\n    <Folder>\n      <name>Blocked gyms</name>';
     var kml_string_exclusionareas_folder = '\n    <Folder>\n      <name>Exclusion areas</name>';
     var kml_string_exareas_folder = '\n    <Folder>\n      <name>EX areas</name>';
+    /*== Set some strings for the kml file ==*/
 
     for (let i = 0; i < gyms_data.length; i++) {
 
@@ -293,32 +291,31 @@ function Get_exclusionareas() {
             var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gyms_data[i].lat, gyms_data[i].lng, level) );
 
             for (let k = 0; k < data_global_exareas['features'].length; k++) {
-    
+
                 if ( (data_global_exareas['features'][k]['geometry']['coordinates'][0].length >= 4) && (data_global_exareas['features'][k]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exareas['features'][k]['geometry']['coordinates'])) == true) ) {
-                    
+
                     if ( data_global_exareas['features'][k]['properties']['name'] != undefined ) {
                         kml_string_exareas_folder += '\n      <Placemark>\n        <name>' + data_global_exareas['features'][k]['properties']['name'] + '</name>';
                     }
                     else{
                         kml_string_exareas_folder += '\n      <Placemark>\n        <name></name>';
                     }
-                    
+
                     kml_string_exareas_folder += '\n        <Polygon>\n          <outerBoundaryIs>\n            <LinearRing>\n              <coordinates>';
 
                     for (let j = 0; j < data_global_exareas['features'][k]['geometry']['coordinates'][0].length; j++) {
                         kml_string_exareas_folder += '\n                ' + data_global_exareas['features'][k]['geometry']['coordinates'][0][j][0] + ',' + data_global_exareas['features'][k]['geometry']['coordinates'][0][j][1];
                     }
                     kml_string_exareas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>';
-                    
+
                     kml_string_exareas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>#4c589d0f</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
                 }
                 else if ( data_global_exareas['features'][k]['geometry']['type'] == "LineString"){
                     var temp_data = [];
                     temp_data = data_global_exareas['features'][k]['geometry']['coordinates'];
                     temp_data.push(data_global_exareas['features'][k]['geometry']['coordinates'][0]);
-    
+
                     if ( temp_data.length >= 4 && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon([temp_data])) == true) ) {
-                        
 
                         if ( data_global_exareas['features'][k]['properties']['name'] != undefined ) {
                             kml_string_exareas_folder += '\n      <Placemark>\n        <name>' + data_global_exareas['features'][k]['properties']['name'] + '</name>';
@@ -326,7 +323,7 @@ function Get_exclusionareas() {
                         else{
                             kml_string_exareas_folder += '\n      <Placemark>\n        <name></name>';
                         }
-                        
+
                         kml_string_exareas_folder += '\n        <LineString>\n          <coordinates>';
     
                         for (let j = 0; j < data_global_exareas['features'][k]['geometry']['coordinates'].length; j++) {
@@ -357,14 +354,14 @@ function Get_exclusionareas() {
                         kml_string_exclusionareas_folder += '\n                ' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][0][j][0] + ',' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][0][j][1];
                     }
                     kml_string_exclusionareas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>';
-                    
+
                     kml_string_exclusionareas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>#4cb0279c</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
                 }
                 else if ( data_global_exclusionareas['features'][k]['geometry']['type'] == "LineString"){
                     var temp_data = [];
                     temp_data = data_global_exclusionareas['features'][k]['geometry']['coordinates'];
                     temp_data.push(data_global_exclusionareas['features'][k]['geometry']['coordinates'][0]);
-    
+
                     if ( temp_data.length >= 4 && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon([temp_data])) == true) ) {
                         
 
@@ -374,9 +371,9 @@ function Get_exclusionareas() {
                         else{
                             kml_string_exclusionareas_folder += '\n      <Placemark>\n        <name></name>';
                         }
-                        
+
                         kml_string_exclusionareas_folder += '\n        <LineString>\n          <coordinates>';
-    
+
                         for (let j = 0; j < data_global_exclusionareas['features'][k]['geometry']['coordinates'].length; j++) {
                             kml_string_exclusionareas_folder += '\n            ' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][j][0] + ',' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][j][1];
                         }
@@ -394,14 +391,14 @@ function Get_exclusionareas() {
     kml_string_exclusionareas_folder += '\n    </Folder>';
     kml_string_exareas_folder += '\n    </Folder>';
 
-    var kml_string = kml_string1 + kml_string_gyms_folder + kml_string_exareas_folder + kml_string_exclusionareas_folder + kml_string2;
-
+    /*==== Get output csv file ====*/
     let file_data = "data:text/csv;charset=utf-8,";
-    file_data += kml_string;
+    file_data += kml_string1 + kml_string_gyms_folder + kml_string_exareas_folder + kml_string_exclusionareas_folder + kml_string2;
     var encodedUri = encodeURI(file_data);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", output_filename + "_blocked_and_exclusionareas.kml");
     document.body.appendChild(link);
     link.click();
+    /*== Get output csv file ==*/
 }
