@@ -5,7 +5,30 @@ var data_global_exareas;
 var data_global_exclusionareas;
 var output_filename;
 var gyms_data;
+
+var problem_detected = false;
 /*== Set global variables ==*/
+
+var data_global_exareas_from_osm = new XMLHttpRequest();
+var data_global_exclusionareas_from_osm = new XMLHttpRequest();
+
+var min_lat = 91.0;
+var min_lng = 181.0;
+
+var max_lat = -91.0;
+var max_lng = -181.0;
+
+var getmaxandminvalues_done = false;
+
+var ready_to_run = false;
+
+var query_common = 'https://overpass-api.de/api/interpreter?data=%5Bdate%3A%222016-07-16T00%3A00%3A00Z%22%5D%0A%5Btimeout%3A620%5D%0A%5Bbbox%3A';
+var query_ex2 = '%5D%3B%0A%28%0A%20%20%20%20way%5Bleisure%3Dpark%5D%3B%0A%20%20%20%20way%5Blanduse%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Dpitch%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgarden%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgolf_course%5D%3B%0A%20%20%20%20way%5Bleisure%3Dplayground%5D%3B%0A%20%20%20%20way%5Blanduse%3Dmeadow%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgrass%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgreenfield%5D%3B%0A%20%20%20%20way%5Bnatural%3Dscrub%5D%3B%0A%20%20%20%20way%5Bnatural%3Dheath%5D%3B%0A%20%20%20%20way%5Bnatural%3Dgrassland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dvineyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dorchard%5D%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
+var query_exclusion2 = '%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0A%20%20%20%20way%5Bhighway%5D%5Barea%3Dyes%5D%3B%0A%09way%5Bnatural%3Dwater%5D%3B%0A%09way%5Blanduse%3Dconstruction%5D%3B%0A%09way%5Bnatural%3Dwetland%5D%3B%0A%09way%5Baeroway%3Drunway%5D%3B%0A%20%20%09way%5Baeroway%3Dtaxiway%5D%3B%0A%20%20%09way%5Blanduse%3Dmilitary%5D%3B%0A%09way%5Blanduse%3Dquarry%5D%3B%0A%20%20%09way%5Bwater%3Dmarsh%5D%3B%0A%20%20%09way%5Blanduse%3Drailway%5D%3B%0A%20%20%09way%5Blanduse%3Dlandfill%5D%3B%0A%09%2F%2Fway%5B%22junction%22%3D%22roundabout%22%5D%2840.54512538387331%2C-3.6385291814804077%2C40.54668050872829%2C-3.6364075541496277%29%3B%0A%20%20%09way%5Bhighway%5D%28if%3Ais_closed%28%29%29%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
+
+
+var query_ex = 'https://overpass-api.de/api/interpreter?data=%5Bdate%3A%222016-07-16T00%3A00%3A00Z%22%5D%0A%5Btimeout%3A620%5D%0A%5Bbbox%3A40.52743%2C-3.65966%2C40.56819%2C-3.60562%5D%3B%0A%28%0A%20%20%20%20way%5Bleisure%3Dpark%5D%3B%0A%20%20%20%20way%5Blanduse%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Dpitch%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgarden%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgolf_course%5D%3B%0A%20%20%20%20way%5Bleisure%3Dplayground%5D%3B%0A%20%20%20%20way%5Blanduse%3Dmeadow%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgrass%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgreenfield%5D%3B%0A%20%20%20%20way%5Bnatural%3Dscrub%5D%3B%0A%20%20%20%20way%5Bnatural%3Dheath%5D%3B%0A%20%20%20%20way%5Bnatural%3Dgrassland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dvineyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dorchard%5D%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
+var query_exclusion = 'https://overpass-api.de/api/interpreter?data=%5Bdate%3A%222016-07-16T00%3A00%3A00Z%22%5D%0A%5Btimeout%3A620%5D%0A%5Bbbox%3A40.52743%2C-3.65966%2C40.56819%2C-3.60562%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0A%20%20%20%20way%5Bhighway%5D%5Barea%3Dyes%5D%3B%0A%09way%5Bnatural%3Dwater%5D%3B%0A%09way%5Blanduse%3Dconstruction%5D%3B%0A%09way%5Bnatural%3Dwetland%5D%3B%0A%09way%5Baeroway%3Drunway%5D%3B%0A%20%20%09way%5Baeroway%3Dtaxiway%5D%3B%0A%20%20%09way%5Blanduse%3Dmilitary%5D%3B%0A%09way%5Blanduse%3Dquarry%5D%3B%0A%20%20%09way%5Bwater%3Dmarsh%5D%3B%0A%20%20%09way%5Blanduse%3Drailway%5D%3B%0A%20%20%09way%5Blanduse%3Dlandfill%5D%3B%0A%09%2F%2Fway%5B%22junction%22%3D%22roundabout%22%5D%2840.54512538387331%2C-3.6385291814804077%2C40.54668050872829%2C-3.6364075541496277%29%3B%0A%20%20%09way%5Bhighway%5D%28if%3Ais_closed%28%29%29%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
 
 /*==== Set data from input files ====*/
 //creates a new file reader object
@@ -20,6 +43,7 @@ function handleFilegyms (evt) {
 
     fr_gyms.onload = e => {
         data_global_gyms = (e.target.result);
+        gyms_data = JSON.parse(csvJSON(data_global_gyms));
     };
 };
 
@@ -52,12 +76,28 @@ function handleSelectedarea() {
         document.getElementById("exclusionareasfile").disabled = true;
         document.getElementById("exgeojson_text").style.color = '#808080';
         document.getElementById("exclusiongeojson_text").style.color = '#808080';
+        document.getElementById("File_section").style.display = 'none';
     }
     else{
         document.getElementById("EXareasfile").disabled = false;
         document.getElementById("exclusionareasfile").disabled = false;
         document.getElementById("exgeojson_text").style.color = '#000';
         document.getElementById("exclusiongeojson_text").style.color = '#000';
+        document.getElementById("File_section").style.display = 'block';
+    }
+
+    if ( document.getElementById("select_area").value == "Automatic" ) {
+        document.getElementById("Automatic_section").style.display = 'block';
+        document.getElementById("Automatic_warning").style.display = 'block';
+        if ( ready_to_run == false ) {
+            document.getElementById("btngetexandblockedgyms").disabled = true;
+        }
+
+    }
+    else{
+        document.getElementById("Automatic_section").style.display = 'none';
+        document.getElementById("Automatic_warning").style.display = 'none';
+        document.getElementById("btngetexandblockedgyms").disabled = false;
     }
 }
 
@@ -70,11 +110,17 @@ function getexgyms() {
     $("#Output_info").html("");
     $("#Output_results").html("");
     $("#Get_exclusionareas").html("");
-    var problem_detected = false;
+    
 
-    /*=== Set csv data into a variable  ===*/
-    gyms_data = JSON.parse(csvJSON(data_global_gyms));
+    if ( data_global_gyms == undefined ) {
+        problem_detected = first_time_problem_detected(problem_detected);
+        $("#Output_info").html($('#Output_info').html() + "File with gyms not correct.");
+        return;
+    }
 
+
+    
+    
     /*=== If a pre-selected area is selected change EX an exclusion areas ===*/
     preselectedareas();
 
@@ -210,7 +256,7 @@ function getexgyms() {
     $("#Output_results").html($('#Output_results').html() + "Blocked gyms: " + blocked_gyms);
 
     if (blocked_gyms > 0) {
-        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'>");
+        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'><br><br>");
     }
 
 }
@@ -268,6 +314,35 @@ function preselectedareas() {
     if (document.getElementById("select_area").value == "Madrid") {
         data_global_exareas = JSON.parse(getJSON('example_data/madrid_exareas.geojson'));
         data_global_exclusionareas = JSON.parse(getJSON('example_data/madrid_exclusionareas.geojson'));
+    }
+
+    if ( document.getElementById("select_area").value == "Automatic" ) {
+        var osm_data_ex = data_global_exareas_from_osm.responseText;//document.getElementById("data_from_osm_ex").value || "<osm></osm>";
+
+        try {
+            osm_data_ex = $.parseXML(osm_data_ex);
+        } catch(e) {
+            osm_data_ex = JSON.parse(osm_data_ex);
+        }
+        var test_ex = osmtogeojson(osm_data_ex);
+    
+        
+    
+        data_global_exareas = test_ex;  
+      
+    
+        var osm_data_exclusion = data_global_exclusionareas_from_osm.responseText;//document.getElementById("data_from_osm_exclusion").value || "<osm></osm>";
+    
+        try {
+            osm_data_exclusion = $.parseXML(osm_data_exclusion);
+        } catch(e) {
+            osm_data_exclusion = JSON.parse(osm_data_exclusion);
+        }
+        var test_exclusion = osmtogeojson(osm_data_exclusion);
+    
+        
+    
+        data_global_exclusionareas = test_exclusion;
     }
 }
 
@@ -403,4 +478,98 @@ function Get_exclusionareas() {
     document.body.appendChild(link);
     link.click();
     /*== Get output csv file ==*/
+}
+
+function getareas(query_url) {
+
+
+    if ( getmaxandminvalues_done == false ) {
+        getmaxandminvalues();
+    }
+
+    if (query_url == "EX") {
+        var query = query_common + min_lat + "%2C" + min_lng + "%2C" + max_lat + "%2C" + max_lng + query_ex2;
+    }
+    else if (query_url == "exclusion") {
+        var query = query_common + min_lat + "%2C" + min_lng + "%2C" + max_lat + "%2C" + max_lng + query_exclusion2;
+    }
+    
+    var data = new XMLHttpRequest();
+    data.open("GET", query, true);
+    data.onreadystatechange = function() {
+        // Check states 4 = Ready to parse, 200 = found file
+        if(data.readyState === 4 && data.status === 200) {
+            if (query_url == "EX") {
+                document.getElementById("btngetexareas").disabled = true;
+                $("#EX_areas_status").html("");
+                $("#EX_areas_status").html($('#EX_areas_status').html() + "EX areas loaded correctly.");
+                $("#Exclusion_areas_status").html("");
+                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Wait 25 seconds to load exclusion areas (more time migth be needed).");
+                setTimeout(function(){
+                    document.getElementById("btngetexclusionareas").disabled = false;
+                    $("#Exclusion_areas_status").html("");
+                },25000);
+            }
+            else if (query_url == "exclusion") {
+                document.getElementById("btngetexclusionareas").disabled = true;
+                document.getElementById("btngetexandblockedgyms").disabled = false;
+                ready_to_run = true;
+                $("#Exclusion_areas_status").html("");
+                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Exclusion areas loaded correctly.");
+                setTimeout(function(){
+                    document.getElementById("btnresetareas").disabled = false;
+                },25000);
+            }
+        }
+        else{
+            if (query_url == "EX") {
+                $("#EX_areas_status").html("");
+                $("#EX_areas_status").html($('#EX_areas_status').html() + "EX areas not loaded. Maybe to many requests to the overpass API.");
+            }
+            else if (query_url == "exclusion") {
+                $("#Exclusion_areas_status").html("");
+                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Exclusion areas not loaded. Maybe to many requests to the overpass API.");
+            }
+        }
+    }
+    data.send(null);
+
+    if (query_url == "EX") {
+        data_global_exareas_from_osm = data;
+    }
+    else if (query_url == "exclusion") {
+        data_global_exclusionareas_from_osm = data;
+    }
+}
+
+function testexareas() {
+    console.log(data_global_exclusionareas_from_osm.responseText);
+}
+
+function getmaxandminvalues() {
+    for (let i = 0; i < gyms_data.length; i++) {
+        if ( Number(gyms_data[i].lat) < min_lat ) {
+            min_lat = gyms_data[i].lat;
+        }
+
+        if ( Number(gyms_data[i].lat) > max_lat ) {
+            max_lat = gyms_data[i].lat;
+        }
+
+
+        if ( Number(gyms_data[i].lng) < min_lng ) {
+            min_lng = gyms_data[i].lng;
+        }
+
+        if ( Number(gyms_data[i].lng) > max_lng ) {
+            max_lng = gyms_data[i].lng;
+        }
+    }
+
+    getmaxandminvalues_done = true;
+}
+
+function resetareas() {
+    document.getElementById("btngetexareas").disabled = false;
+    document.getElementById("btngetexclusionareas").disabled = false;
 }
