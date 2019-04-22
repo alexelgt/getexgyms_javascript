@@ -566,6 +566,12 @@ function getmaxandminvalues() {
         }
     }
 
+    if ( min_lat == max_lat && min_lng == max_lng ) {
+        console.log("hola");
+        min_lat = max_lat - 0.001;
+        min_lng = max_lng - 0.001;
+    }
+
     getmaxandminvalues_done = true;
 }
 
