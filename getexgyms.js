@@ -23,12 +23,8 @@ var getmaxandminvalues_done = false;
 var ready_to_run = false;
 
 var query_common = 'https://overpass-api.de/api/interpreter?data=%5Bdate%3A%222016-07-16T00%3A00%3A00Z%22%5D%0A%5Btimeout%3A620%5D%0A%5Bbbox%3A';
-var query_ex2 = '%5D%3B%0A%28%0A%20%20%20%20way%5Bleisure%3Dpark%5D%3B%0A%20%20%20%20way%5Blanduse%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Dpitch%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgarden%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgolf_course%5D%3B%0A%20%20%20%20way%5Bleisure%3Dplayground%5D%3B%0A%20%20%20%20way%5Blanduse%3Dmeadow%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgrass%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgreenfield%5D%3B%0A%20%20%20%20way%5Bnatural%3Dscrub%5D%3B%0A%20%20%20%20way%5Bnatural%3Dheath%5D%3B%0A%20%20%20%20way%5Bnatural%3Dgrassland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dvineyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dorchard%5D%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
-var query_exclusion2 = '%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0A%20%20%20%20way%5Bhighway%5D%5Barea%3Dyes%5D%3B%0A%09way%5Bnatural%3Dwater%5D%3B%0A%09way%5Blanduse%3Dconstruction%5D%3B%0A%09way%5Bnatural%3Dwetland%5D%3B%0A%09way%5Baeroway%3Drunway%5D%3B%0A%20%20%09way%5Baeroway%3Dtaxiway%5D%3B%0A%20%20%09way%5Blanduse%3Dmilitary%5D%3B%0A%09way%5Blanduse%3Dquarry%5D%3B%0A%20%20%09way%5Bwater%3Dmarsh%5D%3B%0A%20%20%09way%5Blanduse%3Drailway%5D%3B%0A%20%20%09way%5Blanduse%3Dlandfill%5D%3B%0A%09%2F%2Fway%5B%22junction%22%3D%22roundabout%22%5D%2840.54512538387331%2C-3.6385291814804077%2C40.54668050872829%2C-3.6364075541496277%29%3B%0A%20%20%09way%5Bhighway%5D%28if%3Ais_closed%28%29%29%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
-
-
-//var query_ex = 'https://overpass-api.de/api/interpreter?data=%5Bdate%3A%222016-07-16T00%3A00%3A00Z%22%5D%0A%5Btimeout%3A620%5D%0A%5Bbbox%3A40.52743%2C-3.65966%2C40.56819%2C-3.60562%5D%3B%0A%28%0A%20%20%20%20way%5Bleisure%3Dpark%5D%3B%0A%20%20%20%20way%5Blanduse%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Dpitch%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgarden%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgolf_course%5D%3B%0A%20%20%20%20way%5Bleisure%3Dplayground%5D%3B%0A%20%20%20%20way%5Blanduse%3Dmeadow%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgrass%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgreenfield%5D%3B%0A%20%20%20%20way%5Bnatural%3Dscrub%5D%3B%0A%20%20%20%20way%5Bnatural%3Dheath%5D%3B%0A%20%20%20%20way%5Bnatural%3Dgrassland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dvineyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dorchard%5D%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
-//var query_exclusion = 'https://overpass-api.de/api/interpreter?data=%5Bdate%3A%222016-07-16T00%3A00%3A00Z%22%5D%0A%5Btimeout%3A620%5D%0A%5Bbbox%3A40.52743%2C-3.65966%2C40.56819%2C-3.60562%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0A%20%20%20%20way%5Bhighway%5D%5Barea%3Dyes%5D%3B%0A%09way%5Bnatural%3Dwater%5D%3B%0A%09way%5Blanduse%3Dconstruction%5D%3B%0A%09way%5Bnatural%3Dwetland%5D%3B%0A%09way%5Baeroway%3Drunway%5D%3B%0A%20%20%09way%5Baeroway%3Dtaxiway%5D%3B%0A%20%20%09way%5Blanduse%3Dmilitary%5D%3B%0A%09way%5Blanduse%3Dquarry%5D%3B%0A%20%20%09way%5Bwater%3Dmarsh%5D%3B%0A%20%20%09way%5Blanduse%3Drailway%5D%3B%0A%20%20%09way%5Blanduse%3Dlandfill%5D%3B%0A%09%2F%2Fway%5B%22junction%22%3D%22roundabout%22%5D%2840.54512538387331%2C-3.6385291814804077%2C40.54668050872829%2C-3.6364075541496277%29%3B%0A%20%20%09way%5Bhighway%5D%28if%3Ais_closed%28%29%29%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
+var query_ex = '%5D%3B%0A%28%0A%20%20%20%20way%5Bleisure%3Dpark%5D%3B%0A%20%20%20%20way%5Blanduse%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Dpitch%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgarden%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgolf_course%5D%3B%0A%20%20%20%20way%5Bleisure%3Dplayground%5D%3B%0A%20%20%20%20way%5Blanduse%3Dmeadow%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgrass%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgreenfield%5D%3B%0A%20%20%20%20way%5Bnatural%3Dscrub%5D%3B%0A%20%20%20%20way%5Bnatural%3Dheath%5D%3B%0A%20%20%20%20way%5Bnatural%3Dgrassland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dvineyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dorchard%5D%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
+var query_exclusion = '%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0A%20%20%20%20way%5Bhighway%5D%5Barea%3Dyes%5D%3B%0A%09way%5Bnatural%3Dwater%5D%3B%0A%09way%5Blanduse%3Dconstruction%5D%3B%0A%09way%5Bnatural%3Dwetland%5D%3B%0A%09way%5Baeroway%3Drunway%5D%3B%0A%20%20%09way%5Baeroway%3Dtaxiway%5D%3B%0A%20%20%09way%5Blanduse%3Dmilitary%5D%3B%0A%09way%5Blanduse%3Dquarry%5D%3B%0A%20%20%09way%5Bwater%3Dmarsh%5D%3B%0A%20%20%09way%5Blanduse%3Drailway%5D%3B%0A%20%20%09way%5Blanduse%3Dlandfill%5D%3B%0A%09%2F%2Fway%5B%22junction%22%3D%22roundabout%22%5D%2840.54512538387331%2C-3.6385291814804077%2C40.54668050872829%2C-3.6364075541496277%29%3B%0A%20%20%09way%5Bhighway%5D%28if%3Ais_closed%28%29%29%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
 
 /*==== Set data from input files ====*/
 //creates a new file reader object
@@ -118,9 +114,6 @@ function getexgyms() {
         return;
     }
 
-
-    
-    
     /*=== If a pre-selected area is selected change EX an exclusion areas ===*/
     preselectedareas();
 
@@ -131,27 +124,29 @@ function getexgyms() {
         return;
     }
 
-    var data_global_exareas_polygon = [];
-    var number_valid_exareas = 0;
-    for (let i = 0; i < data_global_exareas['features'].length; i++) {
-
-        if ( (data_global_exareas['features'][i]['geometry']['coordinates'][0].length >= 4) && (data_global_exareas['features'][i]['geometry']['type'] == "Polygon") ) {
-            data_global_exareas_polygon[number_valid_exareas] = data_global_exareas['features'][i]['geometry']['coordinates'];
-            number_valid_exareas++;
-        }
-        else if ( data_global_exareas['features'][i]['geometry']['type'] == "LineString" ) {
-
-            var temp_data = [];
-            temp_data = data_global_exareas['features'][i]['geometry']['coordinates'];
-            temp_data.push(data_global_exareas['features'][i]['geometry']['coordinates'][0]);
-
-            if ( temp_data.length >= 4 ) {
-                data_global_exareas_polygon[number_valid_exareas] = temp_data;
+    if ( data_global_exareas['features'].length > 0 ) {
+        var data_global_exareas_polygon = [];
+        var number_valid_exareas = 0;
+        for (let i = 0; i < data_global_exareas['features'].length; i++) {
+    
+            if ( (data_global_exareas['features'][i]['geometry']['coordinates'][0].length >= 4) && (data_global_exareas['features'][i]['geometry']['type'] == "Polygon") ) {
+                data_global_exareas_polygon[number_valid_exareas] = data_global_exareas['features'][i]['geometry']['coordinates'];
                 number_valid_exareas++;
             }
+            else if ( data_global_exareas['features'][i]['geometry']['type'] == "LineString" ) {
+    
+                var temp_data = [];
+                temp_data = data_global_exareas['features'][i]['geometry']['coordinates'];
+                temp_data.push(data_global_exareas['features'][i]['geometry']['coordinates'][0]);
+    
+                if ( temp_data.length >= 4 ) {
+                    data_global_exareas_polygon[number_valid_exareas] = temp_data;
+                    number_valid_exareas++;
+                }
+            }
         }
+        var data_global_exareas_multipolygon = turf.multiPolygon(data_global_exareas_polygon);
     }
-    var data_global_exareas_multipolygon = turf.multiPolygon(data_global_exareas_polygon);
     /*== Create a multipolygon with all EX areas ==*/
     
     /*==== Create a multipolygon with all exclusion areas ====*/
@@ -161,26 +156,28 @@ function getexgyms() {
         return;
     }
 
-    var data_global_exclusionareas_polygon = [];
-    var number_valid_exclusionareas = 0;
-    for (let i = 0; i < data_global_exclusionareas['features'].length; i++) {
-
-        if ( (data_global_exclusionareas['features'][i]['geometry']['coordinates'][0].length >= 4) && (data_global_exclusionareas['features'][i]['geometry']['type'] == "Polygon") ) {
-            data_global_exclusionareas_polygon[number_valid_exclusionareas] = data_global_exclusionareas['features'][i]['geometry']['coordinates'];
-            number_valid_exclusionareas++;
-        }
-        else if ( data_global_exclusionareas['features'][i]['geometry']['type'] == "LineString" ) {
-            var temp_data = [];
-            temp_data = data_global_exclusionareas['features'][i]['geometry']['coordinates'];
-            temp_data.push(data_global_exclusionareas['features'][i]['geometry']['coordinates'][0]);
-
-            if ( temp_data.length >= 4 ) {
-                data_global_exclusionareas_polygon[number_valid_exclusionareas] = [temp_data];
+    if ( data_global_exclusionareas['features'].length > 0 ) {
+        var data_global_exclusionareas_polygon = [];
+        var number_valid_exclusionareas = 0;
+        for (let i = 0; i < data_global_exclusionareas['features'].length; i++) {
+    
+            if ( (data_global_exclusionareas['features'][i]['geometry']['coordinates'][0].length >= 4) && (data_global_exclusionareas['features'][i]['geometry']['type'] == "Polygon") ) {
+                data_global_exclusionareas_polygon[number_valid_exclusionareas] = data_global_exclusionareas['features'][i]['geometry']['coordinates'];
                 number_valid_exclusionareas++;
             }
+            else if ( data_global_exclusionareas['features'][i]['geometry']['type'] == "LineString" ) {
+                var temp_data = [];
+                temp_data = data_global_exclusionareas['features'][i]['geometry']['coordinates'];
+                temp_data.push(data_global_exclusionareas['features'][i]['geometry']['coordinates'][0]);
+    
+                if ( temp_data.length >= 4 ) {
+                    data_global_exclusionareas_polygon[number_valid_exclusionareas] = [temp_data];
+                    number_valid_exclusionareas++;
+                }
+            }
         }
+        var data_global_exclusionareas_multipolygon = turf.multiPolygon(data_global_exclusionareas_polygon);
     }
-    var data_global_exclusionareas_multipolygon = turf.multiPolygon(data_global_exclusionareas_polygon);
     /*== Create a multipolygon with all exclusion areas ==*/
 
     /*==== Check all gyms ====*/
@@ -208,15 +205,21 @@ function getexgyms() {
             var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gyms_data[i].lat, gyms_data[i].lng, level) );
     
             /*==== Check if cell center is inside any of the EX areas ====*/
-            if ( (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exareas_multipolygon) == true) ) {
-                gyms_data[i]['inEXarea'] = true;
+            if ( data_global_exareas['features'].length > 0 ) {
+                if ( (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exareas_multipolygon) == true) ) {
+                    gyms_data[i]['inEXarea'] = true;
+                }
             }
+            
             /*== Check if cell center is inside any of the EX areas ==*/
     
             /*==== Check if cell center is inside any of the exclusion areas ====*/
-            if ( (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exclusionareas_multipolygon) == true) ) {
-                gyms_data[i]['inexclusionarea'] = true;
+            if ( data_global_exclusionareas['features'].length > 0 ) {
+                if ( (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exclusionareas_multipolygon) == true) ) {
+                    gyms_data[i]['inexclusionarea'] = true;
+                }
             }
+            
             /*== Check if cell center is inside any of the exclusion areas ==*/
         }
     }
@@ -366,100 +369,105 @@ function Get_exclusionareas() {
 
             var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gyms_data[i].lat, gyms_data[i].lng, level) );
 
-            for (let k = 0; k < data_global_exareas['features'].length; k++) {
+            if ( data_global_exareas['features'].length > 0 ) {
+                for (let k = 0; k < data_global_exareas['features'].length; k++) {
 
-                if ( (data_global_exareas['features'][k]['geometry']['coordinates'][0].length >= 4) && (data_global_exareas['features'][k]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exareas['features'][k]['geometry']['coordinates'])) == true) ) {
-
-                    if ( data_global_exareas['features'][k]['properties']['name'] != undefined ) {
-                        kml_string_exareas_folder += '\n      <Placemark>\n        <name>' + data_global_exareas['features'][k]['properties']['name'] + '</name>';
-                    }
-                    else{
-                        kml_string_exareas_folder += '\n      <Placemark>\n        <name></name>';
-                    }
-
-                    kml_string_exareas_folder += '\n        <Polygon>\n          <outerBoundaryIs>\n            <LinearRing>\n              <coordinates>';
-
-                    for (let j = 0; j < data_global_exareas['features'][k]['geometry']['coordinates'][0].length; j++) {
-                        kml_string_exareas_folder += '\n                ' + data_global_exareas['features'][k]['geometry']['coordinates'][0][j][0] + ',' + data_global_exareas['features'][k]['geometry']['coordinates'][0][j][1];
-                    }
-                    kml_string_exareas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>';
-
-                    kml_string_exareas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>#4c589d0f</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
-                }
-                else if ( data_global_exareas['features'][k]['geometry']['type'] == "LineString"){
-                    var temp_data = [];
-                    temp_data = data_global_exareas['features'][k]['geometry']['coordinates'];
-                    temp_data.push(data_global_exareas['features'][k]['geometry']['coordinates'][0]);
-
-                    if ( temp_data.length >= 4 && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon([temp_data])) == true) ) {
-
+                    if ( (data_global_exareas['features'][k]['geometry']['coordinates'][0].length >= 4) && (data_global_exareas['features'][k]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exareas['features'][k]['geometry']['coordinates'])) == true) ) {
+    
                         if ( data_global_exareas['features'][k]['properties']['name'] != undefined ) {
                             kml_string_exareas_folder += '\n      <Placemark>\n        <name>' + data_global_exareas['features'][k]['properties']['name'] + '</name>';
                         }
                         else{
                             kml_string_exareas_folder += '\n      <Placemark>\n        <name></name>';
                         }
-
-                        kml_string_exareas_folder += '\n        <LineString>\n          <coordinates>';
     
-                        for (let j = 0; j < data_global_exareas['features'][k]['geometry']['coordinates'].length; j++) {
-                            kml_string_exareas_folder += '\n            ' + data_global_exareas['features'][k]['geometry']['coordinates'][j][0] + ',' + data_global_exareas['features'][k]['geometry']['coordinates'][j][1];
+                        kml_string_exareas_folder += '\n        <Polygon>\n          <outerBoundaryIs>\n            <LinearRing>\n              <coordinates>';
+    
+                        for (let j = 0; j < data_global_exareas['features'][k]['geometry']['coordinates'][0].length; j++) {
+                            kml_string_exareas_folder += '\n                ' + data_global_exareas['features'][k]['geometry']['coordinates'][0][j][0] + ',' + data_global_exareas['features'][k]['geometry']['coordinates'][0][j][1];
                         }
-                        kml_string_exareas_folder += '\n          </coordinates>\n        </LineString>';
-
-                        kml_string_exareas_folder += '\n        <Style>\n          <LineStyle>\n            <color>#ff589d0f</color>\n          </LineStyle>\n        </Style>\n      </Placemark>';
+                        kml_string_exareas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>';
+    
+                        kml_string_exareas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>#4c589d0f</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
                     }
+                    else if ( data_global_exareas['features'][k]['geometry']['type'] == "LineString"){
+                        var temp_data = [];
+                        temp_data = data_global_exareas['features'][k]['geometry']['coordinates'];
+                        temp_data.push(data_global_exareas['features'][k]['geometry']['coordinates'][0]);
+    
+                        if ( temp_data.length >= 4 && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon([temp_data])) == true) ) {
+    
+                            if ( data_global_exareas['features'][k]['properties']['name'] != undefined ) {
+                                kml_string_exareas_folder += '\n      <Placemark>\n        <name>' + data_global_exareas['features'][k]['properties']['name'] + '</name>';
+                            }
+                            else{
+                                kml_string_exareas_folder += '\n      <Placemark>\n        <name></name>';
+                            }
+    
+                            kml_string_exareas_folder += '\n        <LineString>\n          <coordinates>';
+        
+                            for (let j = 0; j < data_global_exareas['features'][k]['geometry']['coordinates'].length; j++) {
+                                kml_string_exareas_folder += '\n            ' + data_global_exareas['features'][k]['geometry']['coordinates'][j][0] + ',' + data_global_exareas['features'][k]['geometry']['coordinates'][j][1];
+                            }
+                            kml_string_exareas_folder += '\n          </coordinates>\n        </LineString>';
+    
+                            kml_string_exareas_folder += '\n        <Style>\n          <LineStyle>\n            <color>#ff589d0f</color>\n          </LineStyle>\n        </Style>\n      </Placemark>';
+                        }
+                    }
+    
                 }
-
             }
 
-            for (let k = 0; k < data_global_exclusionareas['features'].length; k++) {
+            if ( data_global_exclusionareas['features'].length > 0 ) {
+                for (let k = 0; k < data_global_exclusionareas['features'].length; k++) {
     
-                if ( (data_global_exclusionareas['features'][k]['geometry']['coordinates'][0].length >= 4) && (data_global_exclusionareas['features'][k]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exclusionareas['features'][k]['geometry']['coordinates'])) == true) ) {
-                    
-                    if ( data_global_exclusionareas['features'][k]['properties']['name'] != undefined ) {
-                        kml_string_exclusionareas_folder += '\n      <Placemark>\n        <name>' + data_global_exclusionareas['features'][k]['properties']['name'] + '</name>';
-                    }
-                    else{
-                        kml_string_exclusionareas_folder += '\n      <Placemark>\n        <name></name>';
-                    }
-                    
-                    kml_string_exclusionareas_folder += '\n        <Polygon>\n          <outerBoundaryIs>\n            <LinearRing>\n              <coordinates>';
-
-                    for (let j = 0; j < data_global_exclusionareas['features'][k]['geometry']['coordinates'][0].length; j++) {
-                        kml_string_exclusionareas_folder += '\n                ' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][0][j][0] + ',' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][0][j][1];
-                    }
-                    kml_string_exclusionareas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>';
-
-                    kml_string_exclusionareas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>#4cb0279c</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
-                }
-                else if ( data_global_exclusionareas['features'][k]['geometry']['type'] == "LineString"){
-                    var temp_data = [];
-                    temp_data = data_global_exclusionareas['features'][k]['geometry']['coordinates'];
-                    temp_data.push(data_global_exclusionareas['features'][k]['geometry']['coordinates'][0]);
-
-                    if ( temp_data.length >= 4 && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon([temp_data])) == true) ) {
+                    if ( (data_global_exclusionareas['features'][k]['geometry']['coordinates'][0].length >= 4) && (data_global_exclusionareas['features'][k]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exclusionareas['features'][k]['geometry']['coordinates'])) == true) ) {
                         
-
                         if ( data_global_exclusionareas['features'][k]['properties']['name'] != undefined ) {
                             kml_string_exclusionareas_folder += '\n      <Placemark>\n        <name>' + data_global_exclusionareas['features'][k]['properties']['name'] + '</name>';
                         }
                         else{
                             kml_string_exclusionareas_folder += '\n      <Placemark>\n        <name></name>';
                         }
-
-                        kml_string_exclusionareas_folder += '\n        <LineString>\n          <coordinates>';
-
-                        for (let j = 0; j < data_global_exclusionareas['features'][k]['geometry']['coordinates'].length; j++) {
-                            kml_string_exclusionareas_folder += '\n            ' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][j][0] + ',' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][j][1];
+                        
+                        kml_string_exclusionareas_folder += '\n        <Polygon>\n          <outerBoundaryIs>\n            <LinearRing>\n              <coordinates>';
+    
+                        for (let j = 0; j < data_global_exclusionareas['features'][k]['geometry']['coordinates'][0].length; j++) {
+                            kml_string_exclusionareas_folder += '\n                ' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][0][j][0] + ',' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][0][j][1];
                         }
-                        kml_string_exclusionareas_folder += '\n          </coordinates>\n        </LineString>';
-
-                        kml_string_exclusionareas_folder += '\n        <Style>\n          <LineStyle>\n            <color>#ffb0279c</color>\n          </LineStyle>\n        </Style>\n      </Placemark>';
+                        kml_string_exclusionareas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>';
+    
+                        kml_string_exclusionareas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>#4cb0279c</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
                     }
+                    else if ( data_global_exclusionareas['features'][k]['geometry']['type'] == "LineString"){
+                        var temp_data = [];
+                        temp_data = data_global_exclusionareas['features'][k]['geometry']['coordinates'];
+                        temp_data.push(data_global_exclusionareas['features'][k]['geometry']['coordinates'][0]);
+    
+                        if ( temp_data.length >= 4 && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon([temp_data])) == true) ) {
+                            
+    
+                            if ( data_global_exclusionareas['features'][k]['properties']['name'] != undefined ) {
+                                kml_string_exclusionareas_folder += '\n      <Placemark>\n        <name>' + data_global_exclusionareas['features'][k]['properties']['name'] + '</name>';
+                            }
+                            else{
+                                kml_string_exclusionareas_folder += '\n      <Placemark>\n        <name></name>';
+                            }
+    
+                            kml_string_exclusionareas_folder += '\n        <LineString>\n          <coordinates>';
+    
+                            for (let j = 0; j < data_global_exclusionareas['features'][k]['geometry']['coordinates'].length; j++) {
+                                kml_string_exclusionareas_folder += '\n            ' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][j][0] + ',' + data_global_exclusionareas['features'][k]['geometry']['coordinates'][j][1];
+                            }
+                            kml_string_exclusionareas_folder += '\n          </coordinates>\n        </LineString>';
+    
+                            kml_string_exclusionareas_folder += '\n        <Style>\n          <LineStyle>\n            <color>#ffb0279c</color>\n          </LineStyle>\n        </Style>\n      </Placemark>';
+                        }
+                    }
+    
                 }
-
             }
+            
         }
     }
 
@@ -482,16 +490,18 @@ function Get_exclusionareas() {
 
 function getareas(query_url) {
 
+    var wait_time = 50000.0;
+
 
     if ( getmaxandminvalues_done == false ) {
         getmaxandminvalues();
     }
 
     if (query_url == "EX") {
-        var query = query_common + min_lat + "%2C" + min_lng + "%2C" + max_lat + "%2C" + max_lng + query_ex2;
+        var query = query_common + min_lat + "%2C" + min_lng + "%2C" + max_lat + "%2C" + max_lng + query_ex;
     }
     else if (query_url == "exclusion") {
-        var query = query_common + min_lat + "%2C" + min_lng + "%2C" + max_lat + "%2C" + max_lng + query_exclusion2;
+        var query = query_common + min_lat + "%2C" + min_lng + "%2C" + max_lat + "%2C" + max_lng + query_exclusion;
     }
     
     var data = new XMLHttpRequest();
@@ -504,11 +514,11 @@ function getareas(query_url) {
                 $("#EX_areas_status").html("");
                 $("#EX_areas_status").html($('#EX_areas_status').html() + "EX areas loaded correctly.");
                 $("#Exclusion_areas_status").html("");
-                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Wait 25 seconds to load exclusion areas (more time migth be needed).");
+                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Wait 50 seconds to load exclusion areas (more time migth be needed).");
                 setTimeout(function(){
                     document.getElementById("btngetexclusionareas").disabled = false;
                     $("#Exclusion_areas_status").html("");
-                },25000);
+                },wait_time);
             }
             else if (query_url == "exclusion") {
                 document.getElementById("btngetexclusionareas").disabled = true;
@@ -518,7 +528,7 @@ function getareas(query_url) {
                 $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Exclusion areas loaded correctly.");
                 setTimeout(function(){
                     document.getElementById("btnresetareas").disabled = false;
-                },25000);
+                },wait_time);
             }
         }
         else{
@@ -543,6 +553,10 @@ function getareas(query_url) {
 }
 
 function testexareas() {
+    console.log(data_global_exareas_from_osm.responseText);
+}
+
+function testexclusionareas() {
     console.log(data_global_exclusionareas_from_osm.responseText);
 }
 
@@ -556,7 +570,6 @@ function getmaxandminvalues() {
             max_lat = gyms_data[i].lat;
         }
 
-
         if ( Number(gyms_data[i].lng) < min_lng ) {
             min_lng = gyms_data[i].lng;
         }
@@ -567,7 +580,6 @@ function getmaxandminvalues() {
     }
 
     if ( min_lat == max_lat && min_lng == max_lng ) {
-        console.log("hola");
         min_lat = max_lat - 0.001;
         min_lng = max_lng - 0.001;
     }
