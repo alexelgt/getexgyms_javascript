@@ -490,6 +490,15 @@ function Get_exclusionareas() {
 
 function getareas(query_url) {
 
+    if (query_url == "EX") {
+        $("#EX_areas_status").html("");
+        $("#EX_areas_status").html($('#EX_areas_status').html() + "Loading EX areas (wait until this text changes).");
+    }
+    else if (query_url == "exclusion") {
+        $("#Exclusion_areas_status").html("");
+        $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Loading exclusion areas (wait until this text changes).");
+    }
+
     var wait_time = 50000.0;
 
 
