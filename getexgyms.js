@@ -468,7 +468,6 @@ function Get_exclusionareas() {
                 }
             }
             /*== Check exclusion areas where the cell center is inside ==*/
-
         }
         /*== Only take into account EX gyms in an exclusion area ==*/
     }
@@ -493,10 +492,6 @@ function Get_exclusionareas() {
 
 function getareas(query_url) {
 
-    //document.getElementById("btnresetareas").disabled = false;
-
-    
-
     if (query_url == "EX") {
         $("#EX_areas_status").html("");
         $("#EX_areas_status").html($('#EX_areas_status').html() + "Loading EX areas (wait until this text changes).");
@@ -509,7 +504,6 @@ function getareas(query_url) {
     }
 
     var wait_time = 50000.0;
-
 
     if ( getmaxandminvalues_done == false ) {
         getmaxandminvalues();
@@ -631,5 +625,4 @@ function resetareas() {
     $("#Exclusion_areas_status").html("");
     document.getElementById("btngetexareas").disabled = false;
     document.getElementById("btnresetareas").disabled = true;
-    //document.getElementById("btngetexclusionareas").disabled = false;
 }
