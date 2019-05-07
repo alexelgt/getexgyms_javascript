@@ -7,7 +7,6 @@ var output_filename;
 var gyms_data;
 
 var problem_detected = false;
-/*== Set global variables ==*/
 
 var data_global_exareas_from_osm = new XMLHttpRequest();
 var data_global_exclusionareas_from_osm = new XMLHttpRequest();
@@ -25,6 +24,7 @@ var ready_to_run = false;
 var query_common = 'https://overpass-api.de/api/interpreter?data=%5Bdate%3A%222016-07-16T00%3A00%3A00Z%22%5D%0A%5Btimeout%3A620%5D%0A%5Bbbox%3A';
 var query_ex = '%5D%3B%0A%28%0A%20%20%20%20way%5Bleisure%3Dpark%5D%3B%0A%20%20%20%20way%5Blanduse%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Dpitch%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgarden%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgolf_course%5D%3B%0A%20%20%20%20way%5Bleisure%3Dplayground%5D%3B%0A%20%20%20%20way%5Blanduse%3Dmeadow%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgrass%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgreenfield%5D%3B%0A%20%20%20%20way%5Bnatural%3Dscrub%5D%3B%0A%20%20%20%20way%5Bnatural%3Dheath%5D%3B%0A%20%20%20%20way%5Bnatural%3Dgrassland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dvineyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dorchard%5D%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
 var query_exclusion = '%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0A%20%20%20%20way%5Bhighway%5D%5Barea%3Dyes%5D%3B%0A%09way%5Bnatural%3Dwater%5D%3B%0A%09way%5Blanduse%3Dconstruction%5D%3B%0A%09way%5Bnatural%3Dwetland%5D%3B%0A%09way%5Baeroway%3Drunway%5D%3B%0A%20%20%09way%5Baeroway%3Dtaxiway%5D%3B%0A%20%20%09way%5Blanduse%3Dmilitary%5D%3B%0A%09way%5Blanduse%3Dquarry%5D%3B%0A%20%20%09way%5Bwater%3Dmarsh%5D%3B%0A%20%20%09way%5Blanduse%3Drailway%5D%3B%0A%20%20%09way%5Blanduse%3Dlandfill%5D%3B%0A%09%2F%2Fway%5B%22junction%22%3D%22roundabout%22%5D%2840.54512538387331%2C-3.6385291814804077%2C40.54668050872829%2C-3.6364075541496277%29%3B%0A%20%20%09way%5Bhighway%5D%28if%3Ais_closed%28%29%29%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
+/*== Set global variables ==*/
 
 /*==== Set data from input files ====*/
 //creates a new file reader object
@@ -100,7 +100,7 @@ function handleSelectedarea() {
 document.getElementById('select_area').addEventListener('change', handleSelectedarea, false);
 /*== Deal with page style if select_area is changed ==*/
 
-/*==== Function called when the button is pressed ====*/
+/*==== Function called when the button "Get EX and blocked gyms" is pressed ====*/
 function getexgyms() {
 
     $("#Output_info").html("");
@@ -210,16 +210,14 @@ function getexgyms() {
                     gyms_data[i]['inEXarea'] = true;
                 }
             }
-            
             /*== Check if cell center is inside any of the EX areas ==*/
-    
+
             /*==== Check if cell center is inside any of the exclusion areas ====*/
             if ( data_global_exclusionareas['features'].length > 0 ) {
                 if ( (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exclusionareas_multipolygon) == true) ) {
                     gyms_data[i]['inexclusionarea'] = true;
                 }
             }
-            
             /*== Check if cell center is inside any of the exclusion areas ==*/
         }
     }
@@ -263,7 +261,7 @@ function getexgyms() {
     }
 
 }
-/*== Function called when the button is pressed ==*/
+/*== Function called when the button "Get EX and blocked gyms" is pressed ==*/
 
 function first_time_problem_detected(problem_detected) {
     if (problem_detected == false) {
@@ -320,32 +318,28 @@ function preselectedareas() {
     }
 
     if ( document.getElementById("select_area").value == "Automatic" ) {
-        var osm_data_ex = data_global_exareas_from_osm.responseText;//document.getElementById("data_from_osm_ex").value || "<osm></osm>";
+
+        /*==== Convert EX areas data to a typical GeoJSON file ====*/
+        var osm_data_ex = data_global_exareas_from_osm.responseText;
 
         try {
             osm_data_ex = $.parseXML(osm_data_ex);
         } catch(e) {
             osm_data_ex = JSON.parse(osm_data_ex);
         }
-        var test_ex = osmtogeojson(osm_data_ex);
-    
-        
-    
-        data_global_exareas = test_ex;  
-      
-    
-        var osm_data_exclusion = data_global_exclusionareas_from_osm.responseText;//document.getElementById("data_from_osm_exclusion").value || "<osm></osm>";
-    
+        data_global_exareas = osmtogeojson(osm_data_ex);
+        /*== Convert EX areas data to a typical GeoJSON file ==*/
+
+        /*==== Convert exclusion areas data to a typical GeoJSON file ====*/
+        var osm_data_exclusion = data_global_exclusionareas_from_osm.responseText;
+
         try {
             osm_data_exclusion = $.parseXML(osm_data_exclusion);
         } catch(e) {
             osm_data_exclusion = JSON.parse(osm_data_exclusion);
         }
-        var test_exclusion = osmtogeojson(osm_data_exclusion);
-    
-        
-    
-        data_global_exclusionareas = test_exclusion;
+        data_global_exclusionareas = osmtogeojson(osm_data_exclusion);
+        /*== Convert exclusion areas data to a typical GeoJSON file ==*/
     }
 }
 
@@ -360,15 +354,19 @@ function Get_exclusionareas() {
     var kml_string_exareas_folder = '\n    <Folder>\n      <name>EX areas</name>';
     /*== Set some strings for the kml file ==*/
 
+    /*==== Check all gyms ====*/
     for (let i = 0; i < gyms_data.length; i++) {
 
+        /*==== Only take into account EX gyms in an exclusion area ====*/
         if (gyms_data[i]['inEXarea'] == true && gyms_data[i]['inexclusionarea'] == true) {
 
             kml_string_gyms_folder += '\n      <Placemark>\n        <name>' + gyms_data[i].Name + '</name>';
             kml_string_gyms_folder += '\n        <Point>\n          <coordinates>\n            ' + gyms_data[i].lng + ',' + gyms_data[i].lat + '\n          </coordinates>\n        </Point>\n      </Placemark>';
 
+            /*=== Get cell center of the S2 cell that contains the gym  ===*/
             var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gyms_data[i].lat, gyms_data[i].lng, level) );
 
+            /*==== Check EX areas where the cell center is inside ====*/
             if ( data_global_exareas['features'].length > 0 ) {
                 for (let k = 0; k < data_global_exareas['features'].length; k++) {
 
@@ -417,7 +415,9 @@ function Get_exclusionareas() {
     
                 }
             }
+            /*== Check EX areas where the cell center is inside ==*/
 
+            /*==== Check exclusion areas where the cell center is inside ====*/
             if ( data_global_exclusionareas['features'].length > 0 ) {
                 for (let k = 0; k < data_global_exclusionareas['features'].length; k++) {
     
@@ -467,9 +467,12 @@ function Get_exclusionareas() {
     
                 }
             }
-            
+            /*== Check exclusion areas where the cell center is inside ==*/
+
         }
+        /*== Only take into account EX gyms in an exclusion area ==*/
     }
+    /*== Check all gyms ==*/
 
     kml_string_gyms_folder += '\n    </Folder>';
     kml_string_exclusionareas_folder += '\n    </Folder>';
@@ -490,13 +493,19 @@ function Get_exclusionareas() {
 
 function getareas(query_url) {
 
+    //document.getElementById("btnresetareas").disabled = false;
+
+    
+
     if (query_url == "EX") {
         $("#EX_areas_status").html("");
         $("#EX_areas_status").html($('#EX_areas_status').html() + "Loading EX areas (wait until this text changes).");
+        document.getElementById("btngetexareas").disabled = true;
     }
     else if (query_url == "exclusion") {
         $("#Exclusion_areas_status").html("");
         $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Loading exclusion areas (wait until this text changes).");
+        document.getElementById("btngetexclusionareas").disabled = true;
     }
 
     var wait_time = 50000.0;
@@ -522,6 +531,10 @@ function getareas(query_url) {
                 document.getElementById("btngetexareas").disabled = true;
                 $("#EX_areas_status").html("");
                 $("#EX_areas_status").html($('#EX_areas_status').html() + "EX areas loaded correctly.");
+                if (data_global_exareas_from_osm.responseText.includes("runtime error") == true) {
+                    $("#EX_areas_status").html("");
+                    $("#EX_areas_status").html($('#EX_areas_status').html() + "WARNING! An error ocurred while getting the EX areas. Reload the website and try again. If this message keeps appearing avoid gyms too far away.");
+                }
                 $("#Exclusion_areas_status").html("");
                 $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Wait 50 seconds to load exclusion areas (more time migth be needed).");
                 setTimeout(function(){
@@ -531,10 +544,17 @@ function getareas(query_url) {
             }
             else if (query_url == "exclusion") {
                 document.getElementById("btngetexclusionareas").disabled = true;
-                document.getElementById("btngetexandblockedgyms").disabled = false;
                 ready_to_run = true;
                 $("#Exclusion_areas_status").html("");
                 $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Exclusion areas loaded correctly.");
+                if (data_global_exclusionareas_from_osm.responseText.includes("runtime error") == true) {
+                    ready_to_run = false;
+                    $("#Exclusion_areas_status").html("");
+                    $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "WARNING! An error ocurred while getting the exclusion areas. Reload the website and try again. If this message keeps appearing avoid gyms too far away.");
+                }
+                if ( ready_to_run == true ) {
+                    document.getElementById("btngetexandblockedgyms").disabled = false;
+                }
                 setTimeout(function(){
                     document.getElementById("btnresetareas").disabled = false;
                 },wait_time);
@@ -544,10 +564,12 @@ function getareas(query_url) {
             if (query_url == "EX") {
                 $("#EX_areas_status").html("");
                 $("#EX_areas_status").html($('#EX_areas_status').html() + "EX areas not loaded. Maybe to many requests to the overpass API.");
+                document.getElementById("btngetexareas").disabled = false;
             }
             else if (query_url == "exclusion") {
                 $("#Exclusion_areas_status").html("");
                 $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Exclusion areas not loaded. Maybe to many requests to the overpass API.");
+                document.getElementById("btngetexclusionareas").disabled = false;
             }
         }
     }
@@ -597,6 +619,17 @@ function getmaxandminvalues() {
 }
 
 function resetareas() {
+    getmaxandminvalues_done = false;
+
+    min_lat = 91.0;
+    min_lng = 181.0;
+    
+    max_lat = -91.0;
+    max_lng = -181.0;
+
+    $("#EX_areas_status").html("");
+    $("#Exclusion_areas_status").html("");
     document.getElementById("btngetexareas").disabled = false;
-    document.getElementById("btngetexclusionareas").disabled = false;
+    document.getElementById("btnresetareas").disabled = true;
+    //document.getElementById("btngetexclusionareas").disabled = false;
 }
