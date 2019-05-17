@@ -6,16 +6,15 @@ var data_global_exclusionareas;
 var output_filename;
 var gyms_data;
 
+var csv_string_ex = "";
+var csv_string_blocked = "";
+
 var problem_detected = false;
 
 var data_global_exareas_from_osm = new XMLHttpRequest();
 var data_global_exclusionareas_from_osm = new XMLHttpRequest();
 
-var min_lat = 91.0;
-var min_lng = 181.0;
-
-var max_lat = -91.0;
-var max_lng = -181.0;
+var min_lat, min_lng, max_lat, max_lng;
 
 var getmaxandminvalues_done = false;
 
@@ -40,6 +39,30 @@ function handleFilegyms (evt) {
     fr_gyms.onload = e => {
         data_global_gyms = (e.target.result);
         gyms_data = JSON.parse(csvJSON(data_global_gyms));
+
+        anyValidGym = false
+        for (const gym of gyms_data) {
+    
+            if (checkgym(gym) == "no_problem") {
+                anyValidGym = true
+                break
+            }
+        }
+
+        if (!anyValidGym) {
+            $("#Output_gym_status").html("<b>None of the gyms are valid. Please select a valid file.</b>");
+            if ( document.getElementById("select_area").value != "Automatic" ) {
+                document.getElementById("btngetexandblockedgyms").disabled = true;
+            }
+            document.getElementById("btngetexareas").disabled = true;
+        }
+        else {
+            $("#Output_gym_status").html("");
+            if ( document.getElementById("select_area").value != "Automatic" ) {
+                document.getElementById("btngetexandblockedgyms").disabled = false;
+            }
+            document.getElementById("btngetexareas").disabled = false;
+        }
     };
 };
 
@@ -93,7 +116,9 @@ function handleSelectedarea() {
     else{
         document.getElementById("Automatic_section").style.display = 'none';
         document.getElementById("Automatic_warning").style.display = 'none';
-        document.getElementById("btngetexandblockedgyms").disabled = false;
+        if (anyValidGym) {
+            document.getElementById("btngetexandblockedgyms").disabled = false;
+        }
     }
 }
 
@@ -106,7 +131,6 @@ function getexgyms() {
     $("#Output_info").html("");
     $("#Output_results").html("");
     $("#Get_exclusionareas").html("");
-    
 
     if ( data_global_gyms == undefined ) {
         problem_detected = first_time_problem_detected(problem_detected);
@@ -124,7 +148,9 @@ function getexgyms() {
         return;
     }
 
-    if ( data_global_exareas['features'].length > 0 ) {
+    anyEXArea = data_global_exareas['features'].length
+
+    if ( anyEXArea ) {
         var data_global_exareas_polygon = [];
         var number_valid_exareas = 0;
         for (let i = 0; i < data_global_exareas['features'].length; i++) {
@@ -156,7 +182,9 @@ function getexgyms() {
         return;
     }
 
-    if ( data_global_exclusionareas['features'].length > 0 ) {
+    anyExclusionArea = data_global_exclusionareas['features'].length
+
+    if ( anyExclusionArea ) {
         var data_global_exclusionareas_polygon = [];
         var number_valid_exclusionareas = 0;
         for (let i = 0; i < data_global_exclusionareas['features'].length; i++) {
@@ -182,66 +210,94 @@ function getexgyms() {
 
     /*==== Check all gyms ====*/
     var gyms_analyzed = 0;
-    for (let i = 0; i < gyms_data.length; i++) {
+    var ex_gyms = 0;
+    var blocked_gyms = 0;
+    for (const [i, gym] of gyms_data.entries()) {
 
         /*==== Deal with problematic rows ====*/
-        if (gyms_data[i].Name == "") {
+        var gym_status = checkgym(gym)
+        if (gym_status != "no_problem") {
             problem_detected = first_time_problem_detected(problem_detected);
-            $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (empty row?)<br>");
-        }
-        else if (isNaN(gyms_data[i].lat) == true) {
-            problem_detected = first_time_problem_detected(problem_detected);
-            if (gyms_data[i].Name == "Name" || gyms_data[i].Name == "name") {
+            if (gym_status == "empty_row") {
+                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (empty row?)<br>");
+            }
+            else if (gym_status == "header_row") {
                 $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (header row?)<br>");
             }
-            else{
+            else if (gym_status == "name_with_comma") {
                 $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (name with comma?)<br>");
             }
         }
         /*== Deal with problematic rows ==*/
-        else{
+        
+        else{ // the else is triggered if there isn't any problem
             gyms_analyzed++;
             /*=== Get cell center of the S2 cell that contains the gym  ===*/
-            var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gyms_data[i].lat, gyms_data[i].lng, level) );
+            var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gym.lat, gym.lng, level) );
     
             /*==== Check if cell center is inside any of the EX areas ====*/
-            if ( data_global_exareas['features'].length > 0 ) {
-                if ( (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exareas_multipolygon) == true) ) {
-                    gyms_data[i]['inEXarea'] = true;
-                }
-            }
+            isGymInEXArea = anyEXArea ? turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exareas_multipolygon) : false // if anyEXArea is false and turf.booleanPointInPolygon is evaluated it'll give an error
+            
+            gym['inEXarea'] = isGymInEXArea
             /*== Check if cell center is inside any of the EX areas ==*/
 
             /*==== Check if cell center is inside any of the exclusion areas ====*/
-            if ( data_global_exclusionareas['features'].length > 0 ) {
-                if ( (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exclusionareas_multipolygon) == true) ) {
-                    gyms_data[i]['inexclusionarea'] = true;
-                }
-            }
+            isGymInExclusionArea = anyExclusionArea ? turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exclusionareas_multipolygon) : false // if anyExclusionArea is false and turf.booleanPointInPolygon is evaluated it'll give an error
+
+            gym['inexclusionarea'] = isGymInExclusionArea
             /*== Check if cell center is inside any of the exclusion areas ==*/
+
+            /*==== Get output csv file data ====*/
+            if (gym['inEXarea'] && !gym['inexclusionarea']) {
+                ex_gyms++;
+                csv_string_ex += gym.Name + "," + gym.lat + "," + gym.lng + ",EX\n";
+            }
+            if (gym['inEXarea'] && gym['inexclusionarea']) {
+                blocked_gyms++;
+                csv_string_blocked += gym.Name + "," + gym.lat + "," + gym.lng + ",Blocked\n";
+            }
+            /*== Get output csv file data ==*/
         }
     }
     /*== Check all gyms ==*/
 
-    /*==== Get output csv file ====*/
-    var csv_string_ex = "";
-    var csv_string_blocked = "";
+    $("#Output_results").html($('#Output_results').html() + "<b>Results</b><br>");
+    $("#Output_results").html($('#Output_results').html() + "Gyms analyzed: " + gyms_analyzed + "<br>");
+    $("#Output_results").html($('#Output_results').html() + "EX gyms: " + ex_gyms + "<br>");
+    $("#Output_results").html($('#Output_results').html() + "Blocked gyms: " + blocked_gyms);
 
-    var ex_gyms = 0;
-    var blocked_gyms = 0;
-    for (let i = 0; i < gyms_data.length; i++) {
-        if (gyms_data[i]['inEXarea'] == true && gyms_data[i]['inexclusionarea'] != true) {
-            ex_gyms++;
-            csv_string_ex += gyms_data[i].Name + "," + gyms_data[i].lat + "," + gyms_data[i].lng + ",EX\n";
+    if (ex_gyms || blocked_gyms) {
+        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get csv file with all gyms' onclick='writeCSV(csv_string_ex + csv_string_blocked);'><br>");
+
+        if (blocked_gyms) {
+            $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'><br>");
         }
-        if (gyms_data[i]['inEXarea'] == true && gyms_data[i]['inexclusionarea'] == true) {
-            blocked_gyms++;
-            csv_string_blocked += gyms_data[i].Name + "," + gyms_data[i].lat + "," + gyms_data[i].lng + ",Blocked\n";
-        }
+        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br>");
     }
 
+}
+/*== Function called when the button "Get EX and blocked gyms" is pressed ==*/
+
+function checkgym(gym) {
+    if (gym.Name == "") {
+        return "empty_row"
+    }
+    else if (isNaN(gym.lat) == true) {
+        if (gym.Name == "Name" || gym.Name == "name") {
+            return "header_row"
+        }
+        else{
+            return "name_with_comma"
+        }
+    }
+    else {
+        return "no_problem"
+    }
+}
+
+function writeCSV(string) {
     let file_data = "data:text/csv;charset=utf-8,";
-    file_data += "Name,Latitude,Longitude,Type\n" + csv_string_ex + csv_string_blocked;
+    file_data += "Name,Latitude,Longitude,Type\n" + string;
     file_data = file_data.replace(/[\r]+/g, '').trim();
     var encodedUri = encodeURI(file_data);
     var link = document.createElement("a");
@@ -249,19 +305,7 @@ function getexgyms() {
     link.setAttribute("download", output_filename + "_ex_and_blocked.csv");
     document.body.appendChild(link);
     link.click();
-    /*== Get output csv file ==*/
-
-    $("#Output_results").html($('#Output_results').html() + "<b>Results</b><br>");
-    $("#Output_results").html($('#Output_results').html() + "Gyms analyzed: " + gyms_analyzed + "<br>");
-    $("#Output_results").html($('#Output_results').html() + "EX gyms: " + ex_gyms + "<br>");
-    $("#Output_results").html($('#Output_results').html() + "Blocked gyms: " + blocked_gyms);
-
-    if (blocked_gyms > 0) {
-        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'><br><br>");
-    }
-
 }
-/*== Function called when the button "Get EX and blocked gyms" is pressed ==*/
 
 function first_time_problem_detected(problem_detected) {
     if (problem_detected == false) {
@@ -292,9 +336,9 @@ function csvJSON(csv){
     }
 
     return JSON.stringify(result);
-  }
+}
 
-  function getJSON(url) {
+function getJSON(url) {
     var resp ;
     var xmlHttp ;
 
@@ -355,19 +399,19 @@ function Get_exclusionareas() {
     /*== Set some strings for the kml file ==*/
 
     /*==== Check all gyms ====*/
-    for (let i = 0; i < gyms_data.length; i++) {
+    for (const gym of gyms_data) {
 
         /*==== Only take into account EX gyms in an exclusion area ====*/
-        if (gyms_data[i]['inEXarea'] == true && gyms_data[i]['inexclusionarea'] == true) {
+        if (gym['inEXarea'] && gym['inexclusionarea']) {
 
-            kml_string_gyms_folder += '\n      <Placemark>\n        <name>' + gyms_data[i].Name + '</name>';
-            kml_string_gyms_folder += '\n        <Point>\n          <coordinates>\n            ' + gyms_data[i].lng + ',' + gyms_data[i].lat + '\n          </coordinates>\n        </Point>\n      </Placemark>';
+            kml_string_gyms_folder += '\n      <Placemark>\n        <name>' + gym.Name + '</name>';
+            kml_string_gyms_folder += '\n        <Point>\n          <coordinates>\n            ' + gym.lng + ',' + gym.lat + '\n          </coordinates>\n        </Point>\n      </Placemark>';
 
             /*=== Get cell center of the S2 cell that contains the gym  ===*/
-            var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gyms_data[i].lat, gyms_data[i].lng, level) );
+            var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gym.lat, gym.lng, level) );
 
             /*==== Check EX areas where the cell center is inside ====*/
-            if ( data_global_exareas['features'].length > 0 ) {
+            if ( anyEXArea ) {
                 for (let k = 0; k < data_global_exareas['features'].length; k++) {
 
                     if ( (data_global_exareas['features'][k]['geometry']['coordinates'][0].length >= 4) && (data_global_exareas['features'][k]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exareas['features'][k]['geometry']['coordinates'])) == true) ) {
@@ -418,7 +462,7 @@ function Get_exclusionareas() {
             /*== Check EX areas where the cell center is inside ==*/
 
             /*==== Check exclusion areas where the cell center is inside ====*/
-            if ( data_global_exclusionareas['features'].length > 0 ) {
+            if ( anyExclusionArea ) {
                 for (let k = 0; k < data_global_exclusionareas['features'].length; k++) {
     
                     if ( (data_global_exclusionareas['features'][k]['geometry']['coordinates'][0].length >= 4) && (data_global_exclusionareas['features'][k]['geometry']['type'] == "Polygon") && (turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), turf.polygon(data_global_exclusionareas['features'][k]['geometry']['coordinates'])) == true) ) {
@@ -586,23 +630,12 @@ function testexclusionareas() {
 }
 
 function getmaxandminvalues() {
-    for (let i = 0; i < gyms_data.length; i++) {
-        if ( Number(gyms_data[i].lat) < min_lat ) {
-            min_lat = gyms_data[i].lat;
-        }
 
-        if ( Number(gyms_data[i].lat) > max_lat ) {
-            max_lat = gyms_data[i].lat;
-        }
+    max_lat = Math.max(...gyms_data.map((x) => x.lat))
+    min_lat = Math.min(...gyms_data.map((x) => x.lat))
 
-        if ( Number(gyms_data[i].lng) < min_lng ) {
-            min_lng = gyms_data[i].lng;
-        }
-
-        if ( Number(gyms_data[i].lng) > max_lng ) {
-            max_lng = gyms_data[i].lng;
-        }
-    }
+    max_lng = Math.max(...gyms_data.map((x) => x.lng))
+    min_lng = Math.min(...gyms_data.map((x) => x.lng))
 
     if ( min_lat == max_lat && min_lng == max_lng ) {
         min_lat = max_lat - 0.001;
@@ -614,12 +647,6 @@ function getmaxandminvalues() {
 
 function resetareas() {
     getmaxandminvalues_done = false;
-
-    min_lat = 91.0;
-    min_lng = 181.0;
-    
-    max_lat = -91.0;
-    max_lng = -181.0;
 
     $("#EX_areas_status").html("");
     $("#Exclusion_areas_status").html("");

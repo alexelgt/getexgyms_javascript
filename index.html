@@ -37,7 +37,7 @@
 
       <div id="Automatic_section" style="display:none">
         <p>
-          <input type='button' id='btngetexareas' value='Get EX areas' onclick='getareas("EX");'>
+          <input type='button' id='btngetexareas' value='Get EX areas' onclick='getareas("EX");' disabled>
           <input type='button' id='btngetexclusionareas' value='Get exclusion areas' onclick='getareas("exclusion");' disabled>
           <input type='button' id='btnresetareas' value='Reset areas' onclick='resetareas();' disabled>
         </p>
@@ -47,7 +47,8 @@
       </div>
 
       <p>
-        <input type='button' id='btngetexandblockedgyms' value='Get EX and blocked gyms' onclick='getexgyms();'>
+        <input type='button' id='btngetexandblockedgyms' value='Get EX and blocked gyms' onclick='getexgyms();' disabled>
+        <div id="Output_gym_status"></div>
       </p>
 
       <div id="Output_info"></div>
