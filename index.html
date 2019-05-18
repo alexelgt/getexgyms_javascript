@@ -16,23 +16,23 @@
     </div>
 
     <div id="structure">
-        <h4>IMPORTANT: this script might take a while to run.</h4>
+
+        <div id="block">
+          <h2>IMPORTANT: this script might take a while to run.</h2>
+        </div>
 
         <div id="block">
           <h2>Mode</h2>
           <div id="block_structure">
             <div id="element">
-              <span>Mode</span>
-              <select id="select_mode">
-                <option selected="selected">Manual</option>
-                <option>Automatic</option>
-                <option>Madrid</option>
-              </select>
+              <div id="button_structure">
+                <div id="element" class="selected" onclick='somefuncion("Manual",this);'>Manual</div>
+                <div id="element" class="" onclick='somefuncion("Automatic",this);'>Automatic</div>
+                <div id="element" onclick='somefuncion("Madrid",this);'>Madrid</div>
+              </div>
             </div>
           </div>
         </div>
-
-
 
         <div id="block">
           <h2>Files</h2>
@@ -53,12 +53,18 @@
             </div>
           </div>
         </div>
+
+
+
+
   
         <div id="Automatic_section" style="display:none">
           <p>
-            <input type='button' id='btngetexareas' value='Get EX areas' onclick='getareas("EX");' disabled>
-            <input type='button' id='btngetexclusionareas' value='Get exclusion areas' onclick='getareas("exclusion");' disabled>
-            <input type='button' id='btnresetareas' value='Reset areas' onclick='resetareas();' disabled>
+            <div id="input_button_structure">
+              <input type='button' id='btngetexareas' value='Get EX areas' onclick='getareas("EX");' disabled>
+              <input type='button' id='btngetexclusionareas' value='Get exclusion areas' onclick='getareas("exclusion");' disabled>
+              <input type='button' id='btnresetareas' value='Reset areas' onclick='resetareas();' disabled>
+            </div>
           </p>
   
           <div id="EX_areas_status"></div>
@@ -69,9 +75,29 @@
           <input type='button' id='btngetexandblockedgyms' value='Get EX and blocked gyms' onclick='getexgyms();' disabled>
           <div id="Output_gym_status"></div>
         </p>
+
+        <div id="block" class="error_block" style="display:none">
+          <h2>Problems detected</h2>
+          <div id="block_structure">
+            <div id="element">
+              <span id="Output_error"></span>
+              <span id="Output_error_2"></span>
+              <span id="Output_error_3"></span>
+            </div>
+          </div>
+        </div>
+
+        <div id="block" class="results_block" style="display:none">
+          <h2>Results</h2>
+          <div id="block_structure">
+            <div id="element">
+              <span id="Output_results"></span>
+            </div>
+          </div>
+        </div>
   
         <div id="Output_info"></div>
-        <br>
+
         <div id="Output_results"></div>
   
         <div id="Get_exclusionareas"></div>

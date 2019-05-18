@@ -24,10 +24,15 @@ var query_exclusion = '%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0
 
 /*==== States ====*/
 var problem_detected = false;
+var problems_with_gyms = false;
+
+
 var clear_output_error_text = false;
 var getmaxandminvalues_done = false;
 var ready_to_run = false;
 var anyValidGym = false;
+
+var current_mode = "Manual";
 /*== States ==*/
 
 /*==== Other ====*/
@@ -53,18 +58,19 @@ function handleFilegyms (evt) {
         gyms_data = JSON.parse(csvJSON(data_global_gyms));
 
         /*==== Check if any of the rows contains valid data ====*/
+        problems_with_gyms = false;
         anyValidGym = remove_problematic_gym_rows(); // this function returns the number of valid gyms
 
         if (!anyValidGym) {
-            $("#Output_gym_status").html("<b>None of the gyms are valid. Please select a valid file.</b>");
-            if ( document.getElementById("select_mode").value != "Automatic" ) {
+            $("#Output_error_2").html("• None of the gyms are valid. Please select a valid file.");
+            if ( current_mode != "Automatic" ) {
                 document.getElementById("btngetexandblockedgyms").disabled = true;
             }
             document.getElementById("btngetexareas").disabled = true;
         }
         else {
-            $("#Output_gym_status").html("");
-            if ( document.getElementById("select_mode").value != "Automatic" ) {
+            $("#Output_error_2").html("");
+            if ( current_mode != "Automatic" ) {
                 document.getElementById("btngetexandblockedgyms").disabled = false;
             }
             document.getElementById("btngetexareas").disabled = false;
@@ -102,7 +108,7 @@ document.getElementById('exclusionareasfile').addEventListener('change', handleF
 
 /*==== Deal with page style if select_mode is changed ====*/
 function handleSelectedmode() {
-    if ( document.getElementById("select_mode").value != "Manual" ) {
+    if ( current_mode != "Manual" ) {
         document.getElementById("EXareasfile").disabled = true;
         document.getElementById("exclusionareasfile").disabled = true;
         document.getElementById("File_section").style.display = 'none';
@@ -113,7 +119,7 @@ function handleSelectedmode() {
         document.getElementById("File_section").style.display = 'block';
     }
 
-    if ( document.getElementById("select_mode").value == "Automatic" ) {
+    if ( current_mode == "Automatic" ) {
         document.getElementById("Automatic_section").style.display = 'block';
         document.getElementById("Automatic_warning").style.display = 'block';
         if ( ready_to_run == false ) {
@@ -130,7 +136,7 @@ function handleSelectedmode() {
     }
 }
 
-document.getElementById('select_mode').addEventListener('change', handleSelectedmode, false);
+document.getElementById('button_structure').addEventListener('click', handleSelectedmode, false);
 /*== Deal with page style if select_mode is changed ==*/
 
 /*==== Function called when the button "Get EX and blocked gyms" is pressed ====*/
@@ -147,6 +153,12 @@ function getexgyms() {
     $("#Get_exclusionareas").html("");
 
     $("#Output_table_data").html("");
+
+    $("#Output_error_3").html("");
+
+    if (problems_with_gyms == false) {
+        document.getElementsByClassName("error_block")[0].style.display = 'none';
+    }
     /*== Clear the output ==*/
 
     /*==== Check if the file with gyms data has been selected ====*/
@@ -159,13 +171,13 @@ function getexgyms() {
     /*== Check if the file with gyms data has been selected ==*/
 
     /*=== If a pre-selected area is selected change EX an exclusion areas ===*/
-    set_mode(document.getElementById("select_mode").value);
+    set_mode(current_mode);
 
     /*==== Create a multipolygon with all EX areas ====*/
     /*==== Check if the file with EX areas data has been selected ====*/
     if (data_global_exareas == undefined) {
         problem_detected = first_time_problem_detected(problem_detected);
-        $("#Output_info").html($('#Output_info').html() + "File with EX areas not correct.");
+        $("#Output_error_3").html($('#Output_error_3').html() + "• File with EX areas not correct.");
         return;
     }
     /*== Check if the file with EX areas data has been selected ==*/
@@ -201,7 +213,7 @@ function getexgyms() {
     /*==== Check if the file with Exclusion areas data has been selected ====*/
     if (data_global_exclusionareas == undefined) {
         problem_detected = first_time_problem_detected(problem_detected);
-        $("#Output_info").html($('#Output_info').html() + "File with exclusion areas not correct.");
+        $("#Output_error_3").html($('#Output_error_3').html() + "• File with exclusion areas not correct.");
         return;
     }
     /*== Check if the file with Exclusion areas data has been selected ==*/
@@ -268,18 +280,19 @@ function getexgyms() {
     /*== Check all gyms ==*/
 
     /*==== Deal with the output text and buttons displayed ====*/
-    $("#Output_results").html($('#Output_results').html() + "<b>Results</b><br>");
-    $("#Output_results").html($('#Output_results').html() + "Gyms analyzed: " + gyms_data.length + "<br>");
-    $("#Output_results").html($('#Output_results').html() + "EX gyms: " + ex_gyms + "<br>");
-    $("#Output_results").html($('#Output_results').html() + "Blocked gyms: " + blocked_gyms);
+    //$("#Output_results").html($('#Output_results').html() + "<b>Results</b><br>");
+    document.getElementsByClassName("results_block")[0].style.display = 'block';
+    $("#Output_results").html($('#Output_results').html() + "• Gyms analyzed: " + gyms_data.length + "<br>");
+    $("#Output_results").html($('#Output_results').html() + "• EX gyms: " + ex_gyms + "<br>");
+    $("#Output_results").html($('#Output_results').html() + "• Blocked gyms: " + blocked_gyms);
 
     if (ex_gyms || blocked_gyms) { // If there is any EX or blocked gym show a button to download a csv with the data
-        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get csv file with EX and blocked gyms' onclick='writeCSV(csv_string_ex + csv_string_blocked);'><br><span class='info'>(Data from the table below)</span><br>");
+        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<input type='button' id='btnLoad' value='Get csv file with EX and blocked gyms' onclick='writeCSV(csv_string_ex + csv_string_blocked);'>");
 
         $("#Output_table_data").html($('#Output_table_data').html() + gyms_table_data_header + gyms_table_data_ex + gyms_table_data_blocked);
 
         if (blocked_gyms) { // If there is at least 1 blocked gym show a button to download a kml file which can be imported to Google My Maps to see what blocks these gyms
-            $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'><br><span class='info'>(This file can be imported to Google My Maps to see what blocks these gyms)</span><br>");
+            $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<input type='button' id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'><span class='info'>(The kml file can be imported to Google My Maps to see what blocks these gyms)</span><br>");
         }
         $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br>");
     }
@@ -308,7 +321,8 @@ function gym_status(gym) {
 function remove_problematic_gym_rows() {
     problem_detected = false;
     clear_output_error_text = false;
-    $("#Output_info").html("");
+    document.getElementsByClassName("error_block")[0].style.display = 'none';
+    $("#Output_error").html("");
 
     var valid_gyms = 0;
     var new_gyms_data = [];
@@ -318,15 +332,16 @@ function remove_problematic_gym_rows() {
             new_gyms_data.push(gym);
         }
         else {
+            problems_with_gyms = true;
             problem_detected = first_time_problem_detected(problem_detected);
             if (gym_status(gym) == "empty_row") {
-                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (empty row?)<br>");
+                $("#Output_error").html($('#Output_error').html() + "• Row number " + i + " skipped (empty row?)<br>");
             }
             else if (gym_status(gym) == "header_row") {
-                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (header row?)<br>");
+                $("#Output_error").html($('#Output_error').html() + "• Row number " + i + " skipped (header row?)<br>");
             }
             else if (gym_status(gym) == "name_with_comma") {
-                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (name with comma?)<br>");
+                $("#Output_error").html($('#Output_error').html() + "• Row number " + i + " skipped (name with comma?)<br>");
             }
         }
     }
@@ -348,9 +363,11 @@ function writeCSV(string) {
 }
 
 function first_time_problem_detected(problem_detected) {
+    document.getElementsByClassName("error_block")[0].style.display = 'block';
+    
     if (problem_detected == false) {
         problem_detected = true;
-        $("#Output_info").html($('#Output_info').html() + "<b>Problems detected</b><br>");
+        //$("#Output_info").html($('#Output_info').html() + "<b>Problems detected</b><br>");
     }
     return problem_detected;
 }
@@ -709,4 +726,20 @@ function resetareas() {
     $("#Exclusion_areas_status").html("");
     document.getElementById("btngetexareas").disabled = false;
     document.getElementById("btnresetareas").disabled = true;
+}
+
+function somefuncion(mode,pressed_div) {
+
+    /*==== Remove class selected from all elements ====*/
+    var elems = document.querySelectorAll("#button_structure #element");
+
+    [].forEach.call(elems, function(el) {
+        el.classList.remove("selected");
+    });
+    /*== Remove class selected from all elements ==*/
+
+    /*=== Add class selected to element how triggered the function ===*/
+    $(pressed_div).addClass("selected");
+
+    current_mode = mode;
 }

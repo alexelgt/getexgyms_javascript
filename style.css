@@ -6,6 +6,10 @@
 
     --block_structure: #fefefe;
     --block_structure_element: #c7c7cb;
+
+    --button_color: #3478f6;
+    --button_color_hover: #dceafd;
+    --button_color_active: rgba(53, 153, 246, 0.6);
 }
 
 /*==== Basico ====*/
@@ -41,36 +45,38 @@ a {
     background-color: var(--navbar_background);
     position: fixed;
     width: 100%;
-    height: 50px;
+    height: 40px;
     box-sizing: border-box;
     border-bottom: var(--navbar_border) solid 1px;
 }
 
 #navbar h1 {
-    width: 200px;
-    margin: 0 auto;
-    line-height: 50px;
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+    line-height: 40px;
     color: #000
 }
 /*== Navbar ==*/
 
 /*==== Structure ====*/
 #structure {
-    padding: 50px 0 10px
+    padding: 44px 0 10px
 }
 /*== Structure ==*/
 
 /*==== Block ====*/
 #block {
-    margin: 10px 0;
+    margin: 6px 0;
 }
 #block h2 {
-    padding: 10px 24px 10px;
-    font-size: 20px;
+    padding: 8px 12px 2px;
+    font-size: 16px;
     margin: 0;
 }
 
 #block #block_structure {
+    font-size: 14px;
     box-sizing: border-box;
     background-color: var(--block_structure);
     border-top: var(--block_structure_element) solid 1px;
@@ -79,11 +85,109 @@ a {
 }
 
 #block #block_structure #element {
-    padding: 14px 24px;
-    
+    padding: 8px 12px;
     border-bottom: var(--block_structure_element) solid 1px;
 }
+
+#Output_error, #Output_error_2, #Output_error_3, #Output_results{
+    font-family: monospace;
+}
+#Output_error_2, #Output_error_3 {
+    font-weight: bold;
+    font-size: 16px;
+}
 /*== Block ==*/
+
+/*==== Button ====*/
+#button_structure {
+    border: var(--button_color) solid 1px;
+    border-radius: 10px;
+    display: flex;
+	flex-flow: row;
+	position: relative;
+	box-sizing: border-box;
+}
+
+
+#button_structure #element {
+    line-height: 100%;
+    font-weight: bold;
+    font-size: 12px;
+    flex-grow: 1;
+    box-sizing: border-box;
+    border-bottom: none!important;
+    border-right: var(--button_color) solid 1px;
+    text-align: center;
+    color: var(--button_color);
+}
+
+#button_structure #element:last-child {
+    border-bottom: none!important;
+    border-right: none;
+}
+
+#button_structure #element:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+#button_structure #element:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+#button_structure #element.selected {
+    background-color: var(--button_color);
+    color: var(--block_structure);
+}
+
+#button_structure #element.selected:hover {
+    background-color: var(--button_color);
+}
+
+#button_structure #element:hover {
+    background-color: var(--button_color_hover);
+}
+
+#button_structure #element:active {
+    background-color: var(--button_color_active);
+    color: var(--block_structure);
+}
+
+
+
+
+
+#input_button_structure {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+	flex-flow: row wrap;
+	position: relative;
+	box-sizing: border-box;
+}
+
+input[type="button"]{
+    border: var(--block_structure_element) solid 1px;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -moz-box;
+	position: relative;
+	margin: 5px auto;
+	border-radius: 30px;
+	padding: 5px 6px;
+	font-size: 12px;
+	background-color: var(--block_structure);
+	font-weight: bold;
+	color: var(--button_color);
+	text-align: center;
+}
+
+input[type="button"]:disabled {
+    background-color: #e5e5e5;
+    color: grey;
+}
+/*== Button ==*/
 
 span.info {
     color: #424242
@@ -113,3 +217,4 @@ span.info {
     background-color:#ffd7d7;
 }
 /*== Tables ==*/
+
