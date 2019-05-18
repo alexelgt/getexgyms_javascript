@@ -1,28 +1,39 @@
 /*==== Set global variables ====*/
-var level = 20;
+/*==== Data ====*/
 var data_global_gyms;
 var data_global_exareas;
 var data_global_exclusionareas;
 var output_filename;
 var gyms_data;
 
-var csv_string_ex = "";
-var csv_string_blocked = "";
-
-var problem_detected = false;
-
 var data_global_exareas_from_osm = new XMLHttpRequest();
 var data_global_exclusionareas_from_osm = new XMLHttpRequest();
+/*== Data ==*/
 
-var min_lat, min_lng, max_lat, max_lng;
-
-var getmaxandminvalues_done = false;
-
-var ready_to_run = false;
+/*==== Strings ====*/
+var csv_string_ex = "";
+var csv_string_blocked = "";
+var gyms_table_data_header = "<tr><th>Name</th><th>Latitude</th><th>Longitude</th><th>Type</th></tr>";
+var gyms_table_data_ex = "";
+var gyms_table_data_blocked = "";
 
 var query_common = 'https://overpass-api.de/api/interpreter?data=%5Bdate%3A%222016-07-16T00%3A00%3A00Z%22%5D%0A%5Btimeout%3A620%5D%0A%5Bbbox%3A';
 var query_ex = '%5D%3B%0A%28%0A%20%20%20%20way%5Bleisure%3Dpark%5D%3B%0A%20%20%20%20way%5Blanduse%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Dpitch%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgarden%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgolf_course%5D%3B%0A%20%20%20%20way%5Bleisure%3Dplayground%5D%3B%0A%20%20%20%20way%5Blanduse%3Dmeadow%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgrass%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgreenfield%5D%3B%0A%20%20%20%20way%5Bnatural%3Dscrub%5D%3B%0A%20%20%20%20way%5Bnatural%3Dheath%5D%3B%0A%20%20%20%20way%5Bnatural%3Dgrassland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dvineyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dorchard%5D%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
 var query_exclusion = '%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0A%20%20%20%20way%5Bhighway%5D%5Barea%3Dyes%5D%3B%0A%09way%5Bnatural%3Dwater%5D%3B%0A%09way%5Blanduse%3Dconstruction%5D%3B%0A%09way%5Bnatural%3Dwetland%5D%3B%0A%09way%5Baeroway%3Drunway%5D%3B%0A%20%20%09way%5Baeroway%3Dtaxiway%5D%3B%0A%20%20%09way%5Blanduse%3Dmilitary%5D%3B%0A%09way%5Blanduse%3Dquarry%5D%3B%0A%20%20%09way%5Bwater%3Dmarsh%5D%3B%0A%20%20%09way%5Blanduse%3Drailway%5D%3B%0A%20%20%09way%5Blanduse%3Dlandfill%5D%3B%0A%09%2F%2Fway%5B%22junction%22%3D%22roundabout%22%5D%2840.54512538387331%2C-3.6385291814804077%2C40.54668050872829%2C-3.6364075541496277%29%3B%0A%20%20%09way%5Bhighway%5D%28if%3Ais_closed%28%29%29%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
+/*== Strings ==*/
+
+/*==== States ====*/
+var problem_detected = false;
+var clear_output_error_text = false;
+var getmaxandminvalues_done = false;
+var ready_to_run = false;
+var anyValidGym = false;
+/*== States ==*/
+
+/*==== Other ====*/
+var level = 20;
+var min_lat, min_lng, max_lat, max_lng;
+/*== States ==*/
 /*== Set global variables ==*/
 
 /*==== Set data from input files ====*/
@@ -31,41 +42,39 @@ const fr_exareas = new FileReader();
 const fr_exclusionareas = new FileReader();
 const fr_gyms = new FileReader();
 
+/*==== Gyms ====*/
 function handleFilegyms (evt) {
     fr_gyms.readAsText(evt.target.files[0]);
 
-    output_filename = evt.target.files[0].name.replace('.csv', '');
+    output_filename = evt.target.files[0].name.replace('.csv', '').replace('.txt', '');
 
     fr_gyms.onload = e => {
         data_global_gyms = (e.target.result);
         gyms_data = JSON.parse(csvJSON(data_global_gyms));
 
-        anyValidGym = false
-        for (const gym of gyms_data) {
-    
-            if (checkgym(gym) == "no_problem") {
-                anyValidGym = true
-                break
-            }
-        }
+        /*==== Check if any of the rows contains valid data ====*/
+        anyValidGym = remove_problematic_gym_rows(); // this function returns the number of valid gyms
 
         if (!anyValidGym) {
             $("#Output_gym_status").html("<b>None of the gyms are valid. Please select a valid file.</b>");
-            if ( document.getElementById("select_area").value != "Automatic" ) {
+            if ( document.getElementById("select_mode").value != "Automatic" ) {
                 document.getElementById("btngetexandblockedgyms").disabled = true;
             }
             document.getElementById("btngetexareas").disabled = true;
         }
         else {
             $("#Output_gym_status").html("");
-            if ( document.getElementById("select_area").value != "Automatic" ) {
+            if ( document.getElementById("select_mode").value != "Automatic" ) {
                 document.getElementById("btngetexandblockedgyms").disabled = false;
             }
             document.getElementById("btngetexareas").disabled = false;
         }
+        /*== Check if any of the rows contains valid data ==*/
     };
 };
+/*== Gyms ==*/
 
+/*==== EX areas ====*/
 function handleFileEXareas (evt) {
     fr_exareas.readAsText(evt.target.files[0]);
 
@@ -73,7 +82,9 @@ function handleFileEXareas (evt) {
         data_global_exareas = JSON.parse(e.target.result);
     };
 };
+/*== EX areas ==*/
 
+/*==== Exclusion areas ====*/
 function handleFileexclusionareas (evt) {
     fr_exclusionareas.readAsText(evt.target.files[0]);
 
@@ -81,6 +92,7 @@ function handleFileexclusionareas (evt) {
         data_global_exclusionareas = JSON.parse(e.target.result);
     };
 };
+/*== Exclusion areas ==*/
 
 //event listener for file input
 document.getElementById('gymsfile').addEventListener('change', handleFilegyms, false);
@@ -88,24 +100,20 @@ document.getElementById('EXareasfile').addEventListener('change', handleFileEXar
 document.getElementById('exclusionareasfile').addEventListener('change', handleFileexclusionareas, false);
 /*== Set data from input files ==*/
 
-/*==== Deal with page style if select_area is changed ====*/
-function handleSelectedarea() {
-    if ( document.getElementById("select_area").value != "Manual" ) {
+/*==== Deal with page style if select_mode is changed ====*/
+function handleSelectedmode() {
+    if ( document.getElementById("select_mode").value != "Manual" ) {
         document.getElementById("EXareasfile").disabled = true;
         document.getElementById("exclusionareasfile").disabled = true;
-        document.getElementById("exgeojson_text").style.color = '#808080';
-        document.getElementById("exclusiongeojson_text").style.color = '#808080';
         document.getElementById("File_section").style.display = 'none';
     }
     else{
         document.getElementById("EXareasfile").disabled = false;
         document.getElementById("exclusionareasfile").disabled = false;
-        document.getElementById("exgeojson_text").style.color = '#000';
-        document.getElementById("exclusiongeojson_text").style.color = '#000';
         document.getElementById("File_section").style.display = 'block';
     }
 
-    if ( document.getElementById("select_area").value == "Automatic" ) {
+    if ( document.getElementById("select_mode").value == "Automatic" ) {
         document.getElementById("Automatic_section").style.display = 'block';
         document.getElementById("Automatic_warning").style.display = 'block';
         if ( ready_to_run == false ) {
@@ -122,31 +130,45 @@ function handleSelectedarea() {
     }
 }
 
-document.getElementById('select_area').addEventListener('change', handleSelectedarea, false);
-/*== Deal with page style if select_area is changed ==*/
+document.getElementById('select_mode').addEventListener('change', handleSelectedmode, false);
+/*== Deal with page style if select_mode is changed ==*/
 
 /*==== Function called when the button "Get EX and blocked gyms" is pressed ====*/
 function getexgyms() {
 
-    $("#Output_info").html("");
+    /*==== Clear the output ====*/
+    if (clear_output_error_text == true) {
+        $("#Output_info").html("");   
+    }
+    else {
+        clear_output_error_text = true;
+    }
     $("#Output_results").html("");
     $("#Get_exclusionareas").html("");
 
+    $("#Output_table_data").html("");
+    /*== Clear the output ==*/
+
+    /*==== Check if the file with gyms data has been selected ====*/
+    // with the new checks done, this part is redundant
     if ( data_global_gyms == undefined ) {
         problem_detected = first_time_problem_detected(problem_detected);
         $("#Output_info").html($('#Output_info').html() + "File with gyms not correct.");
         return;
     }
+    /*== Check if the file with gyms data has been selected ==*/
 
     /*=== If a pre-selected area is selected change EX an exclusion areas ===*/
-    preselectedareas();
+    set_mode(document.getElementById("select_mode").value);
 
     /*==== Create a multipolygon with all EX areas ====*/
+    /*==== Check if the file with EX areas data has been selected ====*/
     if (data_global_exareas == undefined) {
         problem_detected = first_time_problem_detected(problem_detected);
         $("#Output_info").html($('#Output_info').html() + "File with EX areas not correct.");
         return;
     }
+    /*== Check if the file with EX areas data has been selected ==*/
 
     anyEXArea = data_global_exareas['features'].length
 
@@ -176,11 +198,13 @@ function getexgyms() {
     /*== Create a multipolygon with all EX areas ==*/
     
     /*==== Create a multipolygon with all exclusion areas ====*/
+    /*==== Check if the file with Exclusion areas data has been selected ====*/
     if (data_global_exclusionareas == undefined) {
         problem_detected = first_time_problem_detected(problem_detected);
         $("#Output_info").html($('#Output_info').html() + "File with exclusion areas not correct.");
         return;
     }
+    /*== Check if the file with Exclusion areas data has been selected ==*/
 
     anyExclusionArea = data_global_exclusionareas['features'].length
 
@@ -209,76 +233,62 @@ function getexgyms() {
     /*== Create a multipolygon with all exclusion areas ==*/
 
     /*==== Check all gyms ====*/
-    var gyms_analyzed = 0;
     var ex_gyms = 0;
     var blocked_gyms = 0;
     for (const [i, gym] of gyms_data.entries()) {
 
-        /*==== Deal with problematic rows ====*/
-        var gym_status = checkgym(gym)
-        if (gym_status != "no_problem") {
-            problem_detected = first_time_problem_detected(problem_detected);
-            if (gym_status == "empty_row") {
-                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (empty row?)<br>");
-            }
-            else if (gym_status == "header_row") {
-                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (header row?)<br>");
-            }
-            else if (gym_status == "name_with_comma") {
-                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (name with comma?)<br>");
-            }
-        }
-        /*== Deal with problematic rows ==*/
-        
-        else{ // the else is triggered if there isn't any problem
-            gyms_analyzed++;
-            /*=== Get cell center of the S2 cell that contains the gym  ===*/
-            var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gym.lat, gym.lng, level) );
+        /*=== Get cell center of the S2 cell that contains the gym  ===*/
+        var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gym.lat, gym.lng, level) );
     
-            /*==== Check if cell center is inside any of the EX areas ====*/
-            isGymInEXArea = anyEXArea ? turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exareas_multipolygon) : false // if anyEXArea is false and turf.booleanPointInPolygon is evaluated it'll give an error
-            
-            gym['inEXarea'] = isGymInEXArea
-            /*== Check if cell center is inside any of the EX areas ==*/
+        /*==== Check if cell center is inside any of the EX areas ====*/
+        isGymInEXArea = anyEXArea ? turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exareas_multipolygon) : false // if anyEXArea is false and turf.booleanPointInPolygon is evaluated it'll give an error
+        
+        gym['inEXarea'] = isGymInEXArea
+        /*== Check if cell center is inside any of the EX areas ==*/
 
-            /*==== Check if cell center is inside any of the exclusion areas ====*/
-            isGymInExclusionArea = anyExclusionArea ? turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exclusionareas_multipolygon) : false // if anyExclusionArea is false and turf.booleanPointInPolygon is evaluated it'll give an error
+        /*==== Check if cell center is inside any of the exclusion areas ====*/
+        isGymInExclusionArea = anyExclusionArea ? turf.booleanPointInPolygon(turf.point([gym_cellcenter.lng,gym_cellcenter.lat]), data_global_exclusionareas_multipolygon) : false // if anyExclusionArea is false and turf.booleanPointInPolygon is evaluated it'll give an error
 
-            gym['inexclusionarea'] = isGymInExclusionArea
-            /*== Check if cell center is inside any of the exclusion areas ==*/
+        gym['inexclusionarea'] = isGymInExclusionArea
+        /*== Check if cell center is inside any of the exclusion areas ==*/
 
-            /*==== Get output csv file data ====*/
-            if (gym['inEXarea'] && !gym['inexclusionarea']) {
-                ex_gyms++;
-                csv_string_ex += gym.Name + "," + gym.lat + "," + gym.lng + ",EX\n";
-            }
-            if (gym['inEXarea'] && gym['inexclusionarea']) {
-                blocked_gyms++;
-                csv_string_blocked += gym.Name + "," + gym.lat + "," + gym.lng + ",Blocked\n";
-            }
-            /*== Get output csv file data ==*/
+        /*==== Check if the gym is EX or blocked and if so update output csv file data ====*/
+        if (gym['inEXarea'] && !gym['inexclusionarea']) {
+            ex_gyms++;
+            csv_string_ex += gym.Name + "," + gym.lat + "," + gym.lng + ",EX\n";
+            gyms_table_data_ex += "<tr class='ex'><td>" + gym.Name + "</td><td>" + gym.lat + "</td><td>" + gym.lng + "</td><td>EX</td></tr>"
         }
+        if (gym['inEXarea'] && gym['inexclusionarea']) {
+            blocked_gyms++;
+            csv_string_blocked += gym.Name + "," + gym.lat + "," + gym.lng + ",Blocked\n";
+            gyms_table_data_blocked += "<tr class='blocked'><td>" + gym.Name + "</td><td>" + gym.lat + "</td><td>" + gym.lng + "</td><td>Blocked</td></tr>"
+        }
+        /*== Check if the gym is EX or blocked and if so update output csv file data ==*/
     }
     /*== Check all gyms ==*/
 
+    /*==== Deal with the output text and buttons displayed ====*/
     $("#Output_results").html($('#Output_results').html() + "<b>Results</b><br>");
-    $("#Output_results").html($('#Output_results').html() + "Gyms analyzed: " + gyms_analyzed + "<br>");
+    $("#Output_results").html($('#Output_results').html() + "Gyms analyzed: " + gyms_data.length + "<br>");
     $("#Output_results").html($('#Output_results').html() + "EX gyms: " + ex_gyms + "<br>");
     $("#Output_results").html($('#Output_results').html() + "Blocked gyms: " + blocked_gyms);
 
-    if (ex_gyms || blocked_gyms) {
-        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get csv file with all gyms' onclick='writeCSV(csv_string_ex + csv_string_blocked);'><br>");
+    if (ex_gyms || blocked_gyms) { // If there is any EX or blocked gym show a button to download a csv with the data
+        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get csv file with EX and blocked gyms' onclick='writeCSV(csv_string_ex + csv_string_blocked);'><br><span class='info'>(Data from the table below)</span><br>");
 
-        if (blocked_gyms) {
-            $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'><br>");
+        $("#Output_table_data").html($('#Output_table_data').html() + gyms_table_data_header + gyms_table_data_ex + gyms_table_data_blocked);
+
+        if (blocked_gyms) { // If there is at least 1 blocked gym show a button to download a kml file which can be imported to Google My Maps to see what blocks these gyms
+            $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br><input type='button' id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'><br><span class='info'>(This file can be imported to Google My Maps to see what blocks these gyms)</span><br>");
         }
         $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br>");
     }
+    /*== Deal with the output text and buttons displayed ==*/
 
 }
 /*== Function called when the button "Get EX and blocked gyms" is pressed ==*/
 
-function checkgym(gym) {
+function gym_status(gym) {
     if (gym.Name == "") {
         return "empty_row"
     }
@@ -293,6 +303,36 @@ function checkgym(gym) {
     else {
         return "no_problem"
     }
+}
+
+function remove_problematic_gym_rows() {
+    problem_detected = false;
+    clear_output_error_text = false;
+    $("#Output_info").html("");
+
+    var valid_gyms = 0;
+    var new_gyms_data = [];
+    for (const [i, gym] of gyms_data.entries()) {
+        if (gym_status(gym) == "no_problem") {
+            valid_gyms += 1;
+            new_gyms_data.push(gym);
+        }
+        else {
+            problem_detected = first_time_problem_detected(problem_detected);
+            if (gym_status(gym) == "empty_row") {
+                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (empty row?)<br>");
+            }
+            else if (gym_status(gym) == "header_row") {
+                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (header row?)<br>");
+            }
+            else if (gym_status(gym) == "name_with_comma") {
+                $("#Output_info").html($('#Output_info').html() + "Row number " + i + " skipped (name with comma?)<br>");
+            }
+        }
+    }
+    gyms_data = new_gyms_data;
+
+    return valid_gyms
 }
 
 function writeCSV(string) {
@@ -355,15 +395,15 @@ function getJSON(url) {
     return resp ;
 }
 
-function preselectedareas() {
-    if (document.getElementById("select_area").value == "Madrid") {
+function set_mode(mode) {
+    if (mode === "Madrid") {
         data_global_exareas = JSON.parse(getJSON('example_data/madrid_exareas.geojson'));
         data_global_exclusionareas = JSON.parse(getJSON('example_data/madrid_exclusionareas.geojson'));
     }
 
-    if ( document.getElementById("select_area").value == "Automatic" ) {
+    if ( mode === "Automatic" ) {
 
-        /*==== Convert EX areas data to a typical GeoJSON file ====*/
+        /*==== Converts EX areas data to a typical GeoJSON file ====*/
         var osm_data_ex = data_global_exareas_from_osm.responseText;
 
         try {
@@ -372,9 +412,9 @@ function preselectedareas() {
             osm_data_ex = JSON.parse(osm_data_ex);
         }
         data_global_exareas = osmtogeojson(osm_data_ex);
-        /*== Convert EX areas data to a typical GeoJSON file ==*/
+        /*== Converts EX areas data to a typical GeoJSON file ==*/
 
-        /*==== Convert exclusion areas data to a typical GeoJSON file ====*/
+        /*==== Converts exclusion areas data to a typical GeoJSON file ====*/
         var osm_data_exclusion = data_global_exclusionareas_from_osm.responseText;
 
         try {
@@ -383,7 +423,7 @@ function preselectedareas() {
             osm_data_exclusion = JSON.parse(osm_data_exclusion);
         }
         data_global_exclusionareas = osmtogeojson(osm_data_exclusion);
-        /*== Convert exclusion areas data to a typical GeoJSON file ==*/
+        /*== Converts exclusion areas data to a typical GeoJSON file ==*/
     }
 }
 
@@ -540,11 +580,13 @@ function getareas(query_url) {
         $("#EX_areas_status").html("");
         $("#EX_areas_status").html($('#EX_areas_status').html() + "Loading EX areas (wait until this text changes).");
         document.getElementById("btngetexareas").disabled = true;
+        document.getElementById("gymsfile").disabled = true;
     }
     else if (query_url == "exclusion") {
         $("#Exclusion_areas_status").html("");
         $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "Loading exclusion areas (wait until this text changes).");
         document.getElementById("btngetexclusionareas").disabled = true;
+        document.getElementById("gymsfile").disabled = false;
     }
 
     var wait_time = 50000.0;
@@ -630,16 +672,31 @@ function testexclusionareas() {
 }
 
 function getmaxandminvalues() {
+    const offset = 0.001;
+    min_possible_lat = -90.0;
+    min_possible_lng = -180.0;
 
-    max_lat = Math.max(...gyms_data.map((x) => x.lat))
-    min_lat = Math.min(...gyms_data.map((x) => x.lat))
+    max_lat = Math.max(...gyms_data.map((x) => x.lat));
+    min_lat = Math.min(...gyms_data.map((x) => x.lat));
 
-    max_lng = Math.max(...gyms_data.map((x) => x.lng))
-    min_lng = Math.min(...gyms_data.map((x) => x.lng))
+    max_lng = Math.max(...gyms_data.map((x) => x.lng));
+    min_lng = Math.min(...gyms_data.map((x) => x.lng));
 
-    if ( min_lat == max_lat && min_lng == max_lng ) {
-        min_lat = max_lat - 0.001;
-        min_lng = max_lng - 0.001;
+    if ( min_lat == max_lat ) {
+        if (max_lat - offset < min_possible_lat) {
+            max_lat = min_lat + offset;
+        }
+        else {
+            min_lat = max_lat - offset;
+        }
+    }
+    else if ( min_lng == max_lng ) {
+        if (max_lng - offset < min_possible_lng) {
+            max_lng = min_lng + offset;
+        }
+        else {
+            min_lng = max_lng - offset;
+        }
     }
 
     getmaxandminvalues_done = true;

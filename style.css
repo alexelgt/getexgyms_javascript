@@ -1,0 +1,115 @@
+:root {
+    --background: #efeff3;
+
+    --navbar_background: #f5f5f7;
+    --navbar_border: #a7a7aa;
+
+    --block_structure: #fefefe;
+    --block_structure_element: #c7c7cb;
+}
+
+/*==== Basico ====*/
+body {
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+    margin: 0;
+    font-family: "Helvetica";
+    font-size: 16px;
+    background-color: var(--background);
+    background-size: var(--backgroundsize);
+    -webkit-touch-callout: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    color: #000
+}
+
+a {
+    text-decoration: none;
+}
+
+* {
+    /*-webkit-user-select: none;
+    user-select: none;*/
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+}
+/*== Basico ==*/
+
+/*==== Navbar ====*/
+#navbar {
+    background-color: var(--navbar_background);
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    border-bottom: var(--navbar_border) solid 1px;
+}
+
+#navbar h1 {
+    width: 200px;
+    margin: 0 auto;
+    line-height: 50px;
+    color: #000
+}
+/*== Navbar ==*/
+
+/*==== Structure ====*/
+#structure {
+    padding: 50px 0 10px
+}
+/*== Structure ==*/
+
+/*==== Block ====*/
+#block {
+    margin: 10px 0;
+}
+#block h2 {
+    padding: 10px 24px 10px;
+    font-size: 20px;
+    margin: 0;
+}
+
+#block #block_structure {
+    box-sizing: border-box;
+    background-color: var(--block_structure);
+    border-top: var(--block_structure_element) solid 1px;
+    border-left: 0;
+    border-right: 0;
+}
+
+#block #block_structure #element {
+    padding: 14px 24px;
+    
+    border-bottom: var(--block_structure_element) solid 1px;
+}
+/*== Block ==*/
+
+span.info {
+    color: #424242
+}
+
+/*==== Tables ====*/
+#Output_table_data {
+    border-collapse:collapse;
+    width: 100%
+}
+
+#Output_table_data th {
+    background-color:#000;
+    color:#fff;
+}
+
+#Output_table_data td, #Output_table_data th {
+    padding:5px;
+    border:1px solid #000;
+}
+
+#Output_table_data tr.ex {
+    background-color:#d7ffd7;
+}
+
+#Output_table_data tr.blocked {
+    background-color:#ffd7d7;
+}
+/*== Tables ==*/

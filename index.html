@@ -8,68 +8,93 @@
       <meta content="yes" name="apple-mobile-web-app-capable">
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <link href="style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <h2>Get EX gyms</h2>
-    <h4>IMPORTANT: this script might take a while to run.</h4>
-      <p>
-        <span>Gyms file</span>
-        <input type="file" id="gymsfile" accept=".csv,.txt"/>
-      </p>
-      <p>
-        <span>Mode</span>
-        <select id="select_area">
-          <option selected="selected">Manual</option>
-          <option>Automatic</option>
-          <option>Madrid</option>
-        </select>
-      </p>
-      <div id="File_section" style="display:block">
+    <div id="navbar">
+        <h1>Get EX gyms</h1>
+    </div>
+
+    <div id="structure">
+        <h4>IMPORTANT: this script might take a while to run.</h4>
+
+        <div id="block">
+          <h2>Mode</h2>
+          <div id="block_structure">
+            <div id="element">
+              <span>Mode</span>
+              <select id="select_mode">
+                <option selected="selected">Manual</option>
+                <option>Automatic</option>
+                <option>Madrid</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div id="block">
+          <h2>Files</h2>
+          <div id="block_structure">
+            <div id="element">
+              <span>Gyms file</span>
+              <input type="file" id="gymsfile" accept=".csv,.txt"/>
+            </div>
+            <div id="File_section" style="display:block">
+              <div id="element">
+                <span id="exgeojson_text">EX areas file</span>
+                <input type="file" id="EXareasfile" accept=".geojson"/>
+              </div>
+              <div id="element">
+                <span id="exclusiongeojson_text">Exclusion areas file</span>
+                <input type="file" id="exclusionareasfile" accept=".geojson"/>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div id="Automatic_section" style="display:none">
+          <p>
+            <input type='button' id='btngetexareas' value='Get EX areas' onclick='getareas("EX");' disabled>
+            <input type='button' id='btngetexclusionareas' value='Get exclusion areas' onclick='getareas("exclusion");' disabled>
+            <input type='button' id='btnresetareas' value='Reset areas' onclick='resetareas();' disabled>
+          </p>
+  
+          <div id="EX_areas_status"></div>
+          <div id="Exclusion_areas_status"></div>
+        </div>
+  
         <p>
-          <span id="exgeojson_text">EX areas file</span>
-          <input type="file" id="EXareasfile" accept=".geojson"/>
+          <input type='button' id='btngetexandblockedgyms' value='Get EX and blocked gyms' onclick='getexgyms();' disabled>
+          <div id="Output_gym_status"></div>
         </p>
-        <p>
-          <span id="exclusiongeojson_text">Exclusion areas file</span>
-          <input type="file" id="exclusionareasfile" accept=".geojson"/>
-        </p>
-      </div>
-
-      <div id="Automatic_section" style="display:none">
-        <p>
-          <input type='button' id='btngetexareas' value='Get EX areas' onclick='getareas("EX");' disabled>
-          <input type='button' id='btngetexclusionareas' value='Get exclusion areas' onclick='getareas("exclusion");' disabled>
-          <input type='button' id='btnresetareas' value='Reset areas' onclick='resetareas();' disabled>
-        </p>
-
-        <div id="EX_areas_status"></div>
-        <div id="Exclusion_areas_status"></div>
-      </div>
-
-      <p>
-        <input type='button' id='btngetexandblockedgyms' value='Get EX and blocked gyms' onclick='getexgyms();' disabled>
-        <div id="Output_gym_status"></div>
-      </p>
-
-      <div id="Output_info"></div>
-      <br>
-      <div id="Output_results"></div>
-
-      <div id="Get_exclusionareas"></div>
-
-      <div id="Automatic_warning" style="display:none">
-        <b>Warning!</b> Automatic mode uses Overpass API and actually runs the queries to get EX and exclusion areas instead of reading them from existing files.
+  
+        <div id="Output_info"></div>
         <br>
+        <div id="Output_results"></div>
+  
+        <div id="Get_exclusionareas"></div>
+  
+        <table id="Output_table_data" border="1"></table>
         <br>
-        This means that automatic mode is much slower and if big queries are done to the Overpass API, it'll result in getting an error.
-        <br>
-        <br>
-        An example of what will produce a big query is if you include two far away gyms.
-        <p style="display:none">
-          <input type='button' id='btnLoad' value='Test 1' onclick='testexareas();'>
-          <input type='button' id='btnLoad' value='Test 2' onclick='testexclusionareas();'>
-        </p>
-      </div>
+  
+        <div id="Automatic_warning" style="display:none">
+          <b>Warning!</b> Automatic mode uses Overpass API and actually runs the queries to get EX and exclusion areas instead of reading them from existing files.
+          <br>
+          <br>
+          This means that automatic mode is much slower and if big queries are done to the Overpass API, it'll result in getting an error.
+          <br>
+          <br>
+          An example of what will produce a big query is if you include two far away gyms.
+          <p style="display:none">
+            <input type='button' id='btnLoad' value='Test 1' onclick='testexareas();'>
+            <input type='button' id='btnLoad' value='Test 2' onclick='testexclusionareas();'>
+          </p>
+        </div>
+    </div>
+    
+    
 
 
     <script src='turf.min.js'></script>
