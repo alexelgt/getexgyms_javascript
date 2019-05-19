@@ -168,8 +168,10 @@ a {
 	position: relative;
 	box-sizing: border-box;
 }
-
-input[type="button"]{
+input {
+    -webkit-appearance: none;
+}
+input[type="button"], button{
     -webkit-appearance: none;
     border: var(--block_structure_element) solid 1px;
     box-sizing: border-box;
@@ -186,7 +188,7 @@ input[type="button"]{
 	text-align: center;
 }
 
-input[type="button"]:disabled {
+input[type="button"]:disabled, button:disabled{
     background-color: #e5e5e5;
     color: grey;
 }
