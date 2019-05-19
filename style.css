@@ -170,6 +170,7 @@ a {
 }
 
 input[type="button"]{
+    -webkit-appearance: none;
     border: var(--block_structure_element) solid 1px;
     box-sizing: border-box;
     display: -webkit-box;
