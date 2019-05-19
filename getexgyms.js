@@ -287,12 +287,12 @@ function getexgyms() {
     $("#Output_results").html($('#Output_results').html() + "• Blocked gyms: " + blocked_gyms);
 
     if (ex_gyms || blocked_gyms) { // If there is any EX or blocked gym show a button to download a csv with the data
-        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<input type='button' id='btnLoad' value='Get csv file with EX and blocked gyms' onclick='writeCSV(csv_string_ex + csv_string_blocked);'>");
+        $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<button id='btnLoad' value='Get csv file with EX and blocked gyms' onclick='writeCSV(csv_string_ex + csv_string_blocked);'>Get csv file with EX and blocked gyms</button>");
 
         $("#Output_table_data").html($('#Output_table_data').html() + gyms_table_data_header + gyms_table_data_ex + gyms_table_data_blocked);
 
         if (blocked_gyms) { // If there is at least 1 blocked gym show a button to download a kml file which can be imported to Google My Maps to see what blocks these gyms
-            $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<input type='button' id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'><span class='info'>(The kml file can be imported to Google My Maps to see what blocks these gyms)</span><br>");
+            $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<button id='btnLoad' value='Get kml file with blocked gyms' onclick='Get_exclusionareas();'>Get kml file with blocked gyms</button><span class='info'>(The kml file can be imported to Google My Maps to see what blocks these gyms)</span><br>");
         }
         $("#Get_exclusionareas").html($('#Get_exclusionareas').html() + "<br>");
     }
