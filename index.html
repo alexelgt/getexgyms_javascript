@@ -38,51 +38,52 @@
           <h2>Files</h2>
           <div id="block_structure">
             <div id="element">
-              <span>Gyms file</span>
+              <span>Gyms</span>
               <input type="file" id="gymsfile" accept=".csv,.txt"/>
             </div>
             <div id="File_section" style="display:block">
               <div id="element">
-                <span id="exgeojson_text">EX areas file</span>
+                <span id="exgeojson_text">EX areas</span>
                 <input type="file" id="EXareasfile" accept=".geojson"/>
               </div>
               <div id="element">
-                <span id="exclusiongeojson_text">Exclusion areas file</span>
+                <span id="exclusiongeojson_text">Exclusion areas</span>
                 <input type="file" id="exclusionareasfile" accept=".geojson"/>
               </div>
             </div>
           </div>
         </div>
 
-
-
-
-  
         <div id="Automatic_section" style="display:none">
-          <p>
-            <div id="input_button_structure">
-              <button id='btngetexareas' value='Get EX areas' onclick='getareas("EX");' disabled>Get EX areas</button>
-              <button id='btngetexclusionareas' value='Get exclusion areas' onclick='getareas("exclusion");' disabled>Get exclusion areas</button>
-              <button id='btnresetareas' value='Reset areas' onclick='resetareas();' disabled>Reset areas</button>
+          <div id="input_button_structure">
+            <button id='btngetexareas' onclick='getareas("EX");' disabled>Get EX areas</button>
+            <button id='btngetexclusionareas' onclick='getareas("exclusion");' disabled>Get exclusion areas</button>
+            <button id='btnresetareas' onclick='resetareas();' disabled>Reset areas</button>
+          </div>
+
+          <div id="block">
+            <h2>Automatic mode status</h2>
+            <div id="block_structure">
+              <div id="element">
+                <span id="EX_areas_status" class="log">• Upload the file with gyms data and tap the first button.</span>
+                <br>
+                <span id="Exclusion_areas_status" class="log"></span>
+              </div>
             </div>
-          </p>
-  
-          <div id="EX_areas_status"></div>
-          <div id="Exclusion_areas_status"></div>
+          </div>
         </div>
-  
-        <p>
-          <button id='btngetexandblockedgyms' value='Get EX and blocked gyms' onclick='getexgyms();' disabled>Get EX and blocked gyms</button>
-          <div id="Output_gym_status"></div>
-        </p>
+
+        <div id="input_button_structure">
+          <button id='btngetexandblockedgyms' onclick='getexgyms();' disabled>Get EX and blocked gyms</button>
+        </div>
 
         <div id="block" class="error_block" style="display:none">
           <h2>Problems detected</h2>
           <div id="block_structure">
             <div id="element">
-              <span id="Output_error"></span>
-              <span id="Output_error_2"></span>
-              <span id="Output_error_3"></span>
+              <span id="Output_error" class="log"></span>
+              <span id="Output_error_2" class="log"></span>
+              <span id="Output_error_3" class="log"></span>
             </div>
           </div>
         </div>
@@ -91,18 +92,18 @@
           <h2>Results</h2>
           <div id="block_structure">
             <div id="element">
-              <span id="Output_results"></span>
+              <span id="Output_results" class="log"></span>
             </div>
           </div>
         </div>
   
-        <div id="Output_info"></div>
+  
+        
 
-        <div id="Output_results"></div>
+        <div id="input_button_structure" class="Output_buttons"></div>
+        <div id="text_block" class="Output_text_info"></div>
   
-        <div id="Get_exclusionareas"></div>
-  
-        <table id="Output_table_data" border="1"></table>
+        <table id="Output_table_data"></table>
         <br>
   
         <div id="Automatic_warning" style="display:none">
@@ -119,9 +120,6 @@
           </p>
         </div>
     </div>
-    
-    
-
 
     <script src='turf.min.js'></script>
     <script src='s2geometry.js'></script>

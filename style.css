@@ -91,9 +91,10 @@ a {
     border-bottom: var(--block_structure_element) solid 1px;
 }
 
-#Output_error, #Output_error_2, #Output_error_3, #Output_results{
+span.log{
     font-family: monospace;
 }
+
 #Output_error_2, #Output_error_3 {
     font-weight: bold;
     font-size: 16px;
@@ -162,18 +163,16 @@ a {
 
 #input_button_structure {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 12px auto;
     display: flex;
 	flex-flow: row wrap;
 	position: relative;
 	box-sizing: border-box;
 }
-input {
-    -webkit-appearance: none;
-}
+
 button {
     -webkit-appearance: none;
-    border: var(--block_structure_element) solid 1px;
+    border: var(--button_color) solid 1px;
     box-sizing: border-box;
     display: -webkit-box;
     display: -moz-box;
@@ -188,15 +187,31 @@ button {
 	text-align: center;
 }
 
-button:disabled {
+button:disabled, button:hover:disabled{
     -webkit-appearance: none;
+    border: var(--block_structure_element) solid 1px;
     background-color: #e5e5e5;
     color: grey;
 }
+
+button:hover {
+    background-color: var(--button_color_hover);
+}
+
+button:active {
+    background-color: var(--button_color_active);
+}
+
+button:focus {
+    outline:0;
+}
 /*== Button ==*/
 
-span.info {
-    color: #424242
+#text_block {
+    width: 100%;
+    text-align: center;
+    color: #6d6d71;
+    margin: 10px auto;
 }
 
 /*==== Tables ====*/
