@@ -90,7 +90,7 @@ a {
 }
 
 #block #block_structure #element {
-    padding: 8px 14px;
+    padding: 10px 14px;
     border-bottom: var(--block_structure_element) solid 1px;
 }
 
@@ -235,7 +235,7 @@ input[type=file] {
 
 input[type=file] + label {
     box-sizing: border-box;
-    padding: 8px 12px 8px 54px;
+    padding: 10px 12px 10px 54px;
     cursor: pointer;
     width: 100%;
     line-height: 18px;
