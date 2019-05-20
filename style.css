@@ -95,16 +95,19 @@ span.log{
     font-family: monospace;
 }
 
-#Output_error_2, #Output_error_3 {
-    font-weight: bold;
-    font-size: 16px;
+#Output_error_gyms {
+    color: #dd8f00;
+}
+
+#Output_error_no_valid_gyms, #Output_error_exareas, #Output_error_exclusionareas {
+    color: #e50000;
 }
 /*== Block ==*/
 
 /*==== Button ====*/
 #button_structure {
-    border: var(--button_color) solid 1px;
-    border-radius: 10px;
+    bo2rder: var(--button_color) solid 1px;
+    bo2rder-radius: 10px;
     display: flex;
 	flex-flow: row;
 	position: relative;
@@ -112,47 +115,45 @@ span.log{
 }
 
 
-#button_structure #element {
+#button_structure > div {
+    padding: 8px 6px;
     line-height: 100%;
     font-weight: bold;
     font-size: 12px;
     flex-grow: 1;
     box-sizing: border-box;
-    border-bottom: none!important;
-    border-right: var(--button_color) solid 1px;
+    border: var(--button_color) solid 1px;
+    border-left: none;
+    
     text-align: center;
     color: var(--button_color);
 }
 
-#button_structure #element:last-child {
-    border-bottom: none!important;
-    border-right: none;
-}
-
-#button_structure #element:first-child {
+#button_structure > div:first-child {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
+    border-left: var(--button_color) solid 1px;
 }
 
-#button_structure #element:last-child {
+#button_structure > div:last-child {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
 }
 
-#button_structure #element.selected {
+#button_structure > div.selected {
     background-color: var(--button_color);
     color: var(--block_structure);
 }
 
-#button_structure #element.selected:hover {
+#button_structure > div.selected:hover {
     background-color: var(--button_color);
 }
 
-#button_structure #element:hover {
+#button_structure > div:hover {
     background-color: var(--button_color_hover);
 }
 
-#button_structure #element:active {
+#button_structure > div:active {
     background-color: var(--button_color_active);
     color: var(--block_structure);
 }
@@ -162,10 +163,11 @@ span.log{
 
 
 #input_button_structure {
-    max-width: 600px;
+    width: 100%;
     margin: 12px auto;
     display: flex;
-	flex-flow: row wrap;
+    flex-flow: row wrap;
+    justify-content: center;
 	position: relative;
 	box-sizing: border-box;
 }
@@ -177,7 +179,7 @@ button {
     display: -webkit-box;
     display: -moz-box;
 	position: relative;
-	margin: 5px auto;
+	margin: 5px;
 	border-radius: 30px;
 	padding: 5px 6px;
 	font-size: 12px;
