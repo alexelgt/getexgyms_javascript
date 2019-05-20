@@ -36,19 +36,29 @@
 
         <div id="block">
           <h2>Files</h2>
-          <div id="block_structure">
+          <div id="block_structure" class="block_files">
             <div id="element">
-              <span>Gyms</span>
-              <input type="file" id="gymsfile" accept=".csv,.txt"/>
+              <!--<span>Gyms</span>
+              <input type="file" id="gyms2file" accept=".csv,.txt"/>-->
+
+              <input type="file" name="gymsfile" id="gymsfile" class="inputfile" accept=".csv,.txt"/>
+              <label for="gymsfile"><img id="label_img" src="Gyms_icon.png">Gyms: <span class="inputfile">select file</span></label>
+
             </div>
             <div id="File_section" style="display:block">
               <div id="element">
-                <span id="exgeojson_text">EX areas</span>
-                <input type="file" id="EXareasfile" accept=".geojson"/>
+                <!--<span id="exgeojson_text">EX areas</span>
+                <input type="file" id="EXareasfile" accept=".geojson"/>-->
+
+                <input type="file" name="EXareasfile" id="EXareasfile" class="inputfile" accept=".geojson"/>
+                <label for="EXareasfile"><img id="label_img" src="EX_icon.png">EX areas: <span class="inputfile">select file</span></label>
               </div>
               <div id="element">
-                <span id="exclusiongeojson_text">Exclusion areas</span>
-                <input type="file" id="exclusionareasfile" accept=".geojson"/>
+                <!--<span id="exclusiongeojson_text">Exclusion areas</span>
+                <input type="file" id="exclusionareasfile" accept=".geojson"/>-->
+
+                <input type="file" name="exclusionareasfile" id="exclusionareasfile" class="inputfile" accept=".geojson"/>
+                <label for="exclusionareasfile"><img id="label_img" src="Exclusion_icon.png">Exclusion areas: <span class="inputfile">select file</span></label>
               </div>
             </div>
           </div>
@@ -127,6 +137,7 @@
     <script src='s2geometry.js'></script>
     <script src="jquery-3.1.1.min.js" type="text/javascript"></script>
     <script src='osmtogeojson.js'></script>
+    <script src='custom-file-input.js'></script>
     <script src="getexgyms.js" type="text/javascript"></script>
     <script src="fileManagement.js" type="text/javascript"></script>
     <script src="gymsCheckings.js" type="text/javascript"></script>
