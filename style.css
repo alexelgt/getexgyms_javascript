@@ -310,6 +310,8 @@ input[type=file] + label:active {
 #Output_table_data tr.blocked {
     background-color:#ffd7d7;
 }
+
+
 /*== Tables ==*/
 
 
@@ -328,5 +330,9 @@ input[type=file] + label:active {
 
     #label_img {
         left: 54px;
+    }
+
+    #Output_table_data td:first-child, #Output_table_data td:last-child, #Output_table_data th:first-child, #Output_table_data th:last-child {
+        padding-right: 40px;
     }
 }
