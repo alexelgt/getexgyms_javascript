@@ -517,8 +517,8 @@ function setMode(mode,pressed_div) {
     pressed_div.classList.add("selected");
 
     changeModeVar(mode);
-}
 
-function changeModeVar(mode,parentClass) {
-    current_mode = mode;
+    function changeModeVar(mode,parentClass) {
+        current_mode = mode;
+    }
 }
