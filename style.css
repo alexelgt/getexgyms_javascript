@@ -281,6 +281,8 @@ input[type=file] + label:active {
 
 
 #text_block {
+    box-sizing: border-box;
+    padding: 0 14px;
     width: 100%;
     text-align: center;
     color: #6d6d71;
@@ -330,6 +332,10 @@ input[type=file] + label:active {
 
     #label_img {
         left: 54px;
+    }
+
+    #text_block {
+        padding: 0 54px;
     }
 
     #Output_table_data td:first-child, #Output_table_data th:first-child {
