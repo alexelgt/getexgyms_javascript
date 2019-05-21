@@ -9,7 +9,7 @@
 
     --button_color: #3478f6;
     --button_color_hover: #dceafd;
-    --button_color_active: rgba(53, 153, 246, 0.6);
+    --button_color_active: rgba(53, 153, 246, 0.4);
 
     --output_error_orange: #dd8f00;
     --output_error_red: #e50000;
@@ -37,9 +37,14 @@ a {
 }
 
 * {
-    /*-webkit-user-select: none;
-    user-select: none;*/
+    -webkit-user-select: none;
+    user-select: none;
     -webkit-tap-highlight-color: rgba(0,0,0,0)
+}
+
+tr, th, tr, td, .log {
+    -webkit-user-select: text;
+    user-select: text;
 }
 /*== Basico ==*/
 
@@ -164,7 +169,6 @@ span.log{
 
 #button_structure > div:active {
     background-color: var(--button_color_active);
-    color: var(--block_structure);
 }
 
 
@@ -251,6 +255,14 @@ span.inputfile {
 input[type=file]:focus + label,
 input[type=file] + label:hover {
     background-color: #d9d9d9;
+
+    -webkit-transition: background-color 120ms linear;
+    -ms-transition: background-color 120ms linear;
+    transition: background-color 120ms linear;
+}
+
+input[type=file] + label:active {
+    background-color: #c8c8c8;
 
     -webkit-transition: background-color 120ms linear;
     -ms-transition: background-color 120ms linear;
