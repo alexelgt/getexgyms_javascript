@@ -25,6 +25,7 @@ body {
     font-size: 16px;
     background-color: var(--background);
     background-size: var(--backgroundsize);
+    -webkit-text-size-adjust: 100%;
     -webkit-touch-callout: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -311,3 +312,21 @@ input[type=file] + label:active {
 }
 /*== Tables ==*/
 
+
+@media only screen and (device-width : 375px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) {
+    #block h2 {
+        padding: 8px 54px 2px;
+    }
+
+    #block #block_structure #element {
+        padding: 10px 54px;
+    }
+
+    input[type=file] + label {
+        padding: 10px 12px 10px 94px;
+    }
+
+    #label_img {
+        left: 54px;
+    }
+}
