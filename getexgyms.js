@@ -513,7 +513,7 @@ function setMode(mode,pressed_div) {
     });
     /*== Remove class "selected" from all elements ==*/
 
-    /*=== Add class "selected" to element how triggered the function ===*/
+    /*=== Add class "selected" to element who triggered the function ===*/
     pressed_div.classList.add("selected");
 
     changeModeVar(mode);
