@@ -499,8 +499,14 @@ function resetareas() {
 
 function setMode(mode,pressed_div) {
 
+    var parentClass = pressed_div.parentNode.className;
+
+    if (parentClass != "") {
+        parentClass = "." + parentClass.replace(/ /g, '.');
+    }
+
     /*==== Remove class "selected" from all elements ====*/
-    var elems = document.querySelectorAll("#button_structure > div");
+    var elems = document.querySelectorAll("#button_structure" + parentClass + " > div");
 
     [].forEach.call(elems, function(el) {
         el.classList.remove("selected");
