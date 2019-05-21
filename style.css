@@ -133,6 +133,8 @@ span.log{
     text-align: center;
     color: var(--button_color);
 
+    -webkit-tap-highlight-color: red;
+
     -webkit-transition: background-color 120ms linear;
     -ms-transition: background-color 120ms linear;
     transition: background-color 120ms linear;
@@ -159,6 +161,7 @@ span.log{
 }
 
 #button_structure > div:hover {
+    -webkit-tap-highlight-color: green;
     background-color: var(--button_color_hover);
 }
 
