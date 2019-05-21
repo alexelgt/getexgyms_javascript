@@ -332,7 +332,11 @@ input[type=file] + label:active {
         left: 54px;
     }
 
-    #Output_table_data td:first-child, #Output_table_data td:last-child, #Output_table_data th:first-child, #Output_table_data th:last-child {
+    #Output_table_data td:first-child, #Output_table_data th:first-child {
+        padding-left: 40px;
+    }
+
+    #Output_table_data td:last-child, #Output_table_data th:last-child {
         padding-right: 40px;
     }
 }
