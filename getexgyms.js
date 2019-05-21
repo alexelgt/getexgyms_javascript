@@ -514,7 +514,11 @@ function setMode(mode,pressed_div) {
     /*== Remove class "selected" from all elements ==*/
 
     /*=== Add class "selected" to element how triggered the function ===*/
-    $(pressed_div).addClass("selected");
+    pressed_div.classList.add("selected");
 
+    changeModeVar(mode);
+}
+
+function changeModeVar(mode,parentClass) {
     current_mode = mode;
 }
