@@ -289,6 +289,10 @@ input[type=file] + label:active {
     margin: 10px auto;
 }
 
+#text_block.info {
+    text-align: justify;
+}
+
 /*==== Tables ====*/
 #Output_table_data {
     border-collapse:collapse;
