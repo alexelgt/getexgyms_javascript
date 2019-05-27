@@ -29,7 +29,6 @@ body {
     margin: 0;
     font-size: 16px;
     background-color: var(--background);
-    background-size: var(--backgroundsize);
     -webkit-text-size-adjust: 100%;
     -webkit-touch-callout: none;
     -webkit-appearance: none;
@@ -97,8 +96,21 @@ tr, th, tr, td, .log {
     font-size: 14px;
     box-sizing: border-box;
     background-color: var(--block_structure);
-    border-left: 0;
-    border-right: 0;
+    
+}
+
+#block #block_structure.log {
+    margin: 20px 10px 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 6px;
+}
+
+#block #block_structure.log h2{
+    padding: 0px 3px;
+    position: absolute;
+    background-color: #fff;
+    margin-top:-20px;
 }
 
 #block #block_structure #element {
