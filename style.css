@@ -269,7 +269,7 @@ button:disabled::after, input[type=file] + label:disabled::before, input[type=fi
     min-height: 30px;
     color: #000;
     background-color: #e0e0e0;
-    font-size: 14px;
+    f2ont-size: 14px;
     line-height: 30px;
 }
 
@@ -356,19 +356,15 @@ span.inputfile {
 
 @media only screen and (device-width : 375px) and (width : 812px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) {
     #block h2 {
-        padding: 8px 54px 2px;
+        padding: 8px 44px 2px;
     }
 
     #block #block_structure #element {
-        padding: 10px 54px;
-    }
-
-    #label_img {
-        left: 54px;
+        padding: 10px 44px;
     }
 
     #text_block {
-        padding: 0 54px;
+        padding: 0 44px;
     }
 
     #Output_table_data td:first-child, #Output_table_data th:first-child {
