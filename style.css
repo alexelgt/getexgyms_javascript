@@ -378,6 +378,10 @@ span.inputfile {
         padding: 10px 44px;
     }
 
+    #block #block_structure.log {
+        margin: 20px 44px 10px;
+    }
+
     #text_block {
         padding: 0 44px;
     }
