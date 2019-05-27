@@ -190,6 +190,10 @@ button, input[type=file] + label {
     transition: box-shadow 0.2s;
 }
 
+button {
+    margin: 5px;
+}
+
 
 input[type=file]#gymsfile + label {
     background-color: #6d90af;
@@ -222,7 +226,6 @@ button::after, input[type=file] + label::before, input[type=file] + label::after
 }
 
 button::before, input[type=file] + label::before {
-    background-color: rgb(var(--matter-helper-ontheme));
     transition: opacity 0.2s;
 }
 
@@ -230,9 +233,6 @@ button::after, input[type=file] + label::after {
     background: radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;
     transition: opacity 1s, background-size 0.5s;
 }
-
-
-
 
 /* Hover, Focus */
 button:hover,
@@ -327,7 +327,6 @@ button:disabled::after, input[type=file] + label:disabled::before, input[type=fi
 }
 
 #button_structure > div::before {
-    background-color: rgb(var(--matter-helper-ontheme));
     transition: opacity 0.2s;
 }
 
@@ -461,10 +460,6 @@ span.inputfile {
 
     #block #block_structure #element {
         padding: 10px 54px;
-    }
-
-    input[type=file] + label {
-        pad2ding: 10px 12px 10px 94px;
     }
 
     #label_img {
