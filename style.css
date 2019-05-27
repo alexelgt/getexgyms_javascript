@@ -235,6 +235,10 @@ button:hover:focus::before, input[type=file] + label:hover:focus::before, #butto
 }
 
 /* Active */
+button:active, input[type=file] + label:active, #button_structure > div:active {
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
 button:active::after, input[type=file] + label:active::after, #button_structure > div:active::after {
     opacity: 0.32;
     background-size: 100% 100%;
@@ -269,7 +273,6 @@ button:disabled::after, input[type=file] + label:disabled::before, input[type=fi
     min-height: 30px;
     color: #000;
     background-color: #e0e0e0;
-    f2ont-size: 14px;
     line-height: 30px;
 }
 
