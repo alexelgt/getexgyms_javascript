@@ -20,9 +20,9 @@
 /*==== Basico ====*/
 body {
     font-family: "Roboto", 'Helvetica Neue, Helvetica, Arial';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     width: 100%;
     min-height: 100%;
     height: 100%;
@@ -64,7 +64,6 @@ tr, th, tr, td, .log {
     width: 100%;
     height: 45px;
     box-sizing: border-box;
-    b3order-bottom: var(--navbar_border) solid 1px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .5);
 }
 
@@ -89,7 +88,7 @@ tr, th, tr, td, .log {
     margin: 6px 0;
 }
 #block h2 {
-    padding: 8px 14px 2px;
+    padding: 8px 10px 2px;
     font-size: 16px;
     margin: 0;
 }
@@ -98,14 +97,12 @@ tr, th, tr, td, .log {
     font-size: 14px;
     box-sizing: border-box;
     background-color: var(--block_structure);
-    bor2der-top: var(--block_structure_element) solid 1px;
     border-left: 0;
     border-right: 0;
 }
 
 #block #block_structure #element {
-    padding: 0px 14px;
-    bor2der-bottom: var(--block_structure_element) solid 1px;
+    padding: 0px 10px;
 }
 
 #block #block_structure.block_files #element {
@@ -134,15 +131,9 @@ span.log{
 }
 
 
-
-
-
-
-
-
 #input_button_structure {
     width: 100%;
-    margin: 12px auto;
+    margin: 4px auto;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
@@ -150,20 +141,13 @@ span.log{
 	box-sizing: border-box;
 }
 
-
-
-
-
-
-
 #block #block_structure #element.files > div {
     flex-direction: column;
     max-width: 500px;
     margin: 0 auto;
 }
 
-
-button, input[type=file] + label {
+button, input[type=file] + label, #button_structure > div {
     margin: 5px 0;
     position: relative;
     display: inline-block;
@@ -191,9 +175,8 @@ button, input[type=file] + label {
 }
 
 button {
-    margin: 5px;
+    margin: 5px 3px;
 }
-
 
 input[type=file]#gymsfile + label {
     background-color: #6d90af;
@@ -207,14 +190,13 @@ input[type=file]#exclusionareasfile + label {
     background-color: #5756ce;
 }
 
-
-button::-moz-focus-inner, input[type=file] + label::-moz-focus-inner {
+button::-moz-focus-inner, input[type=file] + label::-moz-focus-inner, #button_structure > div::-moz-focus-inner {
     border: none;
 }
 
 /* Overlay */
 button::before,
-button::after, input[type=file] + label::before, input[type=file] + label::after {
+button::after, input[type=file] + label::before, input[type=file] + label::after, #button_structure > div::before, #button_structure > div::after {
     content: "";
     position: absolute;
     top: 0;
@@ -225,42 +207,42 @@ button::after, input[type=file] + label::before, input[type=file] + label::after
     opacity: 0;
 }
 
-button::before, input[type=file] + label::before {
+button::before, input[type=file] + label::before, #button_structure > div::before {
     transition: opacity 0.2s;
 }
 
-button::after, input[type=file] + label::after {
+button::after, input[type=file] + label::after, #button_structure > div::after {
     background: radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;
     transition: opacity 1s, background-size 0.5s;
 }
 
 /* Hover, Focus */
 button:hover,
-button:focus, input[type=file] + label:hover, input[type=file] + label:focus {
+button:focus, input[type=file] + label:hover, input[type=file] + label:focus, #button_structure > div:hover, #button_structure > div:focus {
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-button:hover::before, input[type=file] + label:hover::before {
+button:hover::before, input[type=file] + label:hover::before, #button_structure > div:hover::before {
     opacity: 0.08;
 }
 
-button:focus::before, input[type=file] + label:focus::before {
+button:focus::before, input[type=file] + label:focus::before, #button_structure > div:focus::before {
     opacity: 0.24;
 }
 
-button:hover:focus::before, input[type=file] + label:hover:focus::before {
+button:hover:focus::before, input[type=file] + label:hover:focus::before, #button_structure > div:hover:focus::before {
     opacity: 0.32;
 }
 
 /* Active */
-button:active::after, input[type=file] + label:active::after {
+button:active::after, input[type=file] + label:active::after, #button_structure > div:active::after {
     opacity: 0.32;
     background-size: 100% 100%;
     transition: background-size 0s;
 }
 
 /* Disabled */
-button:disabled, input[type=file] + label:disabled {
+button:disabled, input[type=file] + label:disabled, #button_structure > div:disabled {
     color: rgba(0, 0, 0, 0.38);
     background-color: rgba(0, 0, 0, 0.12);
     box-shadow: none;
@@ -268,36 +250,27 @@ button:disabled, input[type=file] + label:disabled {
 }
 
 button:disabled::before,
-button:disabled::after, input[type=file] + label:disabled::before, input[type=file] + label:disabled::after {
+button:disabled::after, input[type=file] + label:disabled::before, input[type=file] + label:disabled::after, #button_structure > div:disabled::before, #button_structure > div:disabled::after {
     opacity: 0;
 }
 
 
+#button_structure > div, #button_structure > div:hover, #button_structure > div:focus {
+    box-shadow: none;
+}
+
 #button_structure > div {
     flex-grow: 1;
-    margin: 5px;
-    position: relative;
-    display: inline-block;
-    box-sizing: border-box;
-    border: none;
+    margin: 5px 3px;
     border-radius: 40px;
     padding: 0 10px;
     min-width: 64px;
     height: 30px;
-    vertical-align: middle;
-    text-align: center;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
+    min-height: 30px;
     color: #000;
     background-color: #e0e0e0;
-    font-family: "Roboto";
     font-size: 14px;
-    font-weight: 500;
     line-height: 30px;
-    overflow: hidden;
-    outline: none;
-    cursor: pointer;
-    transition: box-shadow 0.2s;
 }
 
 #button_structure > div.selected {
@@ -306,85 +279,13 @@ button:disabled::after, input[type=file] + label:disabled::before, input[type=fi
     color: #571ee5;
 }
 
-
-
-#button_structure > div::-moz-focus-inner {
-    border: none;
+#button_structure > div:first-child {
+    margin-left: 0;
 }
 
-/* Overlay */
-
-#button_structure > div::before,
-#button_structure > div::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: inherit;
-    opacity: 0;
+#button_structure > div:last-child {
+    margin-right: 0;
 }
-
-#button_structure > div::before {
-    transition: opacity 0.2s;
-}
-
-#button_structure > div::after {
-    background: radial-gradient(circle at center, currentColor 1%, transparent 1%) center/10000% 10000% no-repeat;
-    transition: opacity 1s, background-size 0.5s;
-}
-
-
-
-
-#button_structure > div:hover::before {
-    opacity: 0.08;
-}
-
-#button_structure > div:focus::before {
-    opacity: 0.24;
-}
-
-#button_structure > div:hover:focus::before {
-    opacity: 0.32;
-}
-
-/* Active */
-
-
-#button_structure > div:active::after {
-    opacity: 0.32;
-    background-size: 100% 100%;
-    transition: background-size 0s;
-}
-
-
-/* Hover, Focus */
-#button_structure > div:hover,
-#button_structure > div:focus {
-    
-}
-
-/* Active */
-#button_structure > div:active {
-    
-}
-
-#butt2on_select:active::after {
-    opacity: 0.32;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0s;
-}
-
-/* Disabled */
-#button_structure > div:disabled {
-    color: rgba(0, 0, 0, 0.38);
-    background-color: rgba(0, 0, 0, 0.12);
-    box-shadow: none;
-    cursor: initial;
-}
-/*== Button ==*/
 
 
 input[type=file] {
@@ -415,7 +316,7 @@ span.inputfile {
 
 #text_block {
     box-sizing: border-box;
-    padding: 0 14px;
+    padding: 0 10px;
     width: 100%;
     text-align: center;
     margin: 10px auto;
