@@ -501,10 +501,11 @@ function testexclusionareas() {
 function resetareas() {
     getmaxandminvalues_done = false;
 
-    $("#EX_areas_status").html("");
+    $("#EX_areas_status").html("• Upload the file with gyms data and tap the first button.");
     $("#Exclusion_areas_status").html("");
     document.getElementById("btngetexareas").disabled = false;
     document.getElementById("btnresetareas").disabled = true;
+    document.getElementById("btngetexandblockedgyms").disabled = true;
 }
 
 function setMode(mode,pressed_div) {
