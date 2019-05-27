@@ -28,7 +28,7 @@
             <div id="element">
               <div id="button_structure">
                 <div class="selected" onclick='setMode("Manual",this);'>Manual</div>
-                <div class="" onclick='setMode("Automatic",this);'>Automatic</div>
+                <div onclick='setMode("Automatic",this);'>Automatic</div>
                 <div onclick='setMode("Madrid",this);'>Madrid</div>
               </div>
             </div>
@@ -37,33 +37,25 @@
 
         <div id="block">
           <h2>Files</h2>
-          <div id="block_structure" class="block_files">
-            <div id="element">
-              <!--<span>Gyms</span>
-              <input type="file" id="gyms2file" accept=".csv,.txt"/>-->
-
-              <input type="file" name="gymsfile" id="gymsfile" class="inputfile" accept=".csv,.txt"/>
-              <label for="gymsfile"><img id="label_img" src="Gyms_icon.png">Gyms: <span class="inputfile">select file</span></label>
-
-            </div>
-            <div id="File_section" style="display:block">
-              <div id="element">
-                <!--<span id="exgeojson_text">EX areas</span>
-                <input type="file" id="EXareasfile" accept=".geojson"/>-->
-
-                <input type="file" name="EXareasfile" id="EXareasfile" class="inputfile" accept=".geojson"/>
-                <label for="EXareasfile"><img id="label_img" src="EX_icon.png">EX areas: <span class="inputfile">select file</span></label>
+          <div id="block_structure">
+            <div id="element" class="files">
+              <div>
+                <input type="file" name="gymsfile" id="gymsfile" class="inputfile" accept=".csv,.txt"/>
+                <label for="gymsfile">Gyms: <span class="inputfile">select file</span></label>
               </div>
-              <div id="element">
-                <!--<span id="exclusiongeojson_text">Exclusion areas</span>
-                <input type="file" id="exclusionareasfile" accept=".geojson"/>-->
-
+              <div id="File_section_EX">
+                <input type="file" name="EXareasfile" id="EXareasfile" class="inputfile" accept=".geojson"/>
+                <label for="EXareasfile">EX areas: <span class="inputfile">select file</span></label>
+              </div>
+              <div id="File_section_exclusion">
                 <input type="file" name="exclusionareasfile" id="exclusionareasfile" class="inputfile" accept=".geojson"/>
-                <label for="exclusionareasfile"><img id="label_img" src="Exclusion_icon.png">Exclusion areas: <span class="inputfile">select file</span></label>
+                <label for="exclusionareasfile">Exclusion areas: <span class="inputfile">select file</span></label>
               </div>
             </div>
           </div>
         </div>
+
+        
 
         <div id="Automatic_section" style="display:none">
           <div id="input_button_structure">

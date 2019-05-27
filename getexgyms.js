@@ -112,12 +112,16 @@ function handleSelectedmode() {
     if ( current_mode != "Manual" ) {
         document.getElementById("EXareasfile").disabled = true;
         document.getElementById("exclusionareasfile").disabled = true;
-        document.getElementById("File_section").style.display = 'none';
+        document.getElementById("File_section_EX").style.display = 'none';
+        document.getElementById("File_section_exclusion").style.display = 'none';
+        
     }
     else{
         document.getElementById("EXareasfile").disabled = false;
         document.getElementById("exclusionareasfile").disabled = false;
-        document.getElementById("File_section").style.display = 'block';
+        document.getElementById("File_section_EX").style.display = 'block';
+        document.getElementById("File_section_exclusion").style.display = 'block';
+        
     }
 
     if ( current_mode == "Automatic" ) {
@@ -150,6 +154,12 @@ function getexgyms() {
     $(".Output_buttons").html("");
     $(".Output_text_info").html("");
     $("#Output_table_data").html("");
+
+
+    csv_string_ex = "";
+    csv_string_blocked = "";
+    gyms_table_data_ex = "";
+    gyms_table_data_blocked = "";
 
     if (problems_with_gyms == false) {
         document.getElementsByClassName("error_block")[0].style.display = 'none';
