@@ -27,7 +27,6 @@ var query_exclusion = '%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0
 var problem_detected = false;
 var problems_with_gyms = false;
 
-var getmaxandminvalues_done = false;
 var ready_to_run = false;
 var anyValidGym = false;
 
@@ -417,9 +416,8 @@ function getareas(query_url) {
 
     var wait_time = 50000.0;
 
-    if ( getmaxandminvalues_done == false ) {
-        getMaxMinLatLng();
-    }
+    getMaxMinLatLng();
+    
 
     if (query_url == "EX") {
         var query = query_common + min_lat + "%2C" + min_lng + "%2C" + max_lat + "%2C" + max_lng + query_ex;
@@ -430,77 +428,82 @@ function getareas(query_url) {
     
     var data = new XMLHttpRequest();
     data.open("GET", query, true);
+
+    
+    data.open("GET", query, true);
     data.onreadystatechange = function() {
-        // Check states 4 = Ready to parse, 200 = found file
-        if(data.readyState === 4 && data.status === 200) {
+
+
+    if (data.readyState === 4) {
+        if (data.statusText == "OK") {
             if (query_url == "EX") {
-                document.getElementById("btngetexareas").disabled = true;
-                $("#EX_areas_status").html("");
-                $("#EX_areas_status").html($('#EX_areas_status').html() + "• EX areas loaded correctly.");
-                if (data_global_exareas_from_osm.responseText.includes("runtime error") == true) {
+                if (data.responseText.includes("runtime error") == true) {
+                    document.getElementById("btngetexareas").disabled = false;
+                    document.getElementById("gymsfile").disabled = false;
                     $("#EX_areas_status").html("");
-                    $("#EX_areas_status").html($('#EX_areas_status').html() + "• WARNING! An error ocurred while getting the EX areas. Reload the website and try again. If this message keeps appearing avoid gyms too far away.");
+                    $("#EX_areas_status").html($('#EX_areas_status').html() + "• WARNING! An error ocurred while getting the EX areas. If this message keeps appearing avoid gyms too far away.");
                 }
-                $("#Exclusion_areas_status").html("");
-                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Wait 50 seconds to load exclusion areas (more time migth be needed).");
-                setTimeout(function(){
-                    document.getElementById("btngetexclusionareas").disabled = false;
+                else {
+                    data_global_exareas_from_osm = data;
+
+                    document.getElementById("btngetexareas").disabled = true;
+                    $("#EX_areas_status").html("");
+                    $("#EX_areas_status").html($('#EX_areas_status').html() + "• EX areas loaded correctly.");
+
                     $("#Exclusion_areas_status").html("");
-                },wait_time);
+                    $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Wait 50 seconds to load exclusion areas (more time migth be needed).");
+                    setTimeout(function(){
+                        document.getElementById("btngetexclusionareas").disabled = false;
+                        $("#Exclusion_areas_status").html("");
+                    },wait_time);
+                }
+
             }
             else if (query_url == "exclusion") {
-                document.getElementById("btngetexclusionareas").disabled = true;
-                ready_to_run = true;
-                $("#Exclusion_areas_status").html("");
-                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas loaded correctly.");
-                if (data_global_exclusionareas_from_osm.responseText.includes("runtime error") == true) {
-                    ready_to_run = false;
+
+                if (data.responseText.includes("runtime error") == true) {
+                    document.getElementById("btngetexareas").disabled = false;
+                    document.getElementById("gymsfile").disabled = false;
                     $("#Exclusion_areas_status").html("");
-                    $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• WARNING! An error ocurred while getting the exclusion areas. Reload the website and try again. If this message keeps appearing avoid gyms too far away.");
+                    $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• WARNING! An error ocurred while getting the exclusion areas. If this message keeps appearing avoid gyms too far away.");
                 }
-                if ( ready_to_run == true ) {
+                else {
+                    data_global_exclusionareas_from_osm = data;
+
+                    document.getElementById("btngetexclusionareas").disabled = true;
+                    $("#Exclusion_areas_status").html("");
+                    $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas loaded correctly.");
+
                     document.getElementById("btngetexandblockedgyms").disabled = false;
                     document.getElementById("gymsfile").disabled = false;
+                    
+                    setTimeout(function(){
+                        document.getElementById("btnresetareas").disabled = false;
+                    },wait_time);
                 }
-                setTimeout(function(){
-                    document.getElementById("btnresetareas").disabled = false;
-                },wait_time);
             }
+
         }
-        else{
+        else if (data.statusText == "Too Many Requests") {
+
             if (query_url == "EX") {
                 $("#EX_areas_status").html("");
-                $("#EX_areas_status").html($('#EX_areas_status').html() + "• EX areas not loaded. Maybe to many requests to the overpass API.");
+                $("#EX_areas_status").html($('#EX_areas_status').html() + "• EX areas not loaded. Too many requests to the overpass API.");
                 document.getElementById("btngetexareas").disabled = false;
             }
             else if (query_url == "exclusion") {
                 $("#Exclusion_areas_status").html("");
-                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas not loaded. Maybe to many requests to the overpass API.");
+                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas not loaded. Too many requests to the overpass API.");
                 document.getElementById("btngetexclusionareas").disabled = false;
             }
         }
+        }
     }
+
     data.send(null);
-
-    if (query_url == "EX") {
-        data_global_exareas_from_osm = data;
-    }
-    else if (query_url == "exclusion") {
-        data_global_exclusionareas_from_osm = data;
-    }
-}
-
-function testexareas() {
-    console.log(data_global_exareas_from_osm.responseText);
-}
-
-function testexclusionareas() {
-    console.log(data_global_exclusionareas_from_osm.responseText);
 }
 
 function resetareas() {
-    getmaxandminvalues_done = false;
-
     $("#EX_areas_status").html("• Upload the file with gyms data and tap the first button.");
     $("#Exclusion_areas_status").html("");
     document.getElementById("btngetexareas").disabled = false;
