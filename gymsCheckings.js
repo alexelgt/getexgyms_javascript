@@ -73,4 +73,6 @@ function getMaxMinLatLng() {
             min_lng = max_lng - offset;
         }
     }
+
+    return [min_lat, min_lng, max_lat, max_lng]
 }

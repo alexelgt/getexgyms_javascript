@@ -86,7 +86,7 @@ tr, th, tr, td, .log {
 #block {
     margin: 6px 0;
 }
-#block h2 {
+#block h2, input + span {
     padding: 8px 10px 2px;
     font-size: 16px;
     margin: 0;
@@ -156,7 +156,7 @@ span.log{
 
 #block #block_structure #element.files > div {
     flex-direction: column;
-    max-width: 500px;
+    m2ax-width: 500px;
     margin: 0 auto;
 }
 
@@ -365,9 +365,44 @@ span.inputfile {
 #Output_table_data tr.blocked {
     background-color:#ffd7d7;
 }
-
-
 /*== Tables ==*/
+
+input {
+    height: 36px;
+    line-height: 13px;
+    font-size: 13px;
+    margin: 10px 0 5px;
+    padding: 18px 10px 10px;
+    border: 1px solid #000;
+    border-radius: 6px;
+    box-sizing: border-box;
+    resize: none;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    
+}
+
+input:focus {
+    border-color: #2196f3;
+}
+
+input + span {
+    position: relative;
+    font-weight: bold;
+    top:-50px;
+    left:10px;
+
+    padding: 0px 3px;
+    
+    background-color: #fff;
+    
+    border-radius: 6px;
+}
+
+input:focus + span {
+    color: #2196f3
+}
 
 
 @media only screen and (device-width : 375px) and (width : 812px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) {
