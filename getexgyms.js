@@ -93,6 +93,17 @@ function handleFileEXareas (evt) {
             $("#Output_error_red").html($('#Output_error_red').html() + "• File with EX areas not correct.");
             throw new Error("File with EX areas not correct");
         }
+
+        try {
+            data_global_exareas['features'].length;
+        } catch(e) {
+            EXAreasReady = false;
+            readyToGetEXAndBlocked();
+            document.getElementsByClassName("error_block")[0].style.display = 'block';
+            $("#Output_error_red").html($('#Output_error_red').html() + "• File with EX areas not correct.");
+        }
+
+
     };
 };
 /*== EX areas ==*/
@@ -115,6 +126,15 @@ function handleFileexclusionareas (evt) {
             document.getElementsByClassName("error_block")[0].style.display = 'block';
             $("#Output_error_red").html($('#Output_error_red').html() + "• File with exclusion areas not correct.");
             throw new Error("File with exclusion areas not correct");
+        }
+
+        try {
+            data_global_exclusionareas['features'].length;
+        } catch(e) {
+            ExclusionAreasReady = false;
+            readyToGetEXAndBlocked();
+            document.getElementsByClassName("error_block")[0].style.display = 'block';
+            $("#Output_error_red").html($('#Output_error_red').html() + "• File with exclusion areas not correct.");
         }
     };
 };
@@ -173,6 +193,8 @@ function getexgyms() {
     $(".Output_buttons").html("");
     $(".Output_text_info").html("");
     $("#Output_table_data").html("");
+
+    $("#hr").html("<hr></hr>");
 
     document.getElementsByClassName("results_block")[0].style.display = 'none';
 
@@ -284,7 +306,7 @@ function checkIfGymsAreEXorBlocked(data_global_exareas_multipolygon, data_global
 }
 
 function createMultiPolygon(data_areas) {
-    var anyArea = data_areas['features'].length
+    var anyArea = data_areas['features'].length;
 
     if ( anyArea ) {
         var data_areas_polygon = [];
