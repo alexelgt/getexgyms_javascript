@@ -18,7 +18,7 @@ function gymStatus(gym) {
 function removeProblematicGymRows() {
     problem_detected = false;
     document.getElementsByClassName("error_block")[0].style.display = 'none';
-    $("#Output_error_gyms").html("");
+    $("#Output_error_orange").html("");
 
     var valid_gyms = 0;
     var new_gyms_data = [];
@@ -31,13 +31,13 @@ function removeProblematicGymRows() {
             problems_with_gyms = true;
             document.getElementsByClassName("error_block")[0].style.display = 'block';
             if (gymStatus(gym) == "empty_row") {
-                $("#Output_error_gyms").html($('#Output_error_gyms').html() + "• Row number " + i + " skipped (empty row?).<br>");
+                $("#Output_error_orange").html($('#Output_error_orange').html() + "• Row number " + i + " skipped (empty row?).<br>");
             }
             else if (gymStatus(gym) == "header_row") {
-                $("#Output_error_gyms").html($('#Output_error_gyms').html() + "• Row number " + i + " skipped (header row?).<br>");
+                $("#Output_error_orange").html($('#Output_error_orange').html() + "• Row number " + i + " skipped (header row?).<br>");
             }
             else if (gymStatus(gym) == "name_with_comma") {
-                $("#Output_error_gyms").html($('#Output_error_gyms').html() + "• Row number " + i + " skipped (name with comma?).<br>");
+                $("#Output_error_orange").html($('#Output_error_orange').html() + "• Row number " + i + " skipped (name with comma?).<br>");
             }
         }
     }

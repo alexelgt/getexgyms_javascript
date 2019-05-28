@@ -17,7 +17,11 @@ var csv_string;
 var problem_detected = false;
 var problems_with_gyms = false;
 
-var ready_to_run = false;
+var EXAreasReady = false;
+var ExclusionAreasReady = false;
+
+var AutomaticModeAreasLoaded = false;
+
 var anyValidGym = false;
 
 var current_mode = "Manual";
@@ -50,17 +54,18 @@ function handleFilegyms (evt) {
         anyValidGym = removeProblematicGymRows(); // this function returns the number of valid gyms
 
         if (!anyValidGym) {
-            $("#Output_error_no_valid_gyms").html("• None of the gyms are valid. Please select a valid file.");
-            $("#Output_error_gyms").html("");
+            $("#Output_error_red").html("• None of the gyms are valid. Please select a valid file.");
+            $("#Output_error_orange").html("");
             if ( current_mode != "Automatic" ) {
                 document.getElementById("btngetexandblockedgyms").disabled = true;
             }
             document.getElementById("btngetexareas").disabled = true;
+            throw new Error("None of the gyms are valid. Please select a valid file");
         }
         else {
-            $("#Output_error_no_valid_gyms").html("");
+            $("#Output_error_red").html("");
             if ( current_mode != "Automatic" ) {
-                document.getElementById("btngetexandblockedgyms").disabled = false;
+                readyToGetEXAndBlocked();
             }
             document.getElementById("btngetexareas").disabled = false;
         }
@@ -71,20 +76,46 @@ function handleFilegyms (evt) {
 
 /*==== EX areas ====*/
 function handleFileEXareas (evt) {
+    document.getElementsByClassName("error_block")[0].style.display = 'none';
+    $("#Output_error_red").html("");
+
     fr_exareas.readAsText(evt.target.files[0]);
 
     fr_exareas.onload = e => {
-        data_global_exareas = JSON.parse(e.target.result);
+        try {
+            data_global_exareas = JSON.parse(e.target.result);
+            EXAreasReady = true;
+            readyToGetEXAndBlocked();
+        } catch(e) {
+            EXAreasReady = false;
+            readyToGetEXAndBlocked();
+            document.getElementsByClassName("error_block")[0].style.display = 'block';
+            $("#Output_error_red").html($('#Output_error_red').html() + "• File with EX areas not correct.");
+            throw new Error("File with EX areas not correct");
+        }
     };
 };
 /*== EX areas ==*/
 
 /*==== Exclusion areas ====*/
 function handleFileexclusionareas (evt) {
+    document.getElementsByClassName("error_block")[0].style.display = 'none';
+    $("#Output_error_red").html("");
+
     fr_exclusionareas.readAsText(evt.target.files[0]);
 
     fr_exclusionareas.onload = e => {
-        data_global_exclusionareas = JSON.parse(e.target.result);
+        try {
+            data_global_exclusionareas = JSON.parse(e.target.result);
+            ExclusionAreasReady = true;
+            readyToGetEXAndBlocked();
+        } catch(e) {
+            ExclusionAreasReady = false;
+            readyToGetEXAndBlocked();
+            document.getElementsByClassName("error_block")[0].style.display = 'block';
+            $("#Output_error_red").html($('#Output_error_red').html() + "• File with exclusion areas not correct.");
+            throw new Error("File with exclusion areas not correct");
+        }
     };
 };
 /*== Exclusion areas ==*/
@@ -109,10 +140,9 @@ function handleSelectedmode() {
         document.getElementById("exclusionareasfile").disabled = false;
         document.getElementById("File_section_EX").style.display = 'block';
         document.getElementById("File_section_exclusion").style.display = 'block';
-        
     }
 
-    if ( current_mode == "Madrid" ) {
+    if ( current_mode == "URL" ) {
         document.getElementsByClassName("URL_area")[0].style.display = 'block';
     }
     else {
@@ -122,17 +152,12 @@ function handleSelectedmode() {
     if ( current_mode == "Automatic" ) {
         document.getElementById("Automatic_section").style.display = 'block';
         document.getElementById("Automatic_warning").style.display = 'block';
-        if ( ready_to_run == false ) {
-            //document.getElementById("btngetexandblockedgyms").disabled = true;
-        }
-
+        readyToGetEXAndBlocked();
     }
     else{
         document.getElementById("Automatic_section").style.display = 'none';
         document.getElementById("Automatic_warning").style.display = 'none';
-        if (anyValidGym) {
-            document.getElementById("btngetexandblockedgyms").disabled = false;
-        }
+        readyToGetEXAndBlocked();
     }
 }
 
@@ -143,12 +168,13 @@ document.getElementById('button_structure').addEventListener('click', handleSele
 function getexgyms() {
 
     /*==== Clear the output ====*/
-    $("#Output_error_exareas").html("");
-    $("#Output_error_exclusionareas").html("");
+    $("#Output_error_red").html("");
     $("#Output_results").html("");
     $(".Output_buttons").html("");
     $(".Output_text_info").html("");
     $("#Output_table_data").html("");
+
+    document.getElementsByClassName("results_block")[0].style.display = 'none';
 
     if (problems_with_gyms == false) {
         document.getElementsByClassName("error_block")[0].style.display = 'none';
@@ -160,9 +186,9 @@ function getexgyms() {
 
     /*==== Check if the file with EX areas data has been selected ====*/
     if (data_global_exareas === undefined) {
-        document.getElementsByClassName("error_block")[0].style.display = 'block';
-        $("#Output_error_exareas").html($('#Output_error_exareas').html() + "• File with EX areas not correct.");
-        return;
+        //document.getElementsByClassName("error_block")[0].style.display = 'block';
+        //$("#Output_error_red").html($('#Output_error_red').html() + "• File with EX areas not correct.");
+        //throw new Error("File with EX areas not correct");
     }
     /*== Check if the file with EX areas data has been selected ==*/
     /*==== If so create a multipolygon with all EX areas ====*/
@@ -175,8 +201,8 @@ function getexgyms() {
     /*==== Check if the file with Exclusion areas data has been selected ====*/
     if (data_global_exclusionareas === undefined) {
         document.getElementsByClassName("error_block")[0].style.display = 'block';
-        $("#Output_error_exclusionareas").html($('#Output_error_exclusionareas').html() + "• File with exclusion areas not correct.");
-        return;
+        $("#Output_error_red").html($('#Output_error_red').html() + "• File with exclusion areas not correct.");
+        throw new Error("File with exclusion areas not correct");
     }
     /*== Check if the file with Exclusion areas data has been selected ==*/
     /*==== If so create a multipolygon with all exclusion areas ====*/
@@ -288,12 +314,12 @@ function createMultiPolygon(data_areas) {
 }
 
 function setModeVariables(mode) {
-    if (mode === "Madrid") {
+    if (mode === "URL") {
         var EXAreasURL = document.getElementById("EXAreasurl").value;
         var ExclusionAreasURL = document.getElementById("ExclusionAreasurl").value;
 
-        data_global_exareas = setDataFromURL(EXAreasURL);
-        data_global_exclusionareas = setDataFromURL(ExclusionAreasURL);
+        data_global_exareas = setDataFromURL(EXAreasURL,"EX");
+        data_global_exclusionareas = setDataFromURL(ExclusionAreasURL,"exclusion");
     }
 
     if ( mode === "Automatic" ) {
@@ -406,6 +432,8 @@ function checkAreasWhereCenterInside(gym_cellcenter, data_areas, kml_string_area
 }
 
 function getareas(query_url) {
+    document.getElementsByClassName("error_block")[0].style.display = 'none';
+
     var query_common = 'https://overpass-api.de/api/interpreter?data=%5Bdate%3A%222016-07-16T00%3A00%3A00Z%22%5D%0A%5Btimeout%3A620%5D%0A%5Bbbox%3A';
     var query_ex = '%5D%3B%0A%28%0A%20%20%20%20way%5Bleisure%3Dpark%5D%3B%0A%20%20%20%20way%5Blanduse%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Drecreation_ground%5D%3B%0A%20%20%20%20way%5Bleisure%3Dpitch%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgarden%5D%3B%0A%20%20%20%20way%5Bleisure%3Dgolf_course%5D%3B%0A%20%20%20%20way%5Bleisure%3Dplayground%5D%3B%0A%20%20%20%20way%5Blanduse%3Dmeadow%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgrass%5D%3B%0A%20%20%20%20way%5Blanduse%3Dgreenfield%5D%3B%0A%20%20%20%20way%5Bnatural%3Dscrub%5D%3B%0A%20%20%20%20way%5Bnatural%3Dheath%5D%3B%0A%20%20%20%20way%5Bnatural%3Dgrassland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dvineyard%5D%3B%0A%20%20%20%20way%5Blanduse%3Dfarmland%5D%3B%0A%20%20%20%20way%5Blanduse%3Dorchard%5D%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
     var query_exclusion = '%5D%3B%0A%28%0A%20%20%20%20way%5Bamenity%3Dschool%5D%3B%0A%20%20%20%20way%5Bhighway%5D%5Barea%3Dyes%5D%3B%0A%09way%5Bnatural%3Dwater%5D%3B%0A%09way%5Blanduse%3Dconstruction%5D%3B%0A%09way%5Bnatural%3Dwetland%5D%3B%0A%09way%5Baeroway%3Drunway%5D%3B%0A%20%20%09way%5Baeroway%3Dtaxiway%5D%3B%0A%20%20%09way%5Blanduse%3Dmilitary%5D%3B%0A%09way%5Blanduse%3Dquarry%5D%3B%0A%20%20%09way%5Bwater%3Dmarsh%5D%3B%0A%20%20%09way%5Blanduse%3Drailway%5D%3B%0A%20%20%09way%5Blanduse%3Dlandfill%5D%3B%0A%09%2F%2Fway%5B%22junction%22%3D%22roundabout%22%5D%2840.54512538387331%2C-3.6385291814804077%2C40.54668050872829%2C-3.6364075541496277%29%3B%0A%20%20%09way%5Bhighway%5D%28if%3Ais_closed%28%29%29%3B%0A%29%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B';
@@ -448,6 +476,7 @@ function getareas(query_url) {
                     document.getElementById("gymsfile").disabled = false;
                     $("#EX_areas_status").html("");
                     $("#EX_areas_status").html($('#EX_areas_status').html() + "• WARNING! An error ocurred while getting the EX areas. If this message keeps appearing avoid gyms too far away.");
+                    throw new Error("Query is too big for the overpass API. Maybe gyms too far away");
                 }
                 else {
                     data_global_exareas_from_osm = data;
@@ -472,6 +501,7 @@ function getareas(query_url) {
                     document.getElementById("gymsfile").disabled = false;
                     $("#Exclusion_areas_status").html("");
                     $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• WARNING! An error ocurred while getting the exclusion areas. If this message keeps appearing avoid gyms too far away.");
+                    throw new Error("Query is too big for the overpass API. Maybe gyms too far away");
                 }
                 else {
                     data_global_exclusionareas_from_osm = data;
@@ -480,7 +510,8 @@ function getareas(query_url) {
                     $("#Exclusion_areas_status").html("");
                     $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas loaded correctly.");
 
-                    document.getElementById("btngetexandblockedgyms").disabled = false;
+                    AutomaticModeAreasLoaded = true;
+                    readyToGetEXAndBlocked();
                     document.getElementById("gymsfile").disabled = false;
                     
                     setTimeout(function(){
@@ -496,11 +527,13 @@ function getareas(query_url) {
                 $("#EX_areas_status").html("");
                 $("#EX_areas_status").html($('#EX_areas_status').html() + "• EX areas not loaded. Too many requests to the overpass API.");
                 document.getElementById("btngetexareas").disabled = false;
+                throw new Error("EX areas not loaded. Too many requests to the overpass API");
             }
             else if (query_url == "exclusion") {
                 $("#Exclusion_areas_status").html("");
                 $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas not loaded. Too many requests to the overpass API.");
                 document.getElementById("btngetexclusionareas").disabled = false;
+                throw new Error("Exclusion areas not loaded. Too many requests to the overpass API");
             }
         }
         }
@@ -515,6 +548,8 @@ function resetareas() {
     document.getElementById("btngetexareas").disabled = false;
     document.getElementById("btnresetareas").disabled = true;
     document.getElementById("btngetexandblockedgyms").disabled = true;
+
+    AutomaticModeAreasLoaded = false;
 }
 
 function setMode(mode,pressed_div) {
@@ -543,15 +578,52 @@ function setMode(mode,pressed_div) {
     }
 }
 
-function setDataFromURL(URL) {
+function setDataFromURL(URL,datatype) {
     var data;
     try {
         data = JSON.parse(getJSON(URL));
       }
-    catch(error) {
-        console.error(error);
+    catch(e) {
+        console.error();
         document.getElementsByClassName("error_block")[0].style.display = 'block';
-        $("#Output_error_exareas").html($('#Output_error_exareas').html() + "• File with url " + URL + " not correct." + error.name);
+        $("#Output_error_red").html($('#Output_error_red').html() + "• Url with " + datatype + " areas not correct. ");
+        throw new Error("Error while getting data from URL");
       }
     return data
+}
+
+function readyToGetEXAndBlocked() {
+    var ManualModeReady = current_mode == "Manual" && anyValidGym && EXAreasReady && ExclusionAreasReady;
+    var URLModeReady = current_mode == "URL" && anyValidGym;
+    var AutomaticModeReady = current_mode == "Automatic" && AutomaticModeAreasLoaded;
+
+    if (current_mode == "Manual") {
+        if (ManualModeReady) {
+            document.getElementById("btngetexandblockedgyms").disabled = false;
+        }
+        else if (!ManualModeReady) {
+            document.getElementById("btngetexandblockedgyms").disabled = true;
+        }
+    }
+
+    if (current_mode == "URL") {
+        if (URLModeReady) {
+            document.getElementById("btngetexandblockedgyms").disabled = false;
+        }
+        else if (!URLModeReady) {
+            document.getElementById("btngetexandblockedgyms").disabled = true;
+        }
+    }
+
+    if (current_mode == "Automatic") {
+        if (AutomaticModeReady) {
+            document.getElementById("btngetexandblockedgyms").disabled = false;
+        }
+        else if (!AutomaticModeReady) {
+            document.getElementById("btngetexandblockedgyms").disabled = true;
+        }
+    }
+    
+
+    
 }

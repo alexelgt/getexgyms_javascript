@@ -126,11 +126,11 @@ span.log{
     font-family: monospace;
 }
 
-#Output_error_gyms {
+#Output_error_orange {
     color: var(--output_error_orange);
 }
 
-#Output_error_no_valid_gyms, #Output_error_exareas, #Output_error_exclusionareas {
+#Output_error_red, #Output_error_exareas, #Output_error_exclusionareas {
     color: var(--output_error_red);
 }
 /*== Block ==*/
