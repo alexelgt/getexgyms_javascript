@@ -584,9 +584,8 @@ function setDataFromURL(URL,datatype) {
         data = JSON.parse(getJSON(URL));
       }
     catch(e) {
-        console.error();
         document.getElementsByClassName("error_block")[0].style.display = 'block';
-        $("#Output_error_red").html($('#Output_error_red').html() + "• Url with " + datatype + " areas not correct. ");
+        $("#Output_error_red").html($('#Output_error_red').html() + "• Url with " + datatype + " areas not correct. " + e.name);
         throw new Error("Error while getting data from URL");
       }
     return data
