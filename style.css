@@ -419,7 +419,7 @@ input:focus {
 input + span {
     position: relative;
     font-weight: bold;
-    top:-25px;
+    top:-30px;
     left:10px;
 
     padding: 0px 3px;
