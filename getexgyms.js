@@ -588,10 +588,16 @@ function setDataFromURL(URL,datatype) {
     var data;
     try {
         data = JSON.parse(getJSON(URL));
+        isThereAnyError()
       }
     catch(e) {
         document.getElementsByClassName("error_block")[0].style.display = 'block';
-        $("#Output_error_red").html($('#Output_error_red').html() + "• Url with " + datatype + " areas not correct. " + e.name);
+        if (e.name == "TimeoutError") {
+            $("#Output_error_red").html($('#Output_error_red').html() + "• Url with " + datatype + " timed out. Try again");
+        }
+        else {
+            $("#Output_error_red").html($('#Output_error_red').html() + "• Url with " + datatype + " areas not correct");
+        }
         throw new Error("Error while getting data from URL");
       }
     return data
