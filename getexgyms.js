@@ -417,7 +417,7 @@ function checkAreasWhereCenterInside(gym_cellcenter, data_areas, kml_string_area
                     kml_string_areas_folder += '\n                ' + data_areas_element_coordinates[0] + ',' + data_areas_element_coordinates[1];
                 }
                 kml_string_areas_folder += '\n              </coordinates>\n            </LinearRing>\n          </outerBoundaryIs>\n        </Polygon>';
-                kml_string_areas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>#4c' + color + '</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
+                kml_string_areas_folder += '\n        <Style>\n          <PolyStyle>\n            <color>4c' + color + '</color>\n          </PolyStyle>\n        </Style>\n      </Placemark>';
             }
             else if (data_areas_element['geometry']['type'] == "LineString") {
                 var temp_data = [];
@@ -435,7 +435,7 @@ function checkAreasWhereCenterInside(gym_cellcenter, data_areas, kml_string_area
                         kml_string_areas_folder += '\n            ' + data_areas_element_coordinates[0] + ',' + data_areas_element_coordinates[1];
                     }
                     kml_string_areas_folder += '\n          </coordinates>\n        </LineString>';
-                    kml_string_areas_folder += '\n        <Style>\n          <LineStyle>\n            <color>#ff' + color + '</color>\n          </LineStyle>\n        </Style>\n      </Placemark>';
+                    kml_string_areas_folder += '\n        <Style>\n          <LineStyle>\n            <color>ff' + color + '</color>\n          </LineStyle>\n        </Style>\n      </Placemark>';
                 }
             }
         }
