@@ -16,7 +16,6 @@ function gymStatus(gym) {
 }
 
 function removeProblematicGymRows() {
-    problem_detected = false;
     document.getElementsByClassName("error_block")[0].style.display = 'none';
     $("#Output_error_orange").html("");
 
@@ -43,7 +42,7 @@ function removeProblematicGymRows() {
     }
     gyms_data = new_gyms_data;
 
-    return valid_gyms
+    return Boolean(valid_gyms)
 }
 
 function getMaxMinLatLng() {

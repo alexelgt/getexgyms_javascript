@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,500,300italic,500italic,700italic,900,300);
 
 :root {
-    --background: #fff;
+    --background: #e5e5e5;
 
     --navbar_background: #5085ec;
     --navbar_border: #a7a7aa;
@@ -76,9 +76,24 @@ tr, th, tr, td, .log {
 /*== Navbar ==*/
 
 /*==== Structure ====*/
+#card {
+    z-inde2x: 1;
+    paddi2ng: 44px 0 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+    margin: 8px;
+    margin-to2p: 50px;
+    border-radius: 6px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+#card.results {
+    padding-top: 1px;
+}
+
 #structure {
     z-index: 1;
-    padding: 44px 0 10px;
+    padding: 50px 0 10px;
 }
 /*== Structure ==*/
 
@@ -130,7 +145,7 @@ span.log{
     color: var(--output_error_orange);
 }
 
-#Output_error_red, #Output_error_exareas, #Output_error_exclusionareas {
+#Output_error_red, #Output_error_gyms, #Output_error_EXAreas, #Output_error_exclusionAreas {
     color: var(--output_error_red);
 }
 /*== Block ==*/
@@ -188,7 +203,7 @@ button, input[type=file] + label, #button_structure > div {
 }
 
 button {
-    margin: 5px 3px;
+    margin: 5px 3px 12px;
 }
 
 input[type=file]#gymsfile + label {
@@ -259,7 +274,7 @@ button:active::after, input[type=file] + label:active::after, #button_structure 
 }
 
 /* Disabled */
-button:disabled, input[type=file] + label:disabled, #button_structure > div:disabled {
+button:disabled, input[type=file]:disabled + label, input[type=file]#gymsfile:disabled + label, #button_structure > div:disabled {
     color: rgba(0, 0, 0, 0.38);
     background-color: rgba(0, 0, 0, 0.12);
     box-shadow: none;
@@ -267,7 +282,7 @@ button:disabled, input[type=file] + label:disabled, #button_structure > div:disa
 }
 
 button:disabled::before,
-button:disabled::after, input[type=file] + label:disabled::before, input[type=file] + label:disabled::after, #button_structure > div:disabled::before, #button_structure > div:disabled::after {
+button:disabled::after, input[type=file]:disabled + label::before, input[type=file]:disabled + label::after, #button_structure > div:disabled::before, #button_structure > div:disabled::after {
     opacity: 0;
 }
 
@@ -332,7 +347,7 @@ span.inputfile {
 
 #text_block {
     box-sizing: border-box;
-    padding: 0 10px;
+    padding: 0 10px 10px;
     width: 100%;
     text-align: center;
     margin: 10px auto;
@@ -390,7 +405,7 @@ input:focus {
 input + span {
     position: relative;
     font-weight: bold;
-    top:-50px;
+    top:-25px;
     left:10px;
 
     padding: 0px 3px;
@@ -398,6 +413,15 @@ input + span {
     background-color: #fff;
     
     border-radius: 6px;
+}
+
+input:first-child{
+    margin-top: -10px;
+}
+input {
+    
+    position: relative;
+    top:20px;
 }
 
 input:focus + span {

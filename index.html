@@ -18,9 +18,8 @@
 
     <div id="structure">
 
-        <div id="block">
-          <h2>IMPORTANT: this script might take a while to run.</h2>
-        </div>
+      <div id="card">
+        
 
         <div id="block">
           <h2>Mode</h2>
@@ -56,7 +55,7 @@
         </div>
 
         <div id="block" class="URL_area" style="display:none">
-          <div id="block_structure" class="text">
+          <div id="block_structure" class="URL">
             <div id="element">
               <input id="EXAreasurl" class="log" value="https://getexgyms.alexelgt.com/example_data/madrid_exareas.geojson">
               <span>EX Areas URL</span>
@@ -87,26 +86,31 @@
           </div>
         </div>
 
+        <div id="block" class="error_block" style="display:none">
+            <div id="block_structure" class="log">
+              <h2>Problems detected</h2>
+              <div id="element">
+                <span id="Output_error_orange" class="log"></span>
+                <span id="Output_error_red" class="log"></span>
+  
+                <span id="Output_error_gyms" class="log"></span>
+                <span id="Output_error_EXAreas" class="log"></span>
+                <span id="Output_error_exclusionAreas" class="log"></span>
+  
+                <span id="Output_error_exareas" class="log"></span>
+                <span id="Output_error_exclusionareas" class="log"></span>
+              </div>
+            </div>
+          </div>
+
         <div id="input_button_structure">
           <button id='btngetexandblockedgyms' onclick='getexgyms();' disabled>Get EX and blocked gyms</button>
         </div>
 
-        <div id="block" class="error_block" style="display:none">
-          <div id="block_structure" class="log">
-            <h2>Problems detected</h2>
-            <div id="element">
-              <span id="Output_error_orange" class="log"></span>
-              <span id="Output_error_red" class="log"></span>
+      </div>
+      <div id="card" class="results results_block" style="display:none">
 
-              <span id="Output_error_exareas" class="log"></span>
-              <span id="Output_error_exclusionareas" class="log"></span>
-            </div>
-          </div>
-        </div>
-
-        <div id="hr"></div>
-
-        <div id="block" class="results_block" style="display:none">
+        <div id="block" class="results2_block" s2tyle="display:none">
           <div id="block_structure" class="log">
             <h2>Results</h2>
             <div id="element">
@@ -115,27 +119,16 @@
           </div>
         </div>
 
-        
-
-
         <div id="input_button_structure" class="Output_buttons"></div>
         <div id="text_block" class="Output_text_info"></div>
-  
-        <table id="Output_table_data"></table>
-        <br>
-  
-        <div id="Automatic_warning" style="display:none">
-          <div id="text_block" class="info">
-            <b>Warning!</b> Automatic mode uses Overpass API and actually runs the queries to get EX and exclusion areas instead of reading them from existing files.
-            <br>
-            <br>
-            This means that automatic mode is much slower and if big queries are done to the Overpass API, it'll result in getting an error.
-            <br>
-            <br>
-            An example of what will produce a big query is if you include two far away gyms.
-          </div>
-          
-        </div>
+      </div>
+
+      <table id="Output_table_data"></table>
+
+      <div id="block">
+        <h2>IMPORTANT: this script might take a while to run.</h2>
+      </div>
+       
     </div>
 
     <script src='turf.min.js'></script>
