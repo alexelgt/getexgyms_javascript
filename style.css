@@ -438,6 +438,12 @@ input:focus + span {
     color: #2196f3
 }
 
+input:focus {
+    -webkit-appearance: none;
+    outline: none;
+    border-color: #2196f3
+}
+
 @media (min-width: 600px){
     #Output_table_data {
         width: auto;

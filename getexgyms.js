@@ -1,8 +1,15 @@
 /*==== Set global variables ====*/
 /*==== Data ====*/
 var data_global_gyms;
-var data_global_exareas;
-var data_global_exclusionareas;
+
+var data_global_exareas_manual;
+var data_global_exareas_automatic;
+var data_global_exareas_url;
+
+var data_global_exclusionareas_manual;
+var data_global_exclusionareas_automatic;
+var data_global_exclusionareas_url;
+
 var output_filename;
 var gyms_data;
 
@@ -81,7 +88,7 @@ function handleFileEXareas (evt) {
 
     fr_exareas.onload = e => {
         try {
-            data_global_exareas = JSON.parse(e.target.result);
+            data_global_exareas_manual = JSON.parse(e.target.result);
             EXAreasReady = true;
             readyToGetEXAndBlocked();
             $("#Output_error_EXAreas").html("");
@@ -94,7 +101,7 @@ function handleFileEXareas (evt) {
         }
 
         try {
-            data_global_exareas['features'].length;
+            data_global_exareas_manual['features'].length;
         } catch(e) {
             EXAreasReady = false;
             readyToGetEXAndBlocked();
@@ -114,7 +121,7 @@ function handleFileexclusionareas (evt) {
 
     fr_exclusionareas.onload = e => {
         try {
-            data_global_exclusionareas = JSON.parse(e.target.result);
+            data_global_exclusionareas_manual = JSON.parse(e.target.result);
             ExclusionAreasReady = true;
             readyToGetEXAndBlocked();
             $("#Output_error_exclusionAreas").html("");
@@ -127,7 +134,7 @@ function handleFileexclusionareas (evt) {
         }
 
         try {
-            data_global_exclusionareas['features'].length;
+            data_global_exclusionareas_manual['features'].length;
         } catch(e) {
             ExclusionAreasReady = false;
             readyToGetEXAndBlocked();
@@ -196,11 +203,13 @@ function getexgyms() {
     document.getElementsByClassName("results_block")[0].style.display = 'none';
     /*== Clear the output ==*/
 
+    //var data_exareas;
+
     /*=== If a pre-selected area is selected change EX an exclusion areas ===*/
-    setModeVariables(current_mode);
+    var [data_exareas, data_exclusionareas] = setModeVariables(current_mode,data_exareas);
 
     /*==== Check if the file with EX areas data has been selected ====*/
-    if (data_global_exareas === undefined) {
+    if (data_exareas === undefined) {
         document.getElementsByClassName("error_block")[0].style.display = 'block';
         $("#Output_error_red").html($('#Output_error_red').html() + "• File with EX areas not correct.");
         throw new Error("File with EX areas not correct");
@@ -208,13 +217,13 @@ function getexgyms() {
     /*== Check if the file with EX areas data has been selected ==*/
     /*==== If so create a multipolygon with all EX areas ====*/
     else {
-        var data_global_exareas_multipolygon;
-        [anyEXArea, data_global_exareas_multipolygon] = createMultiPolygon(data_global_exareas);
+        var data_exareas_multipolygon;
+        [anyEXArea, data_exareas_multipolygon] = createMultiPolygon(data_exareas);
     }
     /*== If so create a multipolygon with all EX areas===*/
 
     /*==== Check if the file with Exclusion areas data has been selected ====*/
-    if (data_global_exclusionareas === undefined) {
+    if (data_exclusionareas === undefined) {
         document.getElementsByClassName("error_block")[0].style.display = 'block';
         $("#Output_error_red").html($('#Output_error_red').html() + "• File with exclusion areas not correct.");
         throw new Error("File with exclusion areas not correct");
@@ -222,14 +231,14 @@ function getexgyms() {
     /*== Check if the file with Exclusion areas data has been selected ==*/
     /*==== If so create a multipolygon with all exclusion areas ====*/
     else {
-        var data_global_exclusionareas_multipolygon;
-        [anyExclusionArea, data_global_exclusionareas_multipolygon] = createMultiPolygon(data_global_exclusionareas);
+        var data_exclusionareas_multipolygon;
+        [anyExclusionArea, data_exclusionareas_multipolygon] = createMultiPolygon(data_exclusionareas);
     }
     /*== If so create a multipolygon with all exclusion areas ==*/
 
     /*=== Check all gyms ===*/
     var ex_gyms, blocked_gyms, gyms_table_data;
-    [ex_gyms, blocked_gyms, csv_string, gyms_table_data] = checkIfGymsAreEXorBlocked(data_global_exareas_multipolygon, data_global_exclusionareas_multipolygon);
+    [ex_gyms, blocked_gyms, csv_string, gyms_table_data] = checkIfGymsAreEXorBlocked(data_exareas_multipolygon, data_exclusionareas_multipolygon);
 
     /*==== Deal with the output text and buttons displayed ====*/
     document.getElementsByClassName("results_block")[0].style.display = 'block';
@@ -328,13 +337,16 @@ function createMultiPolygon(data_areas) {
     }
 }
 
-function setModeVariables(mode) {
+function setModeVariables(mode, data_exareas, data_exclusionareas) {
     if (mode === "URL") {
         var EXAreasURL = document.getElementById("EXAreasurl").value;
         var ExclusionAreasURL = document.getElementById("ExclusionAreasurl").value;
 
-        data_global_exareas = setDataFromURL(EXAreasURL,"EX");
-        data_global_exclusionareas = setDataFromURL(ExclusionAreasURL,"exclusion");
+        data_global_exareas_url = setDataFromURL(EXAreasURL,"EX");
+        data_global_exclusionareas_url = setDataFromURL(ExclusionAreasURL,"exclusion");
+
+        data_exareas = data_global_exareas_url;
+        data_exclusionareas = data_global_exclusionareas_url;
     }
 
     if ( mode === "Automatic" ) {
@@ -347,7 +359,8 @@ function setModeVariables(mode) {
         } catch(e) {
             osm_data_ex = JSON.parse(osm_data_ex);
         }
-        data_global_exareas = osmtogeojson(osm_data_ex);
+        data_global_exareas_automatic = osmtogeojson(osm_data_ex);
+        data_exareas = data_global_exareas_automatic;
         /*== Converts EX areas data to a typical GeoJSON file ==*/
 
         /*==== Converts exclusion areas data to a typical GeoJSON file ====*/
@@ -358,9 +371,17 @@ function setModeVariables(mode) {
         } catch(e) {
             osm_data_exclusion = JSON.parse(osm_data_exclusion);
         }
-        data_global_exclusionareas = osmtogeojson(osm_data_exclusion);
+        data_global_exclusionareas_automatic = osmtogeojson(osm_data_exclusion);
+        data_exclusionareas = data_global_exclusionareas_automatic;
         /*== Converts exclusion areas data to a typical GeoJSON file ==*/
     }
+
+    if ( mode === "Manual" ) {
+        data_exareas = data_global_exareas_manual;
+        data_exclusionareas = data_global_exclusionareas_manual;
+    }
+
+    return [data_exareas, data_exclusionareas]
 }
 
 function Get_exclusionareas() {
