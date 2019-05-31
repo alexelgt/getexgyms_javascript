@@ -238,6 +238,7 @@ function getexgyms() {
 
     /*==== Deal with the output text and buttons displayed ====*/
     document.getElementsByClassName("results_block")[0].style.display = 'block';
+    document.getElementById("results_string").innerHTML = "Results (" + current_mode + " mode)";
     $("#Output_results").html($('#Output_results').html() + "• Gyms analyzed: " + gyms_data.length + "<br>");
     $("#Output_results").html($('#Output_results').html() + "• EX gyms: " + ex_gyms + "<br>");
     $("#Output_results").html($('#Output_results').html() + "• Blocked gyms: " + blocked_gyms);
@@ -474,17 +475,16 @@ function getareas(query_url) {
 
     if (query_url == "EX") {
         $("#EX_areas_status").html("");
+        document.getElementById("EX_areas_status").style.color = '#000';
         $("#EX_areas_status").html($('#EX_areas_status').html() + "• Loading EX areas (wait until this text changes).");
         document.getElementById("btngetexareas").disabled = true;
-        console.log("holis")
         document.getElementById("gymsfile").disabled = true;
-        console.log("holis2")
         document.getElementById("EXareasfile").disabled = true;
         document.getElementById("exclusionareasfile").disabled = true;
-        console.log("holis3")
     }
     else if (query_url == "exclusion") {
         $("#Exclusion_areas_status").html("");
+        document.getElementById("Exclusion_areas_status").style.color = '#000';
         $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Loading exclusion areas (wait until this text changes).");
         document.getElementById("btngetexclusionareas").disabled = true;
     }
@@ -509,6 +509,7 @@ function getareas(query_url) {
                     document.getElementById("EXareasfile").disabled = false;
                     document.getElementById("exclusionareasfile").disabled = false;
                     $("#EX_areas_status").html("");
+                    document.getElementById("EX_areas_status").style.color = '#e50000';
                     $("#EX_areas_status").html($('#EX_areas_status').html() + "• WARNING! An error ocurred while getting the EX areas. If this message keeps appearing avoid gyms too far away.");
                     throw new Error("Query is too big for the overpass API. Maybe gyms too far away");
                 }
@@ -517,6 +518,7 @@ function getareas(query_url) {
 
                     document.getElementById("btngetexareas").disabled = true;
                     $("#EX_areas_status").html("");
+                    document.getElementById("EX_areas_status").style.color = '#008c00';
                     $("#EX_areas_status").html($('#EX_areas_status').html() + "• EX areas loaded correctly.");
 
                     $("#Exclusion_areas_status").html("");
@@ -536,6 +538,7 @@ function getareas(query_url) {
                     document.getElementById("EXareasfile").disabled = false;
                     document.getElementById("exclusionareasfile").disabled = false;
                     $("#Exclusion_areas_status").html("");
+                    document.getElementById("Exclusion_areas_status").style.color = '#e50000';
                     $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• WARNING! An error ocurred while getting the exclusion areas. If this message keeps appearing avoid gyms too far away.");
                     throw new Error("Query is too big for the overpass API. Maybe gyms too far away");
                 }
@@ -544,6 +547,7 @@ function getareas(query_url) {
 
                     document.getElementById("btngetexclusionareas").disabled = true;
                     $("#Exclusion_areas_status").html("");
+                    document.getElementById("Exclusion_areas_status").style.color = '#008c00';
                     $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas loaded correctly.");
 
                     automaticModeRunning = false;
@@ -566,6 +570,7 @@ function getareas(query_url) {
 
             if (query_url == "EX") {
                 $("#EX_areas_status").html("");
+                document.getElementById("EX_areas_status").style.color = '#e50000';
                 $("#EX_areas_status").html($('#EX_areas_status').html() + "• EX areas not loaded. Too many requests to the overpass API.");
                 document.getElementById("btngetexareas").disabled = false;
                 document.getElementById("gymsfile").disabled = false;
@@ -575,6 +580,7 @@ function getareas(query_url) {
             }
             else if (query_url == "exclusion") {
                 $("#Exclusion_areas_status").html("");
+                document.getElementById("Exclusion_areas_status").style.color = '#e50000';
                 $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas not loaded. Too many requests to the overpass API.");
                 document.getElementById("btngetexclusionareas").disabled = false;
                 throw new Error("Exclusion areas not loaded. Too many requests to the overpass API");
@@ -587,6 +593,8 @@ function getareas(query_url) {
 }
 
 function resetareas() {
+    document.getElementById("EX_areas_status").style.color = '#000';
+    document.getElementById("Exclusion_areas_status").style.color = '#000';
     $("#EX_areas_status").html("• Upload the file with gyms data and tap the first button.");
     $("#Exclusion_areas_status").html("");
     document.getElementById("btngetexareas").disabled = false;
