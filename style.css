@@ -261,6 +261,11 @@ button:hover:focus::before, input[type=file] + label:hover:focus::before, #butto
     opacity: 0.32;
 }
 
+
+#button_structure > div, #button_structure > div:hover, #button_structure > div:focus {
+    box-shadow: none;
+}
+
 /* Active */
 button:active, input[type=file] + label:active, #button_structure > div:active {
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
@@ -273,7 +278,7 @@ button:active::after, input[type=file] + label:active::after, #button_structure 
 }
 
 /* Disabled */
-button:disabled, input[type=file]:disabled + label, input[type=file]#gymsfile:disabled + label, #button_structure > div:disabled {
+button:disabled, input[type=file]:disabled + label, input[type=file]#gymsfile:disabled + label, input[type=file]#EXareasfile:disabled + label, input[type=file]#exclusionareasfile:disabled + label, #button_structure > div:disabled {
     color: rgba(0, 0, 0, 0.38);
     background-color: rgba(0, 0, 0, 0.12);
     box-shadow: none;
@@ -285,11 +290,6 @@ button:disabled::after, input[type=file]:disabled + label::before, input[type=fi
     opacity: 0;
 }
 
-
-#button_structure > div, #button_structure > div:hover, #button_structure > div:focus {
-    box-shadow: none;
-}
-
 #button_structure > div {
     flex-grow: 1;
     margin: 5px 3px;
@@ -299,14 +299,22 @@ button:disabled::after, input[type=file]:disabled + label::before, input[type=fi
     height: 30px;
     min-height: 30px;
     color: #000;
-    background-color: #e0e0e0;
+    background-color: #fff;
     line-height: 30px;
+    border:1px solid #c4c4c4;
+    text-transform: none;
+
+}
+
+#button_structure > div:hover {
+    background-color: #f5f5f5;
+    border-color: #bdbdbd;
 }
 
 #button_structure > div.selected {
-    border-color: #c4c4c4;
-    background-color: #f2edfd;
-    color: #571ee5;
+    border-color: #ccaef9;
+    background-color: #ece1fd;
+    color: #7b1efb;
 }
 
 #button_structure > div:first-child {

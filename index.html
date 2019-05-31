@@ -26,8 +26,8 @@
           <div id="block_structure">
             <div id="element">
               <div id="button_structure">
-                <div class="selected" onclick='setMode("Manual",this);'>Manual</div>
-                <div onclick='setMode("Automatic",this);'>Automatic</div>
+                <div class="selected" onclick='setMode("Automatic",this);'>Automatic</div>
+                <div onclick='setMode("Manual",this);'>Manual</div>
                 <div onclick='setMode("URL",this);'>URL</div>
               </div>
             </div>
@@ -42,11 +42,11 @@
                 <input type="file" name="gymsfile" id="gymsfile" class="inputfile" accept=".csv,.txt"/>
                 <label for="gymsfile">Gyms: <span class="inputfile">select file</span></label>
               </div>
-              <div id="File_section_EX">
+              <div id="File_section_EX" style="display:none">
                 <input type="file" name="EXareasfile" id="EXareasfile" class="inputfile" accept=".geojson"/>
                 <label for="EXareasfile">EX areas: <span class="inputfile">select file</span></label>
               </div>
-              <div id="File_section_exclusion">
+              <div id="File_section_exclusion" style="display:none">
                 <input type="file" name="exclusionareasfile" id="exclusionareasfile" class="inputfile" accept=".geojson"/>
                 <label for="exclusionareasfile">Exclusion areas: <span class="inputfile">select file</span></label>
               </div>
@@ -67,7 +67,7 @@
           </div>
         </div>
 
-        <div id="Automatic_section" style="display:none">
+        <div id="Automatic_section" style="di2splay:none">
           <div id="input_button_structure">
             <button id='btngetexareas' onclick='getareas("EX");' disabled>Get EX areas</button>
             <button id='btngetexclusionareas' onclick='getareas("exclusion");' disabled>Get exclusion areas</button>
