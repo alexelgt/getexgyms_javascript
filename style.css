@@ -1,22 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,500,300italic,500italic,700italic,900,300);
 
-:root {
-    --background: #e5e5e5;
-
-    --navbar_background: #5085ec;
-    --navbar_border: #a7a7aa;
-
-    --block_structure: #fefefe;
-    --block_structure_element: #c7c7cb;
-
-    --button_color: #3478f6;
-    --button_color_hover: #dceafd;
-    --button_color_active: rgba(53, 153, 246, 0.4);
-
-    --output_error_orange: #dd8f00;
-    --output_error_red: #e50000;
-}
-
 /*==== Basico ====*/
 body {
     font-family: "Roboto", 'Helvetica Neue, Helvetica, Arial';
@@ -28,7 +11,7 @@ body {
     height: 100%;
     margin: 0;
     font-size: 16px;
-    background-color: var(--background);
+    background-color: #e5e5e5;
     -webkit-text-size-adjust: 100%;
     -webkit-touch-callout: none;
     -webkit-appearance: none;
@@ -76,6 +59,16 @@ tr, th, tr, td, .log {
 /*== Navbar ==*/
 
 /*==== Structure ====*/
+#structure {
+    z-index: 1;
+    padding: 50px 0 10px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+/*== Structure ==*/
+
+/*==== Card ====*/
 #card {
     background-color: #fff;
     box-sizing: border-box;
@@ -87,15 +80,7 @@ tr, th, tr, td, .log {
 #card.results {
     padding-top: 1px;
 }
-
-#structure {
-    z-index: 1;
-    padding: 50px 0 10px;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-}
-/*== Structure ==*/
+/*== Card ==*/
 
 /*==== Block ====*/
 #block {
@@ -110,8 +95,6 @@ tr, th, tr, td, .log {
 #block #block_structure {
     font-size: 14px;
     box-sizing: border-box;
-    background-color: var(--block_structure);
-    
 }
 
 #block #block_structure.log {
@@ -136,18 +119,6 @@ tr, th, tr, td, .log {
 #block #block_structure.block_files #element {
     padding: 0;
 }
-
-span.log{
-    font-family: monospace;
-}
-
-#Output_error_orange {
-    color: var(--output_error_orange);
-}
-
-#Output_error_red, #Output_error_gyms, #Output_error_EXAreas, #Output_error_exclusionAreas {
-    color: var(--output_error_red);
-}
 /*== Block ==*/
 
 /*==== Button ====*/
@@ -157,7 +128,6 @@ span.log{
 	position: relative;
 	box-sizing: border-box;
 }
-
 
 #input_button_structure {
     width: 100%;
@@ -199,6 +169,10 @@ button, input[type=file] + label, #button_structure > div {
     outline: none;
     cursor: pointer;
     transition: box-shadow 0.2s;
+}
+
+button#btnresetareas {
+    background-color: #cc0000;
 }
 
 button {
@@ -278,7 +252,7 @@ button:active::after, input[type=file] + label:active::after, #button_structure 
 }
 
 /* Disabled */
-button:disabled, input[type=file]:disabled + label, input[type=file]#gymsfile:disabled + label, input[type=file]#EXareasfile:disabled + label, input[type=file]#exclusionareasfile:disabled + label, #button_structure > div:disabled {
+button:disabled, button#btnresetareas:disabled, input[type=file]:disabled + label, input[type=file]#gymsfile:disabled + label, input[type=file]#EXareasfile:disabled + label, input[type=file]#exclusionareasfile:disabled + label, #button_structure > div:disabled {
     color: rgba(0, 0, 0, 0.38);
     background-color: rgba(0, 0, 0, 0.12);
     box-shadow: none;
@@ -348,21 +322,7 @@ span.inputfile {
     font-size: 12px;
     font-style: italic;
 }
-
-
-
-
-#text_block {
-    box-sizing: border-box;
-    padding: 0 10px 10px;
-    width: 100%;
-    text-align: center;
-    margin: 10px auto;
-}
-
-#text_block.info {
-    text-align: justify;
-}
+/*== Button ==*/
 
 /*==== Tables ====*/
 #Output_table_data {
@@ -400,6 +360,7 @@ span.inputfile {
 }
 /*== Tables ==*/
 
+/*==== Input URL ====*/
 input {
     height: 36px;
     line-height: 13px;
@@ -451,6 +412,33 @@ input:focus {
     outline: none;
     border-color: #2196f3
 }
+/*== Input URL ==*/
+
+/*==== Text ====*/
+span.log{
+    font-family: monospace;
+}
+
+#Output_error_orange {
+    color: #dd8f00;
+}
+
+#Output_error_red, #Output_error_gyms, #Output_error_EXAreas, #Output_error_exclusionAreas {
+    color: #e50000;
+}
+
+#text_block {
+    box-sizing: border-box;
+    padding: 0 10px 10px;
+    width: 100%;
+    text-align: center;
+    margin: 10px auto;
+}
+
+#text_block.info {
+    text-align: justify;
+}
+/*== Text ==*/
 
 @media (min-width: 600px){
     #Output_table_data {
@@ -483,13 +471,5 @@ input:focus {
 
     #text_block {
         padding: 0 44px 10px;
-    }
-
-    #Ou2tput_table_data td:first-child, #Outpu2t_table_data th:first-child {
-        padding-left: 40px;
-    }
-
-    #Output_tab2le_data td:last-child, #Output2_table_data th:last-child {
-        padding-right: 40px;
     }
 }
