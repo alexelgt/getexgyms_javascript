@@ -42,6 +42,6 @@ function getJSON(url) {
         xmlHttp.open( "GET", url, false );
         xmlHttp.send( null );
     }
-    console.log(xmlHttp)
+
     return xmlHttp.responseText;
 }

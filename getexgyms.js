@@ -2,6 +2,9 @@
 /*==== Data ====*/
 var data_global_gyms;
 
+var data_exareas;
+var data_exclusionareas;
+
 var data_global_exareas_manual;
 var data_global_exareas_automatic;
 var data_global_exareas_url;
@@ -199,10 +202,8 @@ function getexgyms() {
     document.getElementsByClassName("results_block")[0].style.display = 'none';
     /*== Clear the output ==*/
 
-    //var data_exareas;
-
     /*=== If a pre-selected area is selected change EX an exclusion areas ===*/
-    var [data_exareas, data_exclusionareas] = setModeVariables(current_mode,data_exareas);
+    [data_exareas, data_exclusionareas] = setModeVariables(current_mode,data_exareas);
 
     /*==== Check if the file with EX areas data has been selected ====*/
     if (data_exareas === undefined) {
@@ -249,7 +250,7 @@ function getexgyms() {
         $("#Output_table_data").html($('#Output_table_data').html() + gyms_table_data);
 
         if (blocked_gyms) { // If there is at least 1 blocked gym show a button to download a kml file which can be imported to Google My Maps to see what blocks these gyms
-            $(".Output_buttons").html($('.Output_buttons').html() + "<button id='btnLoad' onclick='Get_exclusionareas();'>Download kml file with blocked gyms</button>");
+            $(".Output_buttons").html($('.Output_buttons').html() + "<button id='btnLoad' onclick='Get_exclusionareas(data_exareas,data_exclusionareas);'>Download kml file with blocked gyms</button>");
             
             $(".Output_text_info").html($('.Output_text_info').html() + "(The kml file can be imported to Google My Maps to see what blocks these gyms)");
         }
@@ -381,7 +382,7 @@ function setModeVariables(mode, data_exareas, data_exclusionareas) {
     return [data_exareas, data_exclusionareas]
 }
 
-function Get_exclusionareas() {
+function Get_exclusionareas(data_exareas,data_exclusionareas) {
 
     /*==== Set some strings for the kml file ====*/
     var kml_string1 = '<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n  <Document>\n    <name>Blocked gyms</name>';
@@ -405,10 +406,10 @@ function Get_exclusionareas() {
             var gym_cellcenter = S2.keyToLatLng( S2.S2Cell.latLngToKey(gym.lat, gym.lng, level) );
 
             /*=== Check EX areas where the cell center is inside ===*/
-            kml_string_exareas_folder = checkAreasWhereCenterInside(gym_cellcenter, data_global_exareas, kml_string_exareas_folder, "589d0f");
+            kml_string_exareas_folder = checkAreasWhereCenterInside(gym_cellcenter, data_exareas, kml_string_exareas_folder, "589d0f");
 
             /*=== Check exclusion areas where the cell center is inside ===*/
-            kml_string_exclusionareas_folder = checkAreasWhereCenterInside(gym_cellcenter, data_global_exclusionareas, kml_string_exclusionareas_folder, "b0279c");
+            kml_string_exclusionareas_folder = checkAreasWhereCenterInside(gym_cellcenter, data_exclusionareas, kml_string_exclusionareas_folder, "b0279c");
         }
         /*== Only take into account EX gyms in an exclusion area ==*/
     }
