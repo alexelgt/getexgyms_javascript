@@ -12,8 +12,12 @@
       <link href="style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div id="navbar">
-        <h1>Get EX gyms</h1>
+
+    <div id="sidebar-overlay" onclick='triggerSideBar();'></div>
+
+    <div id="navbar">    
+      <div id="hamburger" onclick='triggerSideBar();'></div>
+      <h1>Get EX gyms</h1>
     </div>
 
     <div id="structure">
@@ -127,6 +131,13 @@
         <h2>IMPORTANT: this script might take a while to run.</h2>
       </div>
        
+    </div>
+
+    
+
+
+    <div id="sidebar" class="o2ut">
+      Test
     </div>
 
     <script src='turf.min.js'></script>

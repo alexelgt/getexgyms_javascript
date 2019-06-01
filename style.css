@@ -40,7 +40,7 @@ tr, th, tr, td, .log {
 
 /*==== Navbar ====*/
 #navbar {
-    z-index: 2;
+    z-index: 4;
     background-color: #5085ec;
     position: fixed;
     width: 100%;
@@ -440,6 +440,66 @@ span.log{
 }
 /*== Text ==*/
 
+#hamburger {
+    position: fixed;
+    top: 7px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    background-image: url("hamburger-icon.png");
+    background-size: 100% 100%
+}
+
+
+#sidebar-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    background: #000;
+    z-index: 0;
+    transition: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
+}
+
+#sidebar-overlay.active {
+    z-index: 2;
+    opacity: 0.5;
+}
+
+#sidebar-overlay.semiactive {
+    z-index: 2;
+}
+
+
+#sidebar {
+    z-index: 3;
+    position: fixed;
+    background: #fff;
+    width: 200px;
+    height: 100%;
+    top: 45px;
+    left: -200px;
+    -webkit-transition: left 2s ease-in-out;
+    -moz-transition: left 2s ease-in-out;
+    -ms-transition: left 2s ease-in-out;
+    -o-transition: left 2s ease-in-out;
+    transition: left 0.5s ease-in-out;
+}
+
+#sidebar.out {
+    
+    
+    left: 0px;
+    
+}
+
+
+
 @media (min-width: 600px){
     #Output_table_data {
         width: auto;
@@ -455,21 +515,24 @@ span.log{
     }
 }
 
-
 @media only screen and (device-width : 375px) and (width : 812px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) {
-    #block h2 {
+    #hamburger {
+        left: 34px;
+    }
+    
+    #blo2ck h2 {
         padding: 8px 44px 2px;
     }
 
-    #block #block_structure #element {
+    #blo2ck #block_structure #element {
         padding: 10px 44px;
     }
 
-    #block #block_structure.log {
+    #blo2ck #block_structure.log {
         margin: 20px 44px 10px;
     }
 
-    #text_block {
+    #tex2t_block {
         padding: 0 44px 10px;
     }
 }
