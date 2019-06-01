@@ -2,6 +2,7 @@
 
 /*==== Basico ====*/
 body {
+    z-index: 0;
     font-family: "Roboto", 'Helvetica Neue, Helvetica, Arial';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -462,7 +463,7 @@ span.log{
     bottom: 0;
     opacity: 0;
     background: #000;
-    z-index: 0;
+    z-index: -1;
     transition: opacity 0.2s;
   -webkit-transition: opacity 0.2s;
 }
