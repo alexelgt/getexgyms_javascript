@@ -609,7 +609,6 @@ function resetareas() {
 function setMode(mode,pressed_div) {
 
     var parentClass = pressed_div.parentNode.className;
-    var pressedSelected = pressed_div.classList.contains("selected")
 
     if (parentClass != "") {
         parentClass = "." + parentClass.replace(/ /g, '.');
@@ -619,16 +618,12 @@ function setMode(mode,pressed_div) {
     var elems = document.querySelectorAll("#button_structure" + parentClass + " > div");
 
     [].forEach.call(elems, function(el) {
-        if (!pressedSelected) {
-            el.classList.remove("selected");
-        }
+        el.classList.remove("selected");
     });
     /*== Remove class "selected" from all elements ==*/
 
     /*=== Add class "selected" to element who triggered the function ===*/
-    setTimeout(function(){
-        pressed_div.classList.add("selected");
-    },250);
+    pressed_div.classList.add("selected");
 
     changeModeVar(mode);
 

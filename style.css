@@ -301,7 +301,6 @@ button:disabled::after, input[type=file]:disabled + label::before, input[type=fi
     margin-right: 0;
 }
 
-
 input[type=file] {
 	width: 0.1px;
 	height: 0.1px;
