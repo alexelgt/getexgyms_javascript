@@ -542,4 +542,8 @@ span.log{
     #hamburger {
         left: 38px;
     }
+
+    #sidebar {
+        padding-left: 54px;
+    }
 }
