@@ -6,6 +6,7 @@ function triggerSideBar() {
         sidebarDiv.classList.remove("out");
         overlay.classList.remove("active");
         overlay.classList.add("semiactive");
+        //document.body.setAttribute("style","touch-action: auto;");
         document.body.style.overflow = "visible";
         setTimeout(function(){
             overlay.classList.remove("semiactive");
@@ -16,10 +17,7 @@ function triggerSideBar() {
         overlay.classList.add("active");
         document.body.style.overflow = "hidden";
 
-        document.getElementById('sidebar-overlay').addEventListener('touchmove', function(e) {
-
-            e.preventDefault();
-        }, false);
+        document.body.setAttribute("style","touch-action: none;");
     }
 
 }
