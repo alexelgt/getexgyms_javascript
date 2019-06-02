@@ -6,7 +6,7 @@ function triggerSideBar() {
         sidebarDiv.classList.remove("out");
         overlay.classList.remove("active");
         overlay.classList.add("semiactive");
-        //document.body.setAttribute("style","touch-action: auto;");
+        document.body.removeEventListener("touchmove", freezeVp, false);
         document.body.style.overflow = "visible";
         setTimeout(function(){
             overlay.classList.remove("semiactive");
@@ -16,8 +16,11 @@ function triggerSideBar() {
         sidebarDiv.classList.add("out");
         overlay.classList.add("active");
         document.body.style.overflow = "hidden";
-
-        document.body.setAttribute("style","touch-action: none;");
+        document.body.addEventListener("touchmove", freezeVp, false);
     }
 
 }
+
+var freezeVp = function(e) {
+    e.preventDefault();
+};
