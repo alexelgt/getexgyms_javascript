@@ -8,9 +8,7 @@ function triggerSideBar() {
         sidebarDiv.classList.remove("out");
         overlay.classList.remove("active");
         overlay.classList.add("semiactive");
-        document.body.style.position = "static";
-        document.getElementById("structure").style.top = 0;
-        document.body.scrollTop = scrollTop_whenSidebarOpen;
+        document.body.style.overflow = "visible";
         setTimeout(function(){
             overlay.classList.remove("semiactive");
         },200);
@@ -18,10 +16,7 @@ function triggerSideBar() {
     else {
         sidebarDiv.classList.add("out");
         overlay.classList.add("active");
-        scrollTop_whenSidebarOpen = document.body.scrollTop;
-        document.body.style.position = "fixed";
-        document.getElementById("structure").style.top = -scrollTop_whenSidebarOpen;
-        window.scrollTo(0, 1);
+        document.body.style.overflow = "hidden";
     }
 
 }
