@@ -17,13 +17,12 @@ function triggerSideBar() {
         document.body.style.overflow = "hidden";
 
 
-        var fixed = document.getElementById('sidebar-overlay');
+        //var fixed = document.getElementById('sidebar-overlay');
 
-fixed.addEventListener('touchmove', function(e) {
+        document.body.addEventListener('touchmove', function(e) {
 
-        e.preventDefault();
-
-}, false);
+            e.preventDefault();
+        }, false);
     }
 
 }
