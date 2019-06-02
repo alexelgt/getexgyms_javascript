@@ -63,13 +63,13 @@ function handleFilegyms (evt) {
 
         if (!anyValidGym) {
             readyToGetEXAndBlocked();
-            $("#Output_error_gyms").html("• None of the gyms are valid. Please select a valid file.<br>");
-            $("#Output_error_orange").html("");
+            document.getElementById("Output_error_gyms").innerHTML = "• None of the gyms are valid. Please select a valid file.<br>";
+            document.getElementById("Output_error_orange").innerHTML = "";
             document.getElementById("btngetexareas").disabled = true;
             throw new Error("None of the gyms are valid. Please select a valid file");
         }
         else {
-            $("#Output_error_gyms").html("");
+            document.getElementById("Output_error_gyms").innerHTML = "";
             if ( current_mode != "Automatic" ) {
                 readyToGetEXAndBlocked();
                 isThereAnyError();
@@ -94,11 +94,11 @@ function handleFileEXareas (evt) {
             data_global_exareas_manual = JSON.parse(e.target.result);
             EXAreasReady = true;
             readyToGetEXAndBlocked();
-            $("#Output_error_EXAreas").html("");
+            document.getElementById("Output_error_EXAreas").innerHTML = "";
         } catch(e) {
             EXAreasReady = false;
             readyToGetEXAndBlocked();
-            $("#Output_error_EXAreas").html($('#Output_error_EXAreas').html() + "• File with EX areas not correct.<br>");
+            document.getElementById("Output_error_EXAreas").innerHTML = "• File with EX areas not correct.<br>";
             isThereAnyError();
             throw new Error("File with EX areas not correct");
         }
@@ -108,7 +108,7 @@ function handleFileEXareas (evt) {
         } catch(e) {
             EXAreasReady = false;
             readyToGetEXAndBlocked();
-            $("#Output_error_EXAreas").html($('#Output_error_EXAreas').html() + "• File with EX areas not correct.<br>");
+            document.getElementById("Output_error_EXAreas").innerHTML = "• File with EX areas not correct.<br>";
             isThereAnyError();
             throw new Error("File with EX areas not correct");
         }
@@ -127,11 +127,11 @@ function handleFileexclusionareas (evt) {
             data_global_exclusionareas_manual = JSON.parse(e.target.result);
             ExclusionAreasReady = true;
             readyToGetEXAndBlocked();
-            $("#Output_error_exclusionAreas").html("");
+            document.getElementById("Output_error_exclusionAreas").innerHTML = "";
         } catch(e) {
             ExclusionAreasReady = false;
             readyToGetEXAndBlocked();
-            $("#Output_error_exclusionAreas").html($('#Output_error_exclusionAreas').html() + "• File with exclusion areas not correct.<br>");
+            document.getElementById("Output_error_exclusionAreas").innerHTML = "• File with exclusion areas not correct.<br>";
             isThereAnyError();
             throw new Error("File with exclusion areas not correct");
         }
@@ -141,7 +141,7 @@ function handleFileexclusionareas (evt) {
         } catch(e) {
             ExclusionAreasReady = false;
             readyToGetEXAndBlocked();
-            $("#Output_error_exclusionAreas").html($('#Output_error_exclusionAreas').html() + "• File with exclusion areas not correct.<br>");
+            document.getElementById("Output_error_exclusionAreas").innerHTML = "• File with exclusion areas not correct.<br>";
             isThereAnyError();
             throw new Error("File with exclusion areas not correct");
         }
@@ -192,11 +192,13 @@ document.getElementById('button_structure').addEventListener('click', handleSele
 function getexgyms() {
 
     /*==== Clear the output ====*/
-    $("#Output_error_red").html("");
-    $("#Output_results").html("");
-    $(".Output_buttons").html("");
-    $(".Output_text_info").html("");
-    $("#Output_table_data").html("");
+    document.getElementById("Output_error_red").innerHTML = "";
+    document.getElementById("Output_results").innerHTML = "";
+    document.getElementsByClassName("Output_buttons")[0].innerHTML = "";
+    document.getElementsByClassName("Output_text_info")[0].innerHTML = "";
+    document.getElementById("Output_table_data").innerHTML = "";
+
+    
 
 
     document.getElementsByClassName("results_block")[0].style.display = 'none';
@@ -208,7 +210,7 @@ function getexgyms() {
     /*==== Check if the file with EX areas data has been selected ====*/
     if (data_exareas === undefined) {
         document.getElementsByClassName("error_block")[0].style.display = 'block';
-        $("#Output_error_red").html($('#Output_error_red').html() + "• File with EX areas not correct.");
+        document.getElementById("Output_error_red").innerHTML = "• File with EX areas not correct.<br>";
         throw new Error("File with EX areas not correct");
     }
     /*== Check if the file with EX areas data has been selected ==*/
@@ -222,7 +224,7 @@ function getexgyms() {
     /*==== Check if the file with Exclusion areas data has been selected ====*/
     if (data_exclusionareas === undefined) {
         document.getElementsByClassName("error_block")[0].style.display = 'block';
-        $("#Output_error_red").html($('#Output_error_red').html() + "• File with exclusion areas not correct.");
+        document.getElementById("Output_error_red").innerHTML = "• File with exclusion areas not correct.<br>";
         throw new Error("File with exclusion areas not correct");
     }
     /*== Check if the file with Exclusion areas data has been selected ==*/
@@ -240,21 +242,24 @@ function getexgyms() {
     /*==== Deal with the output text and buttons displayed ====*/
     document.getElementsByClassName("results_block")[0].style.display = 'block';
     document.getElementById("results_string").innerHTML = "Results (" + current_mode + " mode)";
-    $("#Output_results").html($('#Output_results').html() + "• Gyms analyzed: " + gyms_data.length + "<br>");
-    $("#Output_results").html($('#Output_results').html() + "• EX gyms: " + ex_gyms + "<br>");
-    $("#Output_results").html($('#Output_results').html() + "• Blocked gyms: " + blocked_gyms);
+
+    document.getElementById("Output_results").innerHTML += "• Gyms analyzed: " + gyms_data.length + "<br>";
+    document.getElementById("Output_results").innerHTML += "• EX gyms: " + ex_gyms + "<br>";
+    document.getElementById("Output_results").innerHTML += "• Blocked gyms: " + blocked_gyms;
+
+
+    
 
     if (ex_gyms || blocked_gyms) { // If there is any EX or blocked gym show a button to download a csv with the data
-        $(".Output_buttons").html($('.Output_buttons').html() + "<button id='btnLoad' onclick='downloadOutputFile(csv_string," + '"csv"' + ", output_filename + " + '"_ex_and_blocked"' + ");'>Download csv file with table data</button>");
+        document.getElementsByClassName("Output_buttons")[0].innerHTML += "<button id='btnLoad' onclick='downloadOutputFile(csv_string," + '"csv"' + ", output_filename + " + '"_ex_and_blocked"' + ");'>Download csv file with table data</button>";
 
-        $("#Output_table_data").html($('#Output_table_data').html() + gyms_table_data);
+        document.getElementById("Output_table_data").innerHTML = gyms_table_data;
 
         if (blocked_gyms) { // If there is at least 1 blocked gym show a button to download a kml file which can be imported to Google My Maps to see what blocks these gyms
-            $(".Output_buttons").html($('.Output_buttons').html() + "<button id='btnLoad' onclick='Get_exclusionareas(data_exareas,data_exclusionareas);'>Download kml file with blocked gyms</button>");
-            
-            $(".Output_text_info").html($('.Output_text_info').html() + "(The kml file can be imported to Google My Maps to see what blocks these gyms)");
+            document.getElementsByClassName("Output_buttons")[0].innerHTML += "<button id='btnLoad' onclick='Get_exclusionareas(data_exareas,data_exclusionareas);'>Download kml file with blocked gyms</button>";
+
+            document.getElementsByClassName("Output_text_info")[0].innerHTML = "(The kml file can be imported to Google My Maps to see what blocks these gyms)";
         }
-        $(".Output_buttons").html($('.Output_buttons').html() + "<br>");
     }
     /*== Deal with the output text and buttons displayed ==*/
 
@@ -349,14 +354,13 @@ function setModeVariables(mode, data_exareas, data_exclusionareas) {
 
     if ( mode === "Automatic" ) {
 
+        var tmp = new DOMParser();
+
         /*==== Converts EX areas data to a typical GeoJSON file ====*/
         var osm_data_ex = data_global_exareas_from_osm.responseText;
 
-        try {
-            osm_data_ex = $.parseXML(osm_data_ex);
-        } catch(e) {
-            osm_data_ex = JSON.parse(osm_data_ex);
-        }
+        osm_data_ex = tmp.parseFromString( osm_data_ex , "text/xml");
+
         data_global_exareas_automatic = osmtogeojson(osm_data_ex);
         data_exareas = data_global_exareas_automatic;
         /*== Converts EX areas data to a typical GeoJSON file ==*/
@@ -364,11 +368,8 @@ function setModeVariables(mode, data_exareas, data_exclusionareas) {
         /*==== Converts exclusion areas data to a typical GeoJSON file ====*/
         var osm_data_exclusion = data_global_exclusionareas_from_osm.responseText;
 
-        try {
-            osm_data_exclusion = $.parseXML(osm_data_exclusion);
-        } catch(e) {
-            osm_data_exclusion = JSON.parse(osm_data_exclusion);
-        }
+        osm_data_exclusion = tmp.parseFromString( osm_data_exclusion , "text/xml");
+
         data_global_exclusionareas_automatic = osmtogeojson(osm_data_exclusion);
         data_exclusionareas = data_global_exclusionareas_automatic;
         /*== Converts exclusion areas data to a typical GeoJSON file ==*/
@@ -475,18 +476,18 @@ function getareas(query_url) {
     var [min_lat, min_lng, max_lat, max_lng] = getMaxMinLatLng();
 
     if (query_url == "EX") {
-        $("#EX_areas_status").html("");
+        document.getElementById("EX_areas_status").innerHTML = "";
         document.getElementById("EX_areas_status").style.color = '#000';
-        $("#EX_areas_status").html($('#EX_areas_status').html() + "• Loading EX areas (wait until this text changes).");
+        document.getElementById("EX_areas_status").innerHTML = "• Loading EX areas (wait until this text changes).";
         document.getElementById("btngetexareas").disabled = true;
         document.getElementById("gymsfile").disabled = true;
         document.getElementById("EXareasfile").disabled = true;
         document.getElementById("exclusionareasfile").disabled = true;
     }
     else if (query_url == "exclusion") {
-        $("#Exclusion_areas_status").html("");
+        document.getElementById("Exclusion_areas_status").innerHTML = "";
         document.getElementById("Exclusion_areas_status").style.color = '#000';
-        $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Loading exclusion areas (wait until this text changes).");
+        document.getElementById("Exclusion_areas_status").innerHTML = "• Loading exclusion areas (wait until this text changes).";
         document.getElementById("btngetexclusionareas").disabled = true;
     }
 
@@ -509,24 +510,25 @@ function getareas(query_url) {
                     document.getElementById("gymsfile").disabled = false;
                     document.getElementById("EXareasfile").disabled = false;
                     document.getElementById("exclusionareasfile").disabled = false;
-                    $("#EX_areas_status").html("");
+                    document.getElementById("EX_areas_status").innerHTML = "";
                     document.getElementById("EX_areas_status").style.color = '#e50000';
-                    $("#EX_areas_status").html($('#EX_areas_status').html() + "• WARNING! An error ocurred while getting the EX areas. If this message keeps appearing avoid gyms too far away.");
+                    document.getElementById("EX_areas_status").innerHTML = "• WARNING! An error ocurred while getting the EX areas. If this message keeps appearing avoid gyms too far away.";
                     throw new Error("Query is too big for the overpass API. Maybe gyms too far away");
                 }
                 else {
                     data_global_exareas_from_osm = data;
 
                     document.getElementById("btngetexareas").disabled = true;
-                    $("#EX_areas_status").html("");
+                    document.getElementById("EX_areas_status").innerHTML = "";
                     document.getElementById("EX_areas_status").style.color = '#008c00';
-                    $("#EX_areas_status").html($('#EX_areas_status').html() + "• EX areas loaded correctly.");
+                    document.getElementById("EX_areas_status").innerHTML = "• EX areas loaded correctly.";
 
-                    $("#Exclusion_areas_status").html("");
-                    $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Wait 50 seconds to load exclusion areas (more time migth be needed).");
+                    //document.getElementById("Exclusion_areas_status").innerHTML = "";
+                    document.getElementById("Exclusion_areas_status").innerHTML = "• Wait 50 seconds to load exclusion areas (more time migth be needed).";
+
                     setTimeout(function(){
                         document.getElementById("btngetexclusionareas").disabled = false;
-                        $("#Exclusion_areas_status").html("");
+                        document.getElementById("Exclusion_areas_status").innerHTML = "";
                     },wait_time);
                 }
 
@@ -538,18 +540,18 @@ function getareas(query_url) {
                     document.getElementById("gymsfile").disabled = false;
                     document.getElementById("EXareasfile").disabled = false;
                     document.getElementById("exclusionareasfile").disabled = false;
-                    $("#Exclusion_areas_status").html("");
+                    document.getElementById("Exclusion_areas_status").innerHTML = "";
                     document.getElementById("Exclusion_areas_status").style.color = '#e50000';
-                    $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• WARNING! An error ocurred while getting the exclusion areas. If this message keeps appearing avoid gyms too far away.");
+                    document.getElementById("Exclusion_areas_status").innerHTML = "• WARNING! An error ocurred while getting the exclusion areas. If this message keeps appearing avoid gyms too far away.";
                     throw new Error("Query is too big for the overpass API. Maybe gyms too far away");
                 }
                 else {
                     data_global_exclusionareas_from_osm = data;
 
                     document.getElementById("btngetexclusionareas").disabled = true;
-                    $("#Exclusion_areas_status").html("");
+                    document.getElementById("Exclusion_areas_status").innerHTML = "";
                     document.getElementById("Exclusion_areas_status").style.color = '#008c00';
-                    $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas loaded correctly.");
+                    document.getElementById("Exclusion_areas_status").innerHTML = "• Exclusion areas loaded correctly.";
 
                     automaticModeRunning = false;
                     automaticModeAreasLoaded = true;
@@ -570,9 +572,9 @@ function getareas(query_url) {
         else if (data.statusText == "Too Many Requests") {
 
             if (query_url == "EX") {
-                $("#EX_areas_status").html("");
+                document.getElementById("EX_areas_status").innerHTML = "";
                 document.getElementById("EX_areas_status").style.color = '#e50000';
-                $("#EX_areas_status").html($('#EX_areas_status').html() + "• EX areas not loaded. Too many requests to the overpass API.");
+                document.getElementById("EX_areas_status").innerHTML = "• EX areas not loaded. Too many requests to the overpass API.";
                 document.getElementById("btngetexareas").disabled = false;
                 document.getElementById("gymsfile").disabled = false;
                 document.getElementById("EXareasfile").disabled = false;
@@ -580,9 +582,9 @@ function getareas(query_url) {
                 throw new Error("EX areas not loaded. Too many requests to the overpass API");
             }
             else if (query_url == "exclusion") {
-                $("#Exclusion_areas_status").html("");
+                document.getElementById("Exclusion_areas_status").innerHTML = "";
                 document.getElementById("Exclusion_areas_status").style.color = '#e50000';
-                $("#Exclusion_areas_status").html($('#Exclusion_areas_status').html() + "• Exclusion areas not loaded. Too many requests to the overpass API.");
+                document.getElementById("Exclusion_areas_status").innerHTML = "• Exclusion areas not loaded. Too many requests to the overpass API.";
                 document.getElementById("btngetexclusionareas").disabled = false;
                 throw new Error("Exclusion areas not loaded. Too many requests to the overpass API");
             }
@@ -596,8 +598,8 @@ function getareas(query_url) {
 function resetareas() {
     document.getElementById("EX_areas_status").style.color = '#000';
     document.getElementById("Exclusion_areas_status").style.color = '#000';
-    $("#EX_areas_status").html("• Upload the file with gyms data and tap the first button.");
-    $("#Exclusion_areas_status").html("");
+    document.getElementById("EX_areas_status").innerHTML = "• Upload the file with gyms data and tap the first button.";
+    document.getElementById("Exclusion_areas_status").innerHTML = "";
     document.getElementById("btngetexareas").disabled = false;
     document.getElementById("btnresetareas").disabled = true;
     document.getElementById("btngetexandblockedgyms").disabled = true;
@@ -640,10 +642,10 @@ function setDataFromURL(URL,datatype) {
       }
     catch(e) {
         if (e.name == "TimeoutError") {
-            $("#Output_error_red").html($('#Output_error_red').html() + "• Url with " + datatype + " timed out. Try again");
+            document.getElementById("Output_error_red").innerHTML = "• Url with " + datatype + " timed out. Try again";
         }
         else {
-            $("#Output_error_red").html($('#Output_error_red').html() + "• Url with " + datatype + " areas not correct");
+            document.getElementById("Output_error_red").innerHTML = "• Url with " + datatype + " areas not correct";
         }
         isThereAnyError();
         throw new Error("Error while getting data from URL");
