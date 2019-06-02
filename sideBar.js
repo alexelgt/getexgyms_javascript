@@ -19,7 +19,7 @@ function triggerSideBar() {
         sidebarDiv.classList.add("out");
         overlay.classList.add("active");
         scrollTop_whenSidebarOpen = document.body.scrollTop;
-        document.body.style.position = "fixed";
+        document.body.style.position = "absolute";
         document.getElementById("structure").style.top = -scrollTop_whenSidebarOpen;
     }
 
