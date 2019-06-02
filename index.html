@@ -1,4 +1,4 @@
-<html>
+<html lang='x-default' xml:lang='x-default'>
   <head>
       <title>Get EX gyms</title>
 		  <meta name="title" content="Get EX gyms">
@@ -11,7 +11,7 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <link href="style.css" rel="stylesheet" type="text/css">
   </head>
-  <body>
+  <body onload="language()">
 
     <div id="sidebar-overlay" onclick='triggerSideBar();'></div>
 
@@ -26,11 +26,11 @@
         
 
         <div id="block">
-          <h2>Mode</h2>
+          <h2 class="STRING_MODE">Mode</h2>
           <div id="block_structure">
             <div id="element">
               <div id="button_structure">
-                <div class="selected" onclick='setMode("Automatic",this);'>Automatic</div>
+                <div class="selected STRING_AUTOMATIC" onclick='setMode("Automatic",this);'>Automatic</div>
                 <div onclick='setMode("Manual",this);'>Manual</div>
                 <div onclick='setMode("URL",this);'>URL</div>
               </div>
@@ -39,20 +39,20 @@
         </div>
 
         <div id="block">
-          <h2>Files</h2>
+          <h2 class="STRING_FILES">Files</h2>
           <div id="block_structure">
             <div id="element" class="files">
               <div>
                 <input type="file" name="gymsfile" id="gymsfile" class="inputfile" accept=".csv,.txt"/>
-                <label for="gymsfile">Gyms: <span class="inputfile">select file</span></label>
+                <label class="STRING_GYMS_FILE" for="gymsfile">Gyms: <span class="inputfile">select file</span></label>
               </div>
               <div id="File_section_EX" style="display:none">
                 <input type="file" name="EXareasfile" id="EXareasfile" class="inputfile" accept=".geojson"/>
-                <label for="EXareasfile">EX areas: <span class="inputfile">select file</span></label>
+                <label class="STRING_EX_FILE" for="EXareasfile">EX areas: <span class="inputfile">select file</span></label>
               </div>
               <div id="File_section_exclusion" style="display:none">
                 <input type="file" name="exclusionareasfile" id="exclusionareasfile" class="inputfile" accept=".geojson"/>
-                <label for="exclusionareasfile">Exclusion areas: <span class="inputfile">select file</span></label>
+                <label class="STRING_EXCLUSION_FILE" for="exclusionareasfile">Exclusion areas: <span class="inputfile">select file</span></label>
               </div>
             </div>
           </div>
@@ -62,25 +62,25 @@
           <div id="block_structure" class="URL">
             <div id="element">
               <input id="EXAreasurl" class="log" value="https://getexgyms.alexelgt.com/example_data/madrid_exareas.geojson">
-              <span>EX Areas URL</span>
+              <span class="STRING_URL_EX">EX Areas URL</span>
             </div>
             <div id="element">
               <input id="ExclusionAreasurl" class="log" value="https://getexgyms.alexelgt.com/example_data/madrid_exclusionareas.geojson">
-              <span>Exclusion Areas URL</span>
+              <span class="STRING_URL_EXCLUSION">Exclusion Areas URL</span>
             </div>
           </div>
         </div>
 
         <div id="Automatic_section">
           <div id="input_button_structure">
-            <button id='btngetexareas' onclick='getareas("EX");' disabled>Get EX areas</button>
-            <button id='btngetexclusionareas' onclick='getareas("exclusion");' disabled>Get exclusion areas</button>
-            <button id='btnresetareas' onclick='resetareas();' disabled>Reset areas</button>
+            <button id='btngetexareas' class="STRING_GET_EX_AREAS" onclick='getareas("EX");' disabled>Get EX areas</button>
+            <button id='btngetexclusionareas' class="STRING_GET_EXCLUSION_AREAS" onclick='getareas("exclusion");' disabled>Get exclusion areas</button>
+            <button id='btnresetareas' class="STRING_GET_RESET_AREAS" onclick='resetareas();' disabled>Reset areas</button>
           </div>
 
           <div id="block">
             <div id="block_structure" class="log">
-              <h2>Automatic mode status</h2>
+              <h2 class="STRING_STATUS_AUTOMATIC_MODE">Automatic mode status</h2>
               <div id="element">
                 <span id="EX_areas_status" class="log">• Upload the file with gyms data and tap the first button.</span>
                 <br>
@@ -92,7 +92,7 @@
 
         <div id="block" class="error_block" style="display:none">
             <div id="block_structure" class="log">
-              <h2>Problems detected</h2>
+              <h2 class="STRING_PROBLEMS_DETECTED">Problems detected</h2>
               <div id="element">
                 <span id="Output_error_orange" class="log"></span>
                 <span id="Output_error_red" class="log"></span>
@@ -106,13 +106,13 @@
           </div>
 
         <div id="input_button_structure">
-          <button id='btngetexandblockedgyms' onclick='getexgyms();' disabled>Get EX and blocked gyms</button>
+          <button id='btngetexandblockedgyms' class="STRING_GET_GYMS" onclick='getexgyms();' disabled>Get EX and blocked gyms</button>
         </div>
 
       </div>
       <div id="card" class="results results_block" style="display:none">
 
-        <div id="block" class="results2_block" s2tyle="display:none">
+        <div id="block">
           <div id="block_structure" class="log">
             <h2 id="results_string">Results</h2>
             <div id="element">
@@ -134,18 +134,11 @@
     </div>
 
     <div id="sidebar">
-      <h2>Menu (test)</h2>
+      <h2 class="STRING_MENU">Menu (test)</h2>
       <a class="selected">Tool</a>
       <a>Info</a>
-      <a>Info</a>
-      <a>Info</a>
-      <a>Info</a>
-      <a>Info</a>
-      <a>Info</a>
-      <a>Info</a>
-      <a>Info</a>
-      <a>Info</a>
-      <a>Info</a>
+      <a>References</a>
+      <a>Credits</a>
     </div>
 
     <script src='turf.min.js'></script>
@@ -155,6 +148,7 @@
     <script src="getexgyms.js" type="text/javascript"></script>
     <script src="fileManagement.js" type="text/javascript"></script>
     <script src="gymsCheckings.js" type="text/javascript"></script>
+    <script src="language.js" type="text/javascript"></script>
     <script type='application/javascript'>
       document.addEventListener("touchstart", function() {}, false);
     </script>
