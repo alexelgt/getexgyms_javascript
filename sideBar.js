@@ -15,6 +15,15 @@ function triggerSideBar() {
         sidebarDiv.classList.add("out");
         overlay.classList.add("active");
         document.body.style.overflow = "hidden";
+
+
+        var fixed = document.getElementById('sidebar-overlay');
+
+fixed.addEventListener('touchmove', function(e) {
+
+        e.preventDefault();
+
+}, false);
     }
 
 }
