@@ -22,5 +22,5 @@ function triggerSideBar() {
 }
 
 var freezeVp = function(e) {
-    document.body.preventDefault();
+    document.getElementById("sidebar-overlay").preventDefault();
 };
