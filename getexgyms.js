@@ -745,7 +745,7 @@ function triggerSideBar() {
         sidebarDiv.classList.remove("out");
         overlay.classList.remove("active");
         overlay.classList.add("semiactive");
-        document.body.style.overflowY = "scroll"
+        document.body.style.position = "static"
         setTimeout(function(){
             overlay.classList.remove("semiactive");
         },200);
@@ -753,7 +753,8 @@ function triggerSideBar() {
     else {
         sidebarDiv.classList.add("out");
         overlay.classList.add("active");
-        document.body.style.overflowY = "hidden"
+        document.body.style.position = "fixed"
+        //document.getElementById("structure").style.position = "fixed"
     }
 
 }
