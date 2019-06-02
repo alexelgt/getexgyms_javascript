@@ -1,0 +1,90 @@
+<html lang='x-default' xml:lang='x-default'>
+  <head>
+      <title>Get EX gyms: Credits</title>
+		  <meta name="title" content="Get EX gyms: Credits">
+      <meta name="keywords" content="Get EX gyms">
+      <meta name="description" content="Get EX gyms given some inputs.">
+      <link rel="icon" sizes="192x192" href="icon_circle.png">
+      <link rel="apple-touch-icon-precomposed" href="icon.png">
+      <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no, viewport-fit=cover" name="viewport">
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <link href="style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body onload="language_credits();language_sidebar()">
+
+    <div id="sidebar-overlay" onclick='triggerSideBar();'></div>
+
+    <div id="navbar">    
+      <div id="hamburger" onclick='triggerSideBar();'></div>
+      <h1 class="STRING_CREDITS_TITLE">Credits</h1>
+    </div>
+
+    <div id="structure">
+
+      <div id="card" class="padding">
+
+        <div id="block">
+          <div id="block_structure">
+            <h2>Turf.js</h2>
+            <div id="element">
+              <div id="text_block" class="info STRING_TURF">
+                This library is used to determine if a point is inside a polygon which makes possible to check if a gym is inside an EX or exclusion area.
+              </div>
+              <div id="input_button_structure">
+                  <a href="https://turfjs.org" id='btn' class="STRING_MORE_INFO" target="_blank">More info</a>
+              </div>
+            </div>
+
+            <h2>s2geometry.js</h2>
+            <div id="element">
+              <div id="text_block" class="info STRING_S2GEOMETRY">
+                This library is used to get the S2 level 20 cell center that contains a gym.
+              </div>
+              <div id="input_button_structure">
+                <a href="https://github.com/jonatkins/s2-geometry-javascript" id='btn' class="STRING_MORE_INFO" target="_blank">More info</a>
+              </div>
+            </div>
+
+            <h2>osmtogeojson.js</h2>
+            <div id="element">
+              <div id="text_block" class="info STRING_OSMTOGEOJSON">
+                This library is used to convert the data from the overpass API to a GeoJSON.
+              </div>
+              <div id="input_button_structure">
+                <a href="https://github.com/tyrasd/osmtogeojson" id='btn' class="STRING_MORE_INFO" target="_blank">More info</a>
+              </div>
+            </div>
+
+            <h2>custom-file-input.js</h2>
+            <div id="element">
+              <div id="text_block" class="info STRING_CUSTOM_FILE_INPUT">
+                This piece of code is used in the input file blocks.
+              </div>
+              <div id="input_button_structure">
+                <a href="https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/" id='btn' class="STRING_MORE_INFO" target="_blank">More info</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+       
+    </div>
+
+    <div id="sidebar">
+      <h2 class="STRING_MENU">Menu</h2>
+      <a class="STRING_TOOL" href="index.html">Tool</a>
+      <a>Info (soon)</a>
+      <a class="STRING_REFERENCES" href="references.html">References</a>
+      <a class="selected STRING_CREDITS">Credits</a>
+    </div>
+
+    <script src="language.js" type="text/javascript"></script>
+    <script src="sideBar.js" type="text/javascript"></script>
+    <script type='application/javascript'>
+      document.addEventListener("touchstart", function() {}, false);
+    </script>
+
+  </body>
+</html>

@@ -63,10 +63,15 @@ function handleFilegyms (evt) {
 
         if (!anyValidGym) {
             readyToGetEXAndBlocked();
-            document.getElementById("Output_error_gyms").innerHTML = "• None of the gyms are valid. Please select a valid file.<br>";
+            if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                document.getElementById("Output_error_gyms").innerHTML = "• Ninguno de los gimnasios es válido . Por favor, seleccione un archivo válido.<br>";
+            }
+            else {
+                document.getElementById("Output_error_gyms").innerHTML = "• None of the gyms are valid. Please, select a valid file.<br>";
+            }
             document.getElementById("Output_error_orange").innerHTML = "";
             document.getElementById("btngetexareas").disabled = true;
-            throw new Error("None of the gyms are valid. Please select a valid file");
+            throw new Error("None of the gyms are valid");
         }
         else {
             document.getElementById("Output_error_gyms").innerHTML = "";
@@ -98,7 +103,12 @@ function handleFileEXareas (evt) {
         } catch(e) {
             EXAreasReady = false;
             readyToGetEXAndBlocked();
-            document.getElementById("Output_error_EXAreas").innerHTML = "• File with EX areas not correct.<br>";
+            if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                document.getElementById("Output_error_EXAreas").innerHTML = "• Archivo con las zonas EX no correcto.<br>";
+            }
+            else {
+                document.getElementById("Output_error_EXAreas").innerHTML = "• File with EX areas not correct.<br>";
+            }
             isThereAnyError();
             throw new Error("File with EX areas not correct");
         }
@@ -108,7 +118,12 @@ function handleFileEXareas (evt) {
         } catch(e) {
             EXAreasReady = false;
             readyToGetEXAndBlocked();
-            document.getElementById("Output_error_EXAreas").innerHTML = "• File with EX areas not correct.<br>";
+            if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                document.getElementById("Output_error_EXAreas").innerHTML = "• Archivo con las zonas EX no correcto.<br>";
+            }
+            else {
+                document.getElementById("Output_error_EXAreas").innerHTML = "• File with EX areas not correct.<br>";
+            }
             isThereAnyError();
             throw new Error("File with EX areas not correct");
         }
@@ -131,7 +146,12 @@ function handleFileexclusionareas (evt) {
         } catch(e) {
             ExclusionAreasReady = false;
             readyToGetEXAndBlocked();
-            document.getElementById("Output_error_exclusionAreas").innerHTML = "• File with exclusion areas not correct.<br>";
+            if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                document.getElementById("Output_error_EXAreas").innerHTML = "• Archivo con las zonas excluyentes no correcto.<br>";
+            }
+            else {
+                document.getElementById("Output_error_EXAreas").innerHTML = "• File with exclusion areas not correct.<br>";
+            }
             isThereAnyError();
             throw new Error("File with exclusion areas not correct");
         }
@@ -141,7 +161,12 @@ function handleFileexclusionareas (evt) {
         } catch(e) {
             ExclusionAreasReady = false;
             readyToGetEXAndBlocked();
-            document.getElementById("Output_error_exclusionAreas").innerHTML = "• File with exclusion areas not correct.<br>";
+            if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                document.getElementById("Output_error_EXAreas").innerHTML = "• Archivo con las zonas excluyentes no correcto.<br>";
+            }
+            else {
+                document.getElementById("Output_error_EXAreas").innerHTML = "• File with exclusion areas not correct.<br>";
+            }
             isThereAnyError();
             throw new Error("File with exclusion areas not correct");
         }
@@ -202,6 +227,7 @@ function getexgyms() {
 
 
     document.getElementsByClassName("results_block")[0].style.display = 'none';
+    document.getElementsByClassName("downloads_block")[0].style.display = 'none';
     /*== Clear the output ==*/
 
     /*=== If a pre-selected area is selected change EX an exclusion areas ===*/
@@ -210,7 +236,12 @@ function getexgyms() {
     /*==== Check if the file with EX areas data has been selected ====*/
     if (data_exareas === undefined) {
         document.getElementsByClassName("error_block")[0].style.display = 'block';
-        document.getElementById("Output_error_red").innerHTML = "• File with EX areas not correct.<br>";
+        if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+            document.getElementById("Output_error_red").innerHTML = "• Archivo con las zonas EX no correcto.<br>";
+        }
+        else {
+            document.getElementById("Output_error_red").innerHTML = "• File with EX areas not correct.<br>";
+        }
         throw new Error("File with EX areas not correct");
     }
     /*== Check if the file with EX areas data has been selected ==*/
@@ -224,7 +255,12 @@ function getexgyms() {
     /*==== Check if the file with Exclusion areas data has been selected ====*/
     if (data_exclusionareas === undefined) {
         document.getElementsByClassName("error_block")[0].style.display = 'block';
-        document.getElementById("Output_error_red").innerHTML = "• File with exclusion areas not correct.<br>";
+        if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+            document.getElementById("Output_error_red").innerHTML = "• Archivo con las zonas excluyentes no correcto.<br>";
+        }
+        else {
+            document.getElementById("Output_error_red").innerHTML = "• File with exclusion areas not correct.<br>";
+        }
         throw new Error("File with exclusion areas not correct");
     }
     /*== Check if the file with Exclusion areas data has been selected ==*/
@@ -241,24 +277,46 @@ function getexgyms() {
 
     /*==== Deal with the output text and buttons displayed ====*/
     document.getElementsByClassName("results_block")[0].style.display = 'block';
-    document.getElementById("results_string").innerHTML = "Results (" + current_mode + " mode)";
 
-    document.getElementById("Output_results").innerHTML += "• Gyms analyzed: " + gyms_data.length + "<br>";
-    document.getElementById("Output_results").innerHTML += "• EX gyms: " + ex_gyms + "<br>";
-    document.getElementById("Output_results").innerHTML += "• Blocked gyms: " + blocked_gyms;
-
-
-    
+    if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+        document.getElementById("results_string").innerHTML = "Resultados (" + current_mode + " mode)";
+        document.getElementById("Output_results").innerHTML += "• Gimnasios analizados: " + gyms_data.length + "<br>";
+        document.getElementById("Output_results").innerHTML += "• Gimnasios EX: " + ex_gyms + "<br>";
+        document.getElementById("Output_results").innerHTML += "• Gimnasios bloqueados: " + blocked_gyms;
+    }
+    else {
+        document.getElementById("results_string").innerHTML = "Results (" + current_mode + " mode)";
+        document.getElementById("Output_results").innerHTML += "• Gyms analyzed: " + gyms_data.length + "<br>";
+        document.getElementById("Output_results").innerHTML += "• EX gyms: " + ex_gyms + "<br>";
+        document.getElementById("Output_results").innerHTML += "• Blocked gyms: " + blocked_gyms;
+    }
 
     if (ex_gyms || blocked_gyms) { // If there is any EX or blocked gym show a button to download a csv with the data
-        document.getElementsByClassName("Output_buttons")[0].innerHTML += "<button id='btnLoad' onclick='downloadOutputFile(csv_string," + '"csv"' + ", output_filename + " + '"_ex_and_blocked"' + ");'>Download csv file with table data</button>";
+        document.getElementsByClassName("downloads_block")[0].style.display = 'block';
+        
+        if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+            document.getElementsByClassName("Output_buttons")[0].innerHTML += "<button id='btnLoad' onclick='downloadOutputFile(csv_string," + '"csv"' + ", output_filename + " + '"_ex_and_blocked"' + ");'>csv con los datos de la tabla</button>";
+        }
+        else {
+            document.getElementsByClassName("Output_buttons")[0].innerHTML += "<button id='btnLoad' onclick='downloadOutputFile(csv_string," + '"csv"' + ", output_filename + " + '"_ex_and_blocked"' + ");'>csv file with table data</button>";
+        }
 
         document.getElementById("Output_table_data").innerHTML = gyms_table_data;
 
         if (blocked_gyms) { // If there is at least 1 blocked gym show a button to download a kml file which can be imported to Google My Maps to see what blocks these gyms
-            document.getElementsByClassName("Output_buttons")[0].innerHTML += "<button id='btnLoad' onclick='Get_exclusionareas(data_exareas,data_exclusionareas);'>Download kml file with blocked gyms</button>";
 
-            document.getElementsByClassName("Output_text_info")[0].innerHTML = "(The kml file can be imported to Google My Maps to see what blocks these gyms)";
+            if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                document.getElementsByClassName("Output_buttons")[0].innerHTML += "<button id='btnLoad' onclick='Get_exclusionareas(data_exareas,data_exclusionareas);'>kml con los gimnasios bloqueados</button>";
+
+                document.getElementsByClassName("Output_text_info")[0].innerHTML = "(El archivo kml se puede importar a Google My Maps para ver qué bloquea estos gimnasios)";
+            }
+            else {
+                document.getElementsByClassName("Output_buttons")[0].innerHTML += "<button id='btnLoad' onclick='Get_exclusionareas(data_exareas,data_exclusionareas);'>kml file with blocked gyms</button>";
+
+                document.getElementsByClassName("Output_text_info")[0].innerHTML = "(The kml file can be imported to Google My Maps to see what blocks these gyms)";document.getElementsByClassName("Output_buttons")[0].innerHTML += "<button id='btnLoad' onclick='downloadOutputFile(csv_string," + '"csv"' + ", output_filename + " + '"_ex_and_blocked"' + ");'>Download csv file with table data</button>";
+            }
+
+            
         }
     }
     /*== Deal with the output text and buttons displayed ==*/
@@ -271,11 +329,18 @@ function checkIfGymsAreEXorBlocked(data_global_exareas_multipolygon, data_global
     var ex_gyms = 0;
     var blocked_gyms = 0;
 
-    var csv_header = "Name,Latitude,Longitude,Type\n";
+    
     var csv_string_ex = "";
     var csv_string_blocked = "";
 
-    var gyms_table_data_header = "<tr><th>Name</th><th>Latitude</th><th>Longitude</th><th>Type</th></tr>";
+    if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+        var csv_header = "Nombre,Latitude,Longitude,Tipo\n";
+        var gyms_table_data_header = "<tr><th>Nombre</th><th>Latitud</th><th>Longitud</th><th>Tipo</th></tr>";
+    }
+    else {
+        var csv_header = "Name,Latitude,Longitude,Type\n";
+        var gyms_table_data_header = "<tr><th>Name</th><th>Latitude</th><th>Longitude</th><th>Type</th></tr>";
+    }
     var gyms_table_data_ex = "";
     var gyms_table_data_blocked = "";
     /*== Set variables ==*/
@@ -302,8 +367,15 @@ function checkIfGymsAreEXorBlocked(data_global_exareas_multipolygon, data_global
         }
         if (gym['inEXarea'] && gym['inexclusionarea']) {
             blocked_gyms++;
-            csv_string_blocked += gym.Name + "," + gym.lat + "," + gym.lng + ",Blocked\n";
-            gyms_table_data_blocked += "<tr class='blocked'><td>" + gym.Name + "</td><td>" + gym.lat + "</td><td>" + gym.lng + "</td><td>Blocked</td></tr>";
+            if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                csv_string_blocked += gym.Name + "," + gym.lat + "," + gym.lng + ",Bloqueado\n";
+                gyms_table_data_blocked += "<tr class='blocked'><td>" + gym.Name + "</td><td>" + gym.lat + "</td><td>" + gym.lng + "</td><td>Bloqueado</td></tr>";
+            }
+            else {
+                csv_string_blocked += gym.Name + "," + gym.lat + "," + gym.lng + ",Blocked\n";
+                gyms_table_data_blocked += "<tr class='blocked'><td>" + gym.Name + "</td><td>" + gym.lat + "</td><td>" + gym.lng + "</td><td>Blocked</td></tr>";
+            }
+            
         }
         /*== Check if the gym is EX or blocked and if so update output csv file data ==*/
     }
@@ -478,7 +550,12 @@ function getareas(query_url) {
     if (query_url == "EX") {
         document.getElementById("EX_areas_status").innerHTML = "";
         document.getElementById("EX_areas_status").style.color = '#000';
-        document.getElementById("EX_areas_status").innerHTML = "• Loading EX areas (wait until this text changes).";
+        if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+            document.getElementById("EX_areas_status").innerHTML = "• Cargando zonas EX (espera hasta que este texto cambie).";
+        }
+        else {
+            document.getElementById("EX_areas_status").innerHTML = "• Loading EX areas (wait until this text changes).";
+        }
         document.getElementById("btngetexareas").disabled = true;
         document.getElementById("gymsfile").disabled = true;
         document.getElementById("EXareasfile").disabled = true;
@@ -487,7 +564,12 @@ function getareas(query_url) {
     else if (query_url == "exclusion") {
         document.getElementById("Exclusion_areas_status").innerHTML = "";
         document.getElementById("Exclusion_areas_status").style.color = '#000';
-        document.getElementById("Exclusion_areas_status").innerHTML = "• Loading exclusion areas (wait until this text changes).";
+        if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+            document.getElementById("Exclusion_areas_status").innerHTML = "• Cargando zonas excluyentes (espera hasta que este texto cambie).";
+        }
+        else {
+            document.getElementById("Exclusion_areas_status").innerHTML = "• Loading exclusion areas (wait until this text changes).";
+        }
         document.getElementById("btngetexclusionareas").disabled = true;
     }
 
@@ -512,7 +594,12 @@ function getareas(query_url) {
                     document.getElementById("exclusionareasfile").disabled = false;
                     document.getElementById("EX_areas_status").innerHTML = "";
                     document.getElementById("EX_areas_status").style.color = '#e50000';
-                    document.getElementById("EX_areas_status").innerHTML = "• WARNING! An error ocurred while getting the EX areas. If this message keeps appearing avoid gyms too far away.";
+                    if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                        document.getElementById("EX_areas_status").innerHTML = "• WARNING! An error ocurred while getting the EX areas. If this message keeps appearing avoid gyms too far away.";
+                    }
+                    else {
+                        document.getElementById("EX_areas_status").innerHTML = "• WARNING! An error ocurred while getting the EX areas. If this message keeps appearing avoid gyms too far away.";
+                    }
                     throw new Error("Query is too big for the overpass API. Maybe gyms too far away");
                 }
                 else {
@@ -521,10 +608,19 @@ function getareas(query_url) {
                     document.getElementById("btngetexareas").disabled = true;
                     document.getElementById("EX_areas_status").innerHTML = "";
                     document.getElementById("EX_areas_status").style.color = '#008c00';
-                    document.getElementById("EX_areas_status").innerHTML = "• EX areas loaded correctly.";
+                    if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                        document.getElementById("EX_areas_status").innerHTML = "• Zonas EX cargadas correctamente.";
+                    }
+                    else {
+                        document.getElementById("EX_areas_status").innerHTML = "• EX areas loaded correctly.";
+                    }
 
-                    //document.getElementById("Exclusion_areas_status").innerHTML = "";
-                    document.getElementById("Exclusion_areas_status").innerHTML = "• Wait 50 seconds to load exclusion areas (more time migth be needed).";
+                    if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                        document.getElementById("Exclusion_areas_status").innerHTML = "• Espera 50 segundos para cargar las zonas excluyentes (más tiempo puede ser necesario).";
+                    }
+                    else {
+                        document.getElementById("Exclusion_areas_status").innerHTML = "• Wait 50 seconds to load exclusion areas (more time migth be needed).";
+                    }
 
                     setTimeout(function(){
                         document.getElementById("btngetexclusionareas").disabled = false;
@@ -542,7 +638,12 @@ function getareas(query_url) {
                     document.getElementById("exclusionareasfile").disabled = false;
                     document.getElementById("Exclusion_areas_status").innerHTML = "";
                     document.getElementById("Exclusion_areas_status").style.color = '#e50000';
-                    document.getElementById("Exclusion_areas_status").innerHTML = "• WARNING! An error ocurred while getting the exclusion areas. If this message keeps appearing avoid gyms too far away.";
+                    if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                        document.getElementById("Exclusion_areas_status").innerHTML = "• WARNING! An error ocurred while getting the exclusion areas. If this message keeps appearing avoid gyms too far away.";
+                    }
+                    else {
+                        document.getElementById("Exclusion_areas_status").innerHTML = "• WARNING! An error ocurred while getting the exclusion areas. If this message keeps appearing avoid gyms too far away.";
+                    }
                     throw new Error("Query is too big for the overpass API. Maybe gyms too far away");
                 }
                 else {
@@ -551,7 +652,12 @@ function getareas(query_url) {
                     document.getElementById("btngetexclusionareas").disabled = true;
                     document.getElementById("Exclusion_areas_status").innerHTML = "";
                     document.getElementById("Exclusion_areas_status").style.color = '#008c00';
-                    document.getElementById("Exclusion_areas_status").innerHTML = "• Exclusion areas loaded correctly.";
+                    if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                        document.getElementById("Exclusion_areas_status").innerHTML = "• Zonas excluyentes cargadas correctamente.";
+                    }
+                    else {
+                        document.getElementById("Exclusion_areas_status").innerHTML = "• Exclusion areas loaded correctly.";
+                    }
 
                     automaticModeRunning = false;
                     automaticModeAreasLoaded = true;
@@ -574,7 +680,12 @@ function getareas(query_url) {
             if (query_url == "EX") {
                 document.getElementById("EX_areas_status").innerHTML = "";
                 document.getElementById("EX_areas_status").style.color = '#e50000';
-                document.getElementById("EX_areas_status").innerHTML = "• EX areas not loaded. Too many requests to the overpass API.";
+                if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                    document.getElementById("EX_areas_status").innerHTML = "• Zonas EX no cargadas. Demasiadas peticiones a la API de overpass.";
+                }
+                else {
+                    document.getElementById("EX_areas_status").innerHTML = "• EX areas not loaded. Too many requests to the overpass API.";
+                }
                 document.getElementById("btngetexareas").disabled = false;
                 document.getElementById("gymsfile").disabled = false;
                 document.getElementById("EXareasfile").disabled = false;
@@ -584,7 +695,12 @@ function getareas(query_url) {
             else if (query_url == "exclusion") {
                 document.getElementById("Exclusion_areas_status").innerHTML = "";
                 document.getElementById("Exclusion_areas_status").style.color = '#e50000';
-                document.getElementById("Exclusion_areas_status").innerHTML = "• Exclusion areas not loaded. Too many requests to the overpass API.";
+                if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                    document.getElementById("Exclusion_areas_status").innerHTML = "• Zonas excluyentes no cargadas. Demasiadas peticiones a la API de overpass.";
+                }
+                else {
+                    document.getElementById("Exclusion_areas_status").innerHTML = "• Exclusion areas not loaded. Too many requests to the overpass API.";
+                }
                 document.getElementById("btngetexclusionareas").disabled = false;
                 throw new Error("Exclusion areas not loaded. Too many requests to the overpass API");
             }
@@ -598,7 +714,12 @@ function getareas(query_url) {
 function resetareas() {
     document.getElementById("EX_areas_status").style.color = '#000';
     document.getElementById("Exclusion_areas_status").style.color = '#000';
-    document.getElementById("EX_areas_status").innerHTML = "• Upload the file with gyms data and tap the first button.";
+    if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+        document.getElementById("EX_areas_status").innerHTML = "• Sube el archivos con los datos de los gimnasios y pulsa en el primer botón.";
+    }
+    else {
+        document.getElementById("EX_areas_status").innerHTML = "• Upload the file with gyms data and tap the first button.";
+    }
     document.getElementById("Exclusion_areas_status").innerHTML = "";
     document.getElementById("btngetexareas").disabled = false;
     document.getElementById("btnresetareas").disabled = true;
@@ -641,11 +762,26 @@ function setDataFromURL(URL,datatype) {
         isThereAnyError();
       }
     catch(e) {
+
+        if ((navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") && datatype == "exclusion") {
+            datatype = "excluyentes"
+        }
+
         if (e.name == "TimeoutError") {
-            document.getElementById("Output_error_red").innerHTML = "• Url with " + datatype + " timed out. Try again";
+            if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                document.getElementById("Output_error_red").innerHTML = "• Se ha agotado el tiempo de espera para obtener las zonas " + datatype + " de la URL. Inténtalo de nuevo";
+            }
+            else {
+                document.getElementById("Output_error_red").innerHTML = "• URL with " + datatype + " timed out. Try again";
+            }
         }
         else {
-            document.getElementById("Output_error_red").innerHTML = "• Url with " + datatype + " areas not correct";
+            if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                document.getElementById("Output_error_red").innerHTML = "• URL con las zonas " + datatype + " no es correcto";
+            }
+            else {
+                document.getElementById("Output_error_red").innerHTML = "• URL with " + datatype + " areas not correct";
+            }
         }
         isThereAnyError();
         throw new Error("Error while getting data from URL");
@@ -735,23 +871,4 @@ function isAutomaticModeRunning() {
     if (automaticModeRunning) {
         document.getElementById("btngetexandblockedgyms").disabled = true;
     }
-}
-
-function triggerSideBar() {
-    sidebarDiv = document.getElementById("sidebar");
-    overlay = document.getElementById("sidebar-overlay");
-
-    if (sidebarDiv.classList.contains("out")) {
-        sidebarDiv.classList.remove("out");
-        overlay.classList.remove("active");
-        overlay.classList.add("semiactive");
-        setTimeout(function(){
-            overlay.classList.remove("semiactive");
-        },200);
-    }
-    else {
-        sidebarDiv.classList.add("out");
-        overlay.classList.add("active");
-    }
-
 }

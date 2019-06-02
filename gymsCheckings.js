@@ -30,13 +30,28 @@ function removeProblematicGymRows() {
             problems_with_gyms = true;
             document.getElementsByClassName("error_block")[0].style.display = 'block';
             if (gymStatus(gym) == "empty_row") {
-                document.getElementById("Output_error_orange").innerHTML += "• Row number " + i + " skipped (empty row?).<br>";
+                if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                    document.getElementById("Output_error_orange").innerHTML += "• Fila número " + i + " omitida (¿fila vacía?).<br>";
+                }
+                else {
+                    document.getElementById("Output_error_orange").innerHTML += "• Row number " + i + " skipped (empty row?).<br>";
+                }
             }
             else if (gymStatus(gym) == "header_row") {
-                document.getElementById("Output_error_orange").innerHTML += "• Row number " + i + " skipped (header row?).<br>";
+                if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                    document.getElementById("Output_error_orange").innerHTML += "• Fila número " + i + " omitida (¿fila de encabezado?).<br>";
+                }
+                else {
+                    document.getElementById("Output_error_orange").innerHTML += "• Row number " + i + " skipped (header row?).<br>";
+                }
             }
             else if (gymStatus(gym) == "name_with_comma") {
-                document.getElementById("Output_error_orange").innerHTML += "• Row number " + i + " skipped (name with comma?).<br>";
+                if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+                    document.getElementById("Output_error_orange").innerHTML += "• Fila número " + i + " omitida (¿nombre con coma?).<br>";
+                }
+                else {
+                    document.getElementById("Output_error_orange").innerHTML += "• Row number " + i + " skipped (name with comma?).<br>";
+                }
             }
         }
     }
