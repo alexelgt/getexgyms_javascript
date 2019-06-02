@@ -16,10 +16,7 @@ function triggerSideBar() {
         overlay.classList.add("active");
         document.body.style.overflow = "hidden";
 
-
-        //var fixed = document.getElementById('sidebar-overlay');
-
-        document.body.addEventListener('touchmove', function(e) {
+        document.getElementById('sidebar-overlay').addEventListener('touchmove', function(e) {
 
             e.preventDefault();
         }, false);
