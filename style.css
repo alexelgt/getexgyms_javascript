@@ -478,6 +478,8 @@ span.log{
 
 
 #sidebar {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     box-sizing: border-box;
     padding: 3px 10px;
     z-index: 4;
