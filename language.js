@@ -65,3 +65,9 @@ function language_references(){
     document.getElementsByClassName("STRING_REFERENCES_INFO")[0].innerHTML = "Desde la salida the las raids EX se ha hecho muchísima investigación. Los posts más importantes sobre raids EX son los siguientes:"
   }
 }
+
+function language_info(){
+  if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+    document.getElementsByClassName("STRING_IMPORTANT_TEXT")[0].innerHTML = "IMPORTANTE: este script puede tardar un poco en ejecutarse."
+  }
+}

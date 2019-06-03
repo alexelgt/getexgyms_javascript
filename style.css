@@ -33,7 +33,7 @@ a {
     -webkit-tap-highlight-color: rgba(0,0,0,0)
 }
 
-tr, th, tr, td, .log {
+tr, th, tr, td, .log, #select_text_block {
     -webkit-user-select: text;
     -moz-user-select: text;
     user-select: text;
@@ -93,6 +93,12 @@ tr, th, tr, td, .log {
     padding: 8px 10px 2px;
     font-size: 16px;
     margin: 0;
+}
+
+#block h2.app_title {
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
 }
 
 #block #block_structure {
@@ -417,7 +423,7 @@ input:focus {
 /*== Input URL ==*/
 
 /*==== Text ====*/
-span.log{
+span.log, #select_text_block{
     font-family: monospace;
 }
 
@@ -531,6 +537,40 @@ span.log{
 #sidebar > a.selected, #sidebar > a.selected:hover:active {
     color: #7b1efb;
     background-color: #ece1fd;
+}
+
+ul {
+    list-style-type:decimal;
+}
+
+li {
+    margin-bottom: 10px;
+    padding-right: 30px;
+}
+
+#select_text_block {
+    width: 100%;
+    background-color: #f1f1f1;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 0
+}
+
+p {
+    margin-bottom: 0
+}
+
+img#icon, img#example {
+    display: block;
+    position: relative;
+    width: 80px;
+    border-radius: 8px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    margin: 10px auto
+}
+
+img#example {
+    width: 200px;
 }
 
 @media (min-width: 600px){

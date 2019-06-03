@@ -1,0 +1,165 @@
+<html lang='x-default' xml:lang='x-default'>
+  <head>
+      <title>Get EX gyms: Info</title>
+		  <meta name="title" content="Get EX gyms: Credits">
+      <meta name="keywords" content="Get EX gyms">
+      <meta name="description" content="Get EX gyms given some inputs.">
+      <link rel="icon" sizes="192x192" href="icon_circle.png">
+      <link rel="apple-touch-icon-precomposed" href="icon.png">
+      <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no, viewport-fit=cover" name="viewport">
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <link href="style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body onload="language_info();language_sidebar()">
+
+    <div id="sidebar-overlay" onclick='triggerSideBar();'></div>
+
+    <div id="navbar">    
+      <div id="hamburger" onclick='triggerSideBar();'></div>
+      <h1>Info</h1>
+    </div>
+
+    <div id="structure">
+
+      <div id="card" class="padding">
+
+        <div id="block">
+          <div id="block_structure">
+            <div id="element">
+              <img id="icon" src="icon.png">
+              <h2 class="app_title">Get EX gyms</h2>
+
+              <div id="text_block">
+                <p>
+                  <a href="https://github.com/alexelgt/getexgyms_javascript" target="_blank"><b>GitHub Repo</b></a><br>
+                  <br>
+                  <a href="https://www.reddit.com/r/TheSilphRoad/comments/bm3wp8/get_ex_gyms_with_this_website/" target="_blank"><b>Reddit post</b></a>
+                </p>
+              </div>
+
+              <h3 class="STRING_IMPORTANT_TEXT">IMPORTANT: this script might take a while to run.</h3>
+              <h3 class="STRING_WHY_USEFUL_TITLE">Why is this website useful?</h3>
+              <div id="text_block" class="info STRING_WHY_USEFUL_TEXT">
+                <p>
+                  With this website you'll be able to identify which gyms should have the <i>EX raid gym</i> tag and which gyms don't have the tag due to being inside an exclusion area.
+                </p>
+                <p>
+                  If one of the gyms is classified as an EX gym but does not have the tag in the game is due to 2 reasons:
+                </p>
+
+                <ul>
+                  <li>There is something we don't know that makes the gym not being EX.</li>
+                  <li>Niantic only takes into account POIs added to Pokémon GO before a given date (it should be between 20th July 2018 and 19th August 2018 <a href="https://www.reddit.com/r/TheSilphRoad/comments/akcel3/the_death_of_new_ex_raid_eligible_gyms_changes_to/" target="_blank">according to u/Tntnnbltn</a>). If this is the reason, the gym should eventually get the tag if Niantic updates their database.</li>
+                  <li>The POI was added to Pokémon GO before that date but there's not been a wave to give tag. It seems that there is a wave on the 25th of every month.</li>
+                </ul>
+              </div>
+
+              <h3 class="STRING_HOW_TO_USE_TITLE">How to use the website?</h3>
+              <div id="text_block" class="info STRING_HOW_TO_USE_TEXT">
+                <p>
+                  The website has some modes being the 2 most important Manual and Automatic. You need to include a list with all the gyms you want to check no matter which mode is used.
+                </p>
+                <p>
+                  The file (.txt or .csv) with all the gyms has to be in the format <b>Name,Latitude,Longitude</b>. Here is an example of the content of a valid txt file:
+                </p>
+              </div>
+              <div id="select_text_block">
+                Invernadero Alcobendas,40.538258,-3.625884<br>
+                Fuente La Vega,40.535141,-3.634682<br>
+                Antiguo Pozo,40.542559,-3.636427<br>
+                Estatua Gaudí,40.540904,-3.638473
+              </div>
+
+              <h3 class="STRING_MODES_TITLE">Modes</h3>
+              <h4 class="STRING_AUTOMATIC_MODE_TITLE">Automatic mode</h4>
+              <div id="text_block" class="info STRING_AUTOMATIC_MODE_TEXT">
+                <p>
+                  This mode uses the Overpass API to get EX and exclusions area in the area covered by the gyms. The Overpass API is a little restrictive so the website has some limitations to avoid errors with the API. As this mode uses the Overpass API, it's much slower than manual mode (although obtaining both GeoJSON also takes some time).
+                </p>
+                <p>
+                  Once you have included a file with all the gyms, do the following steps:
+                </p>
+
+                <ul>
+                  <li>Click the button <i>EX areas</i> and wait until the website says EX areas loaded correctly.</li>
+                  <li>Wait 50 seconds, then click the button <i>Exclusion areas</i> and wait until the website says Exclusion areas loaded correctly.</li>
+                  <li>Click the button Get EX and blocked gyms.</li>
+                </ul>
+              </div>
+
+              <h4 class="STRING_MANUAL_MODE_TITLE">Manual mode</h4>
+              <div id="text_block" class="info STRING_MANUAL_MODE_TEXT">
+                <p>
+                  In this mode GeoJSON files of EX and exclusion areas have to be included.
+                </p>
+                <p>
+                  In order to obtain these files, you have to use overpass-turbo with some given queries. Click on the links below, center the map in the area you want to include, run the query and export the results as a GeoJSON file.
+                </p>
+                <p>
+                  <b>EX areas:</b> <a href="https://overpass-turbo.eu/s/HE5" target="_blank">https://overpass-turbo.eu/s/HE5</a><br>
+                  <b>Exclusion areas:</b> <a href="https://overpass-turbo.eu/s/HE8" target="_blank">https://overpass-turbo.eu/s/HE8</a>
+                </p>
+                <p>
+                  Once you have the files, upload then and click the button <i>Get EX and blocked gyms</i>.
+                </p>
+              </div>
+
+              <h4 class="STRING_URL_MODE_TITLE">URL mode</h4>
+              <div id="text_block" class="info STRING_URL_MODE_TEXT">
+                <p>
+                  It's similar to manual mode but files for EX and exclusion areas are given as URLs. This mode is useful if you upload the GeoJSON files to an external server.
+                </p>
+              </div>
+
+              <h3 class="STRING_RESULTS_TITLE">Results</h3>
+              <div id="text_block" class="info STRING_RESULTS_TEXT">
+                <p>
+                  After you've clicked the button <i>Get EX and blocked gyms</i>, a button will appear to download a csv including all the EX gyms and those that are in an exclusion area. You'll also be given a summary of the results.
+                </p>
+                <p>
+                  Example of an output csv file:
+                </p>
+              </div>
+              <div id="select_text_block">
+                Name,Latitude,Longitude,Type<br>
+                Invernadero Alcobendas,40.538258,-3.625884,EX<br>
+                Estatua Gaudí,40.540904,-3.638473,EX<br>
+                Fuente La Vega,40.535141,-3.634682,Blocked
+              </div>
+
+              <div id="text_block" class="info STRING_RESULTS2_TEXT">
+                <p>
+                  If you get at least one blocked gym (EX gym inside an exclusion area), a button called <i>Get kml file with blocked gyms</i> will appear. If you click it, a kml file will be automatically downloaded. This file can be uploaded to Google My Maps to see the exclusion areas that block the gyms to be EX.
+                </p>
+                <p>
+                  Example:
+                </p>
+                <img id="example" src="example_data/example_blocked_gym.png">
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+       
+    </div>
+
+    <div id="sidebar">
+      <h2 class="STRING_MENU">Menu</h2>
+      <a class="STRING_TOOL" href="index.html">Tool</a>
+      <a class="selected">Info</a>
+      <a class="STRING_REFERENCES" href="references.html">References</a>
+      <a class="STRING_CREDITS" href="credits.html">Credits</a>
+    </div>
+
+    <script src="language.js" type="text/javascript"></script>
+    <script src="sideBar.js" type="text/javascript"></script>
+    <script type='application/javascript'>
+      document.addEventListener("touchstart", function() {}, false);
+    </script>
+
+  </body>
+</html>
