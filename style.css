@@ -336,7 +336,7 @@ span.inputfile {
 #Output_table_data {
     overflow: hidden;
     border-collapse:collapse;
-    width: 100%
+    width: 100%;
 }
 
 #Output_table_data th {
@@ -575,9 +575,9 @@ img#example {
 
 @media (min-width: 600px){
     #Output_table_data {
-        width: auto;
         background-color: #fff;
         box-sizing: border-box;
+        max-width: 584px;
         margin: 8px;
         border-radius: 6px;
         box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
