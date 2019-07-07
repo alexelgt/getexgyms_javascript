@@ -54,9 +54,6 @@ function getexgyms() {
     document.getElementsByClassName("Output_text_info")[0].innerHTML = "";
     document.getElementById("Output_table_data").innerHTML = "";
 
-    
-
-
     document.getElementsByClassName("results_block")[0].style.display = 'none';
     document.getElementsByClassName("downloads_block")[0].style.display = 'none';
     /*== Clear the output ==*/
@@ -160,7 +157,6 @@ function checkIfGymsAreEXorBlocked(data_global_exareas_multipolygon, data_global
     var ex_gyms = 0;
     var blocked_gyms = 0;
 
-    
     var csv_string_ex = "";
     var csv_string_blocked = "";
 
@@ -410,7 +406,7 @@ function getareas(query_url) {
     else if (query_url == "exclusion") {
         var query = query_common + min_lat + "%2C" + min_lng + "%2C" + max_lat + "%2C" + max_lng + query_exclusion;
     }
-    
+
     var data = new XMLHttpRequest();
     data.open("GET", query, true);
     data.onreadystatechange = function() {

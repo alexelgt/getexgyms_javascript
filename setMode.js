@@ -3,7 +3,6 @@ function handleSelectedmode() {
     if ( current_mode != "Manual" ) {
         document.getElementById("File_section_EX").style.display = 'none';
         document.getElementById("File_section_exclusion").style.display = 'none';
-        
     }
     else{
         document.getElementById("File_section_EX").style.display = 'block';
