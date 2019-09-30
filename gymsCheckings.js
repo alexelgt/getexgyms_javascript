@@ -79,7 +79,7 @@ function getMaxMinLatLng() {
             min_lat = max_lat - offset;
         }
     }
-    else if ( min_lng == max_lng ) {
+    if ( min_lng == max_lng ) {
         if (max_lng - offset < min_possible_lng) {
             max_lng = min_lng + offset;
         }
