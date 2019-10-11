@@ -1,5 +1,5 @@
 //Modified version of https://overpass-turbo.eu/s/Fmx (reddit user /u/Tntnnbltn)
-[date:"2016-07-16T00:00:00Z"]
+[date:"2018-10-18T00:00:00Z"]
 [timeout:620]
 [bbox:{{bbox}}];
 (
@@ -9,7 +9,10 @@
     way[amenity=school];
     way[highway][area=yes];
 	way[natural=water];
-
+    relation[amenity=school];
+    relation[highrelation][area=yes];
+	relation[natural=water];
+  
 //probably problematic as well
 	way[landuse=construction];
 	way[natural=wetland];
@@ -20,18 +23,24 @@
   	way[water=marsh];
   	way[landuse=railway];
   	way[landuse=landfill];
+	relation[landuse=construction];
+	relation[natural=wetland];
+	relation[aerorelation=runrelation];
+  	relation[aerorelation=taxirelation];
+  	relation[landuse=military];
+	relation[landuse=quarry];
+  	relation[water=marsh];
+  	relation[landuse=railrelation];
+  	relation[landuse=landfill];
 
 //experimental
 	//way["junction"="roundabout"]({{bbox}});
-  	way[highway](if:is_closed());
+  	//way[highway](if:is_closed());
 
 );
 out body;
 >;
 out skel qt;
-
-//Confirmed OSM tags will appear in blue
-//Unconfirmed OSM tags will appear in grey
 
 {{style:
     way[amenity=school],
@@ -45,7 +54,19 @@ out skel qt;
 	way[landuse=quarry],
 	way[water=marsh],
 	way[landuse=railway],
-	way[landuse=landfill]
+	way[landuse=landfill],
+    relation[amenity=school],
+    relation[highrelation][area=yes],
+    relation[landuse=construction],
+	relation[natural=water],
+	relation[natural=wetland],
+	relation[aerorelation=runrelation],
+	relation[aerorelation=taxirelation],
+	relation[landuse=military],
+	relation[landuse=quarry],
+	relation[water=marsh],
+	relation[landuse=railrelation],
+	relation[landuse=landfill]
 { color:none; fill-color:red; }
 
 	way[highway]

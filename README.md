@@ -1,5 +1,7 @@
 # **Get EX gyms (JavaScript)**
 
+**Updated with new changes from October 10th, 2019.**
+
 Instructions to use this website will be included soon.
 
 ## **Index**
@@ -12,14 +14,14 @@ Instructions to use this website will be included soon.
 To get each file you'll have to run a specific query in the website overpass-turbo.eu. In the folder _overpass-turbo_queries_ of this repo there are 2 txt files with the queries for EX and exclusion areas but you can also use the following links:
 
 ## **EX areas query**
-Query: https://overpass-turbo.eu/s/HE5
+Query: https://overpass-turbo.eu/s/N2C
 
 Run the query and then download (export) as a GeoJSON file.
 
 *Note: this is a modified version of the query found in reference 3 (by reddit user /u/Tntnnbltn).*
 
 ## **Exclusion areas query**
-Query: https://overpass-turbo.eu/s/HE8
+Query: https://overpass-turbo.eu/s/N2A
 
 Run the query and then download (export) as a GeoJSON file.
 
