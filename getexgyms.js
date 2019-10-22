@@ -446,7 +446,7 @@ function getareas(query_url) {
                         document.getElementById("Exclusion_areas_status").innerHTML = "• Espera 50 segundos para cargar las zonas excluyentes (más tiempo puede ser necesario).";
                     }
                     else {
-                        document.getElementById("Exclusion_areas_status").innerHTML = "• Wait 50 seconds to load exclusion areas (more time migth be needed).";
+                        document.getElementById("Exclusion_areas_status").innerHTML = "• Wait 50 seconds to load exclusion areas (more time might be needed).";
                     }
 
                     setTimeout(function(){
