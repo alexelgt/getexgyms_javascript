@@ -7,10 +7,10 @@
 
 //personally observed
     way[amenity=school];
-    way[highway][area=yes];
+    //way[highway][area=yes];
 	way[natural=water];
     relation[amenity=school];
-    relation[highrelation][area=yes];
+    //relation[highway][area=yes];
 	relation[natural=water];
   
 //probably problematic as well
@@ -25,12 +25,12 @@
   	way[landuse=landfill];
 	relation[landuse=construction];
 	relation[natural=wetland];
-	relation[aerorelation=runrelation];
-  	relation[aerorelation=taxirelation];
+	relation[aeroway=runway];
+  	relation[aeroway=taxiway];
   	relation[landuse=military];
 	relation[landuse=quarry];
   	relation[water=marsh];
-  	relation[landuse=railrelation];
+  	relation[landuse=railway];
   	relation[landuse=landfill];
 
 //experimental
@@ -56,16 +56,16 @@ out skel qt;
 	way[landuse=railway],
 	way[landuse=landfill],
     relation[amenity=school],
-    relation[highrelation][area=yes],
+    relation[highway][area=yes],
     relation[landuse=construction],
 	relation[natural=water],
 	relation[natural=wetland],
-	relation[aerorelation=runrelation],
-	relation[aerorelation=taxirelation],
+	relation[aeroway=runway],
+	relation[aeroway=taxiway],
 	relation[landuse=military],
 	relation[landuse=quarry],
 	relation[water=marsh],
-	relation[landuse=railrelation],
+	relation[landuse=railway],
 	relation[landuse=landfill]
 { color:none; fill-color:red; }
 

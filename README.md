@@ -21,7 +21,7 @@ Run the query and then download (export) as a GeoJSON file.
 *Note: this is a modified version of the query found in reference 3 (by reddit user /u/Tntnnbltn).*
 
 ## **Exclusion areas query**
-Query: https://overpass-turbo.eu/s/N3G
+Query: https://overpass-turbo.eu/s/Nnp
 
 Run the query and then download (export) as a GeoJSON file.
 
