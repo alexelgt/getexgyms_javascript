@@ -231,6 +231,14 @@ function createMultiPolygon(data_areas) {
                     number_valid_areas++;
                 }
             }
+            else if ( data_areas_element['geometry']['type'] == "MultiPolygon" ) {
+                for (const data_areas_element_multipoligon of data_areas_element['geometry']['coordinates']) {
+                    if (data_areas_element_multipoligon[0].length >= min_vertices) {
+                        data_areas_polygon[number_valid_areas] = data_areas_element_multipoligon;
+                        number_valid_areas++;
+                    }
+                }
+            }
         }
         return [anyArea, turf.multiPolygon(data_areas_polygon)]
     }

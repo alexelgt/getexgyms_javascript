@@ -7,7 +7,6 @@
 //Tags that are confirmed to classify gyms as 'parks' for EX Raids
     way[leisure=park];
     way[landuse=recreation_ground];
-    way[leisure=recreation_ground];
     way[leisure=pitch];
     way[leisure=garden];
     way[leisure=golf_course];
@@ -24,7 +23,6 @@
     way[landuse=orchard];
     relation[leisure=park];
     relation[landuse=recreation_ground];
-    relation[leisure=recreation_ground];
     relation[leisure=pitch];
     relation[leisure=garden];
     relation[leisure=golf_course];
@@ -48,7 +46,6 @@ out skel qt;
 
     way[leisure=park],
     way[landuse=recreation_ground], 
-    way[leisure=recreation_ground],
     way[leisure=pitch],
     way[leisure=garden],
     way[leisure=golf_course],
@@ -65,7 +62,6 @@ out skel qt;
     way[landuse=orchard],
     relation[leisure=park],
     relation[landuse=recreation_ground], 
-    relation[leisure=recreation_ground],
     relation[leisure=pitch],
     relation[leisure=garden],
     relation[leisure=golf_course],
