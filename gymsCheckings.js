@@ -88,5 +88,19 @@ function getMaxMinLatLng() {
         }
     }
 
+    if (max_lat + offset > Math.abs(min_possible_lat)) {
+        max_lat = Math.abs(min_possible_lat)
+    }
+    else {
+        max_lat = max_lat + offset
+    }
+
+    if (max_lng + offset > Math.abs(min_possible_lng)) {
+        max_lng = Math.abs(min_possible_lng)
+    }
+    else {
+        max_lng = max_lng + offset
+    }
+
     return [min_lat, min_lng, max_lat, max_lng]
 }
