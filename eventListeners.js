@@ -9,11 +9,11 @@ function handleFilegyms (evt) {
 
     fr_gyms.onload = e => {
         data_global_gyms = (e.target.result);
-        gyms_data = JSON.parse(csvJSON(data_global_gyms));
+        [gyms_data, problem_detected] = csvJSON(data_global_gyms);
 
         /*==== Check if any of the rows contains valid data ====*/
         problems_with_gyms = false;
-        anyValidGym = removeProblematicGymRows(); // this function returns the number of valid gyms
+        anyValidGym = removeProblematicGymRows(problem_detected); // this function returns the number of valid gyms
 
         if (!anyValidGym) {
             readyToGetEXAndBlocked();

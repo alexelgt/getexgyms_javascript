@@ -15,9 +15,19 @@ function gymStatus(gym) {
     }
 }
 
-function removeProblematicGymRows() {
+function removeProblematicGymRows(problem_detected) {
     document.getElementsByClassName("error_block")[0].style.display = 'none';
     document.getElementById("Output_error_orange").innerHTML = "";
+
+    if (problem_detected == "row_with_extra_elements") {
+        document.getElementsByClassName("error_block")[0].style.display = 'block';
+        if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
+            document.getElementById("Output_error_orange").innerHTML += "• Por lo menos uno de los gimnasios tiene el formato incorrecto por lo que se ha omitido.<br>";
+        }
+        else {
+            document.getElementById("Output_error_orange").innerHTML += "• At least one of the gyms has the wrong format so it has been omitted.<br>";
+        }
+    }
 
     var valid_gyms = 0;
     var new_gyms_data = [];

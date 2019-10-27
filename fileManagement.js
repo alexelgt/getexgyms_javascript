@@ -10,6 +10,7 @@ function downloadOutputFile(string, format, output_filename) {
 }
 
 function csvJSON(csv){
+    problem_detected = null
 
     csv = "Name,lat,lng\n" + csv;
     var lines=csv.split("\n");
@@ -22,14 +23,19 @@ function csvJSON(csv){
 
         var obj = {};
         var currentline=lines[i].split(",");
-  
-        for(let j = 0; j < headers.length; j++){
-            obj[headers[j]] = currentline[j];
+        if (currentline.length > 3) {
+            problem_detected = "row_with_extra_elements"
         }
-        result.push(obj);
+        else {
+            for(let j = 0; j < headers.length; j++){
+                obj[headers[j]] = currentline[j];
+            }
+            result.push(obj);
+        }
+  
     }
 
-    return JSON.stringify(result);
+    return [JSON.parse(JSON.stringify(result)), problem_detected];
 }
 
 function getJSON(url) {
