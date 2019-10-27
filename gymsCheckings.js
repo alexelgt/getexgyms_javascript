@@ -22,7 +22,7 @@ function removeProblematicGymRows(problem_detected) {
     if (problem_detected == "row_with_extra_elements") {
         document.getElementsByClassName("error_block")[0].style.display = 'block';
         if (navigator.language == "es-es" || navigator.language == "es" || navigator.language == "es-ES") {
-            document.getElementById("Output_error_orange").innerHTML += "• Por lo menos uno de los gimnasios tiene el formato incorrecto por lo que se ha omitido.<br>";
+            document.getElementById("Output_error_orange").innerHTML += "• Por lo menos uno de los gimnasios tiene el formato incorrecto así que se ha omitido.<br>";
         }
         else {
             document.getElementById("Output_error_orange").innerHTML += "• At least one of the gyms has the wrong format so it has been omitted.<br>";
