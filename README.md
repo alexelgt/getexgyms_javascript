@@ -14,7 +14,7 @@ Instructions to use this website will be included soon.
 To get each file you'll have to run a specific query in the website overpass-turbo.eu. In the folder _overpass-turbo_queries_ of this repo there are 2 txt files with the queries for EX and exclusion areas but you can also use the following links:
 
 ## **EX areas query**
-Query: https://overpass-turbo.eu/s/Nq9
+Query: https://overpass-turbo.eu/s/NYF
 
 Run the query and then download (export) as a GeoJSON file.
 
